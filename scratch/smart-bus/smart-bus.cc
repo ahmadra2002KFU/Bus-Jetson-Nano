@@ -794,7 +794,12 @@ CheckDDoS(Ptr<FlowMonitor> flowMonitor,
     bool lossExceeded = lossRate > DDOS_LOSS_THRESHOLD;
     bool delayExceeded = maxDelay > DDOS_DELAY_THRESHOLD;
 
-    if ((rateExceeded && lossExceeded && delayExceeded) && !g_ddosDetected)
+    // 2-of-3 voting: avoids false positives from single-threshold breaches
+    // while still detecting volumetric DDoS where rate spikes with loss or delay
+    uint32_t condCount = (rateExceeded ? 1 : 0)
+                       + (lossExceeded ? 1 : 0)
+                       + (delayExceeded ? 1 : 0);
+    if (condCount >= 2 && !g_ddosDetected)
     {
         g_ddosDetected = true;
         g_ddosDetectionTime = now;
