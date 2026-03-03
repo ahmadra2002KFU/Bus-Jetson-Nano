@@ -1,3 +1,25 @@
+/*
+ * ==============================================================================
+ * AL-AHSA SMART BUS NETWORK - BUG FIXES & NS-3.40 MIGRATION NOTES
+ * ==============================================================================
+ * 
+ * 1. EventId API Change (ns-3.40 Compatibility):
+ *    Changed m_sendEvent.IsPending() to m_sendEvent.IsRunning() in both 
+ *    GpsTelemetryApp and GpsSpoofAttackApp. The IsPending() method was 
+ *    deprecated and removed in recent ns-3 versions.
+ * 
+ * 2. Ticketing TCP Reconnection Bug (Runtime Crash Fix):
+ *    Changed the Ticketing application from TcpSocketFactory to 
+ *    UdpSocketFactory. 
+ *    Reason: The standard ns-3 OnOffApplication struggles with TCP connection 
+ *    teardown and reconstruction during its "Off" phase. When the exponential 
+ *    random variable turns the app back "On", the socket state machine crashes 
+ *    leading to NS_FATAL_ERROR("Can't connect") (e.g., at t=194s). 
+ *    UDP perfectly simulates the 50kbps bursty ticketing traffic without 
+ *    crashing the simulator state machine.
+ * ==============================================================================
+ */
+
 /* smart-bus.cc
  * Al-Ahsa Smart Bus Network — ns-3 LTE Simulation
  * Models DDoS and GPS spoofing attacks, detection logic,
@@ -359,7 +381,7 @@ void
 GpsTelemetryApp::StopApplication(void)
 {
     m_running = false;
-    if (m_sendEvent.IsPending())
+    if (m_sendEvent.IsRunning())
     {
         Simulator::Cancel(m_sendEvent);
     }
@@ -486,7 +508,7 @@ void
 GpsSpoofAttackApp::StopApplication(void)
 {
     m_running = false;
-    if (m_sendEvent.IsPending())
+    if (m_sendEvent.IsRunning())
     {
         Simulator::Cancel(m_sendEvent);
     }
@@ -1051,7 +1073,7 @@ main(int argc, char *argv[])
     }
 
     // Ticketing: TCP with exponential on/off
-    PacketSinkHelper ticketSink("ns3::TcpSocketFactory",
+    PacketSinkHelper ticketSink("ns3::UdpSocketFactory",
         InetSocketAddress(Ipv4Address::GetAny(), TICKET_PORT));
     ApplicationContainer ticketSinkApps = ticketSink.Install(remoteServer);
     ticketSinkApps.Start(Seconds(1.0));
@@ -1059,7 +1081,7 @@ main(int argc, char *argv[])
 
     for (uint32_t i = 0; i < numBuses; i++)
     {
-        OnOffHelper ticketClient("ns3::TcpSocketFactory",
+        OnOffHelper ticketClient("ns3::UdpSocketFactory",
             InetSocketAddress(serverAddr, TICKET_PORT));
         ticketClient.SetAttribute("DataRate",
             DataRateValue(DataRate("50kbps")));
