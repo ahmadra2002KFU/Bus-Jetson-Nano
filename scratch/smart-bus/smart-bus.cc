@@ -64,7 +64,7 @@ static const double DDOS_LOSS_THRESHOLD = 0.05;     // 5%
 static const double DDOS_DELAY_THRESHOLD = 0.1;     // 100ms
 static const double GPS_SPEED_THRESHOLD = 22.2;     // 80 km/h
 static const double GPS_JUMP_THRESHOLD = 1000.0;    // 1 km
-static const double GPS_CORRIDOR_THRESHOLD = 500.0; // 500m
+static const double GPS_CORRIDOR_THRESHOLD = 1500.0; // 1500m
 
 // Ports
 static const uint16_t TELEMETRY_PORT = 5000;
@@ -727,8 +727,9 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
             }
         }
 
-        if ((speedAnomaly || jumpAnomaly || corridorAnomaly || srcAnomaly)
-            && !state.detected)
+        uint32_t anomalyCount = (speedAnomaly ? 1 : 0) + (jumpAnomaly ? 1 : 0)
+                               + (corridorAnomaly ? 1 : 0) + (srcAnomaly ? 1 : 0);
+        if (anomalyCount >= 2 && !state.detected)
         {
             state.detected = true;
 
@@ -759,6 +760,7 @@ CheckDDoS(Ptr<FlowMonitor> flowMonitor,
            Ptr<Ipv4FlowClassifier> classifier,
            double interval)
 {
+    static uint64_t s_prevRxBytes = 0;
     double now = Simulator::Now().GetSeconds();
     FlowMonitor::FlowStatsContainer stats = flowMonitor->GetFlowStats();
 
@@ -783,23 +785,26 @@ CheckDDoS(Ptr<FlowMonitor> flowMonitor,
     double lossRate = (totalTxPackets > 0) ?
                       (totalLostPackets / totalTxPackets) : 0;
 
-    // Estimate rate over interval
-    // totalRxBytes is cumulative, but we check thresholds on instantaneous indicators
-    bool rateExceeded = (totalRxBytes * 8.0 / now) > DDOS_RATE_THRESHOLD;
+    // Estimate rate over the interval (not cumulative)
+    double intervalBytes = totalRxBytes - s_prevRxBytes;
+    double intervalRate = intervalBytes * 8.0 / interval;
+    s_prevRxBytes = totalRxBytes;
+
+    bool rateExceeded = intervalRate > DDOS_RATE_THRESHOLD;
     bool lossExceeded = lossRate > DDOS_LOSS_THRESHOLD;
     bool delayExceeded = maxDelay > DDOS_DELAY_THRESHOLD;
 
-    if ((rateExceeded || lossExceeded || delayExceeded) && !g_ddosDetected)
+    if ((rateExceeded && lossExceeded && delayExceeded) && !g_ddosDetected)
     {
         g_ddosDetected = true;
         g_ddosDetectionTime = now;
 
         std::ostringstream detail;
-        detail << "avgRate=" << (totalRxBytes * 8.0 / now)
+        detail << "intervalRate=" << intervalRate
                << "bps loss=" << lossRate
                << " maxDelay=" << maxDelay << "s";
 
-        LogMetric(now, 999, "ddos_detect", totalRxBytes * 8.0 / now,
+        LogMetric(now, 999, "ddos_detect", intervalRate,
                   lossRate, detail.str());
 
         NS_LOG_WARN("[DDoS DETECTED] t=" << now << " " << detail.str());
@@ -921,7 +926,7 @@ main(int argc, char *argv[])
     double ddosStart = 100.0;
     double ddosDuration = 60.0;
     double gpsStart = 150.0;
-    uint32_t gpsBusTarget = 5;
+    uint32_t gpsBusTarget = 0;
     std::string resultsDir = "results/";
 
     CommandLine cmd;
@@ -957,8 +962,6 @@ main(int argc, char *argv[])
     Ptr<LteHelper> lteHelper = CreateObject<LteHelper>();
     Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper>();
     lteHelper->SetEpcHelper(epcHelper);
-    lteHelper->SetAttribute("PathlossModel",
-        StringValue("ns3::Cost231PropagationLossModel"));
 
     Ptr<Node> pgw = epcHelper->GetPgwNode();
 
@@ -1001,6 +1004,7 @@ main(int argc, char *argv[])
     enbMobility.Install(enbNodes);
 
     NetDeviceContainer enbDevices = lteHelper->InstallEnbDevice(enbNodes);
+    lteHelper->AddX2Interface(enbNodes);
 
     // ========== Bus UEs ==========
     NodeContainer busNodes;
@@ -1060,7 +1064,7 @@ main(int argc, char *argv[])
         OnOffHelper cctvStream("ns3::UdpSocketFactory",
             InetSocketAddress(serverAddr, cctvPort));
         cctvStream.SetAttribute("DataRate",
-            DataRateValue(DataRate("1500kbps")));
+            DataRateValue(DataRate("500kbps")));
         cctvStream.SetAttribute("PacketSize", UintegerValue(1400));
         cctvStream.SetAttribute("OnTime",
             StringValue("ns3::ConstantRandomVariable[Constant=1]"));
