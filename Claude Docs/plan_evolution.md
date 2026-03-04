@@ -28,3 +28,26 @@ This document tracks the evolution of the Smart Bus Network simulation architect
   3. **Application-Layer Spoofing:** GPS spoofing is modeled properly as a custom malicious C++ `ns3::Application` that sends UDP packets with false coordinates and spoofed bus IDs to the server.
   4. **ns-3.40 API Compliance:** Strict adherence to ns-3.40 rules: no lambdas in `Simulator::Schedule` (using free functions) and pre-scheduling `BulkSendApplication` for forensic uploads.
   5. **Realistic LTE:** eNodeBs are explicitly positioned to force LTE handovers, generating realistic latency spikes in the baseline traffic.
+
+## Implementation Iterations (Code Versions)
+
+The V3 design went through three code iterations during implementation:
+
+### v1 Code (commit da5b3c7) - Initial Implementation
+- All 6 critical bugs present (Cost231 killed LTE, no X2, CCTV overload, false positives)
+- rxPackets=0 for all bus traffic, detection triggered by noise
+- Documented in: v1_bugs_report.md
+
+### v2 Code (commits 3f26f9f + 23d0ca5) - Bug Fixes + Detection Tuning
+- Fixed all 6 bugs: LTE works (100% delivery), no baseline false positives
+- Changed DDoS detection from OR to AND, then to 2-of-3 voting
+- GPS corridor widened to 1500m, anomalyCount >= 2 required
+- 2 new issues found: GPS false positives from DDoS traffic, delay threshold too high
+- Documented in: v2_validation_report.md
+
+### v3 Code (commit cf9e489) - Final Working Version
+- GPS payload signature validation (GPS1 magic header) prevents DDoS packets from triggering GPS detector
+- DDoS delay threshold tuned from 100ms to 20ms for the simulation topology
+- All 3 scenarios produce correct detection behavior with zero false positives
+- Forensic upload pipeline verified working
+- Documented in: v3_validation_report.md
