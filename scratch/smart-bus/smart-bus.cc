@@ -61,10 +61,18 @@ static const double BUS_SPEED_MS = 11.1; // ~40 km/h
 // Detection thresholds
 static const double DDOS_RATE_THRESHOLD = 15e6;    // 15 Mbps
 static const double DDOS_LOSS_THRESHOLD = 0.05;     // 5%
-static const double DDOS_DELAY_THRESHOLD = 0.1;     // 100ms
+static const double DDOS_DELAY_THRESHOLD = 0.02;    // 20ms
 static const double GPS_SPEED_THRESHOLD = 22.2;     // 80 km/h
 static const double GPS_JUMP_THRESHOLD = 1000.0;    // 1 km
 static const double GPS_CORRIDOR_THRESHOLD = 1500.0; // 1500m
+
+// GPS telemetry packet format:
+// [0..3]   magic (uint32)
+// [4..7]   busId (uint32)
+// [8..15]  posX (double)
+// [16..23] posY (double)
+static const uint32_t GPS_PAYLOAD_MAGIC = 0x47505331; // "GPS1"
+static const uint32_t GPS_PAYLOAD_MIN_SIZE = 24;
 
 // Ports
 static const uint16_t TELEMETRY_PORT = 5000;
@@ -400,17 +408,20 @@ GpsTelemetryApp::SendPacket(void)
     Ptr<MobilityModel> mob = GetNode()->GetObject<MobilityModel>();
     Vector pos = mob->GetPosition();
 
-    // Build payload: busId(4B) + posX(8B) + posY(8B) + padding to 200B
+    // Build payload: magic(4B) + busId(4B) + posX(8B) + posY(8B) + padding
     uint8_t buffer[200];
     std::memset(buffer, 0, 200);
 
+    uint32_t magic = GPS_PAYLOAD_MAGIC;
+    std::memcpy(buffer, &magic, sizeof(uint32_t));
+
     uint32_t busId = m_busId;
-    std::memcpy(buffer, &busId, sizeof(uint32_t));
+    std::memcpy(buffer + 4, &busId, sizeof(uint32_t));
 
     double posX = pos.x;
     double posY = pos.y;
-    std::memcpy(buffer + 4, &posX, sizeof(double));
-    std::memcpy(buffer + 12, &posY, sizeof(double));
+    std::memcpy(buffer + 8, &posX, sizeof(double));
+    std::memcpy(buffer + 16, &posY, sizeof(double));
 
     Ptr<Packet> packet = Create<Packet>(buffer, 200);
     m_socket->Send(packet);
@@ -523,19 +534,20 @@ GpsSpoofAttackApp::SendPacket(void)
 {
     if (!m_running || m_sent >= m_numPackets) return;
 
-    // Build payload: busId(4B) + lat(8B) + lon(8B) + padding to 200B
+    // Build payload: magic(4B) + busId(4B) + fakeX(8B) + fakeY(8B) + padding
     uint8_t buffer[200];
     std::memset(buffer, 0, 200);
 
-    // Write busId
-    uint32_t busId = m_targetBusId;
-    std::memcpy(buffer, &busId, sizeof(uint32_t));
+    uint32_t magic = GPS_PAYLOAD_MAGIC;
+    std::memcpy(buffer, &magic, sizeof(uint32_t));
 
-    // Write fake coordinates
+    uint32_t busId = m_targetBusId;
+    std::memcpy(buffer + 4, &busId, sizeof(uint32_t));
+
     double fakeX = m_fakePosition.x;
     double fakeY = m_fakePosition.y;
-    std::memcpy(buffer + 4, &fakeX, sizeof(double));
-    std::memcpy(buffer + 12, &fakeY, sizeof(double));
+    std::memcpy(buffer + 8, &fakeX, sizeof(double));
+    std::memcpy(buffer + 16, &fakeY, sizeof(double));
 
     Ptr<Packet> packet = Create<Packet>(buffer, 200);
     m_socket->Send(packet);
@@ -655,18 +667,25 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
     Address from;
     while ((packet = socket->RecvFrom(from)))
     {
-        if (packet->GetSize() < 20) continue;
+        if (packet->GetSize() < GPS_PAYLOAD_MIN_SIZE) continue;
 
         uint8_t buffer[200];
         uint32_t copied = packet->CopyData(buffer, std::min((uint32_t)200,
                                                              packet->GetSize()));
-        if (copied < 20) continue;
+        if (copied < GPS_PAYLOAD_MIN_SIZE) continue;
 
+        uint32_t magic;
         uint32_t busId;
         double posX, posY;
-        std::memcpy(&busId, buffer, sizeof(uint32_t));
-        std::memcpy(&posX, buffer + 4, sizeof(double));
-        std::memcpy(&posY, buffer + 12, sizeof(double));
+        std::memcpy(&magic, buffer, sizeof(uint32_t));
+        if (magic != GPS_PAYLOAD_MAGIC) continue;
+
+        std::memcpy(&busId, buffer + 4, sizeof(uint32_t));
+        std::memcpy(&posX, buffer + 8, sizeof(double));
+        std::memcpy(&posY, buffer + 16, sizeof(double));
+
+        if (busId >= MAX_BUSES) continue;
+        if (!std::isfinite(posX) || !std::isfinite(posY)) continue;
 
         Vector currentPos(posX, posY, 0);
         double now = Simulator::Now().GetSeconds();
