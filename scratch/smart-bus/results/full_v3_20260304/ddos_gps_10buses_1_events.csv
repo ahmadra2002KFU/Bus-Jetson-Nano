@@ -1,0 +1,3 @@
+time,busId,eventType,value1,value2,detail
+105.000,999,ddos_detect,35765702.400,0.000,"intervalRate=3.57657e+07bps loss=0 maxDelay=0.0331052s"
+150.015,0,gps_spoof_detect,6659.100,6652.837,"speed=6659.1m/s jump=6652.84m corridor=1 srcIP=1"

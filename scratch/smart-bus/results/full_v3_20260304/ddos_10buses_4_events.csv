@@ -1,0 +1,2 @@
+time,busId,eventType,value1,value2,detail
+105.000,999,ddos_detect,35706950.400,0.000,"intervalRate=3.5707e+07bps loss=0 maxDelay=0.033553s"
