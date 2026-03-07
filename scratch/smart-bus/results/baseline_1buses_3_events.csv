@@ -1,2 +1,0 @@
-time,busId,eventType,value1,value2,detail
-15.000,999,ddos_detect,0.000,0.154,"avgRate=0bps loss=0.153671 maxDelay=0s"

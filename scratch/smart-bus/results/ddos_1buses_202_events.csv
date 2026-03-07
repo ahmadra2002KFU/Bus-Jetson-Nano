@@ -1,2 +1,0 @@
-time,busId,eventType,value1,value2,detail
-100.015,0,gps_spoof_detect,7798.398,7747.358,"speed=7798.4m/s jump=7747.36m corridor=1 srcIP=1"
