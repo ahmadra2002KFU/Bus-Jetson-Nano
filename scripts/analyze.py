@@ -4,7 +4,9 @@ analyze.py - Parse FlowMonitor XML results and generate comparison graphs.
 
 Filters to only include legitimate bus flows (7.0.0.x source subnet),
 excluding DDoS attacker (2.0.0.x), GPS spoof attacker (3.0.0.x),
-control plane (13.x/14.x), and TCP forensic flows.
+control plane (13.x/14.x), and TCP forensic flows (port 8000).
+
+Supports both 'any' and 'voting' detection modes.
 """
 import xml.etree.ElementTree as ET
 import pandas as pd
@@ -14,6 +16,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
 import sys
+import glob as globmod
 
 # Constants
 RESULTS_DIR = os.environ.get('RESULTS_DIR', '../results/full_v3_20260304')
@@ -22,16 +25,25 @@ os.makedirs(GRAPHS_DIR, exist_ok=True)
 
 BUS_COUNTS = [1, 10, 41]
 SCENARIOS = ['baseline', 'ddos', 'ddos_gps']
-SEEDS = [1, 2, 3, 4, 5]
-SIM_TIME = 200.0  # seconds
+DETECTION_MODES = ['any', 'voting']
+SEEDS = [1]
+SIM_TIME = 300.0  # seconds
 
 # Bus subnet prefix - only flows from this subnet are legitimate bus traffic
 BUS_SUBNET_PREFIX = '7.0.0.'
 
+# Ground truth for detection accuracy
+DDOS_START_TIME = 100.0
+GPS_START_TIME = 150.0
+DETECTION_WINDOW = 30.0  # seconds after attack start to count as true positive
+
+# Propagation delay estimate (LTE + P2P) for queue delay estimation
+PROPAGATION_DELAY_MS = 25.0
+
 
 def get_bus_flow_ids(root):
-    """Parse Ipv4FlowClassifier to find flowIds originating from bus subnet (7.0.0.x)
-    and using UDP (protocol 17). Excludes TCP forensic upload flows."""
+    """Parse Ipv4FlowClassifier to find flowIds originating from bus subnet (7.0.0.x).
+    Includes UDP (proto 17) and TCP (proto 6) but excludes forensic port 8000."""
     bus_flow_ids = set()
     classifier = root.find('.//Ipv4FlowClassifier')
     if classifier is None:
@@ -40,7 +52,10 @@ def get_bus_flow_ids(root):
     for flow in classifier.findall('Flow'):
         src = flow.get('sourceAddress', '')
         proto = flow.get('protocol', '')
-        if src.startswith(BUS_SUBNET_PREFIX) and proto == '17':
+        dst_port = flow.get('destinationPort', '')
+        if src.startswith(BUS_SUBNET_PREFIX) and (
+            proto == '17' or (proto == '6' and dst_port != '8000')
+        ):
             fid = int(flow.get('flowId'))
             bus_flow_ids.add(fid)
 
@@ -107,12 +122,14 @@ def parse_xml(xml_file):
     avg_jitter_ms = (total_jitter_sum_ns / total_rx_packets / 1e6) if total_rx_packets > 0 else 0
     throughput_mbps = (total_rx_bytes * 8) / (SIM_TIME * 1e6)
     plr = (total_lost_packets / total_tx_packets * 100.0) if total_tx_packets > 0 else 0
+    queue_delay_ms = max(0, avg_delay_ms - PROPAGATION_DELAY_MS)
 
     return {
         'throughput_mbps': throughput_mbps,
         'delay_ms': avg_delay_ms,
         'jitter_ms': avg_jitter_ms,
         'plr_percent': plr,
+        'queue_delay_ms': queue_delay_ms,
         'bus_flows': flow_count,
         'total_rx_packets': total_rx_packets,
         'total_tx_packets': total_tx_packets,
@@ -120,29 +137,142 @@ def parse_xml(xml_file):
     }
 
 
+def parse_events_csv(events_file):
+    """Parse events CSV and extract detection events."""
+    if not os.path.exists(events_file):
+        return None
+    try:
+        df = pd.read_csv(events_file)
+        return df
+    except Exception:
+        return None
+
+
+def parse_forensics_csv(forensics_file):
+    """Parse forensics CSV with upload timing data."""
+    if not os.path.exists(forensics_file):
+        return None
+    try:
+        df = pd.read_csv(forensics_file)
+        return df
+    except Exception:
+        return None
+
+
+def compute_detection_accuracy(events_df, scenario):
+    """Compute detection accuracy metrics against ground truth."""
+    result = {
+        'ddos_detected': False,
+        'ddos_time_to_detect': None,
+        'ddos_true_positive': False,
+        'ddos_false_positive': False,
+        'gps_detected': False,
+        'gps_time_to_detect': None,
+        'gps_true_positive': False,
+        'gps_false_positive': False,
+    }
+    if events_df is None or events_df.empty:
+        return result
+
+    # DDoS detection
+    ddos_events = events_df[events_df['eventType'] == 'ddos_detect']
+    if not ddos_events.empty:
+        detect_time = ddos_events.iloc[0]['time']
+        result['ddos_detected'] = True
+        if scenario in ('ddos', 'ddos_gps'):
+            result['ddos_time_to_detect'] = detect_time - DDOS_START_TIME
+            result['ddos_true_positive'] = True
+        else:
+            result['ddos_false_positive'] = True
+
+    # GPS detection
+    gps_events = events_df[events_df['eventType'] == 'gps_spoof_detect']
+    if not gps_events.empty:
+        detect_time = gps_events.iloc[0]['time']
+        result['gps_detected'] = True
+        if scenario == 'ddos_gps':
+            result['gps_time_to_detect'] = detect_time - GPS_START_TIME
+            result['gps_true_positive'] = True
+        else:
+            result['gps_false_positive'] = True
+
+    return result
+
+
+def compute_forensic_metrics(forensics_df):
+    """Extract forensic upload metrics."""
+    result = {
+        'upload_started': False,
+        'upload_completed': False,
+        'upload_duration': None,
+        'upload_bytes': 0,
+    }
+    if forensics_df is None or forensics_df.empty:
+        return result
+
+    row = forensics_df.iloc[0]
+    result['upload_started'] = True
+    result['upload_bytes'] = int(row.get('bytesReceived', 0))
+    if row.get('uploadCompleted', 0) == 1:
+        result['upload_completed'] = True
+        result['upload_duration'] = row['uploadFinishTime'] - row['uploadStartTime']
+
+    return result
+
+
 def main():
     print("Parsing FlowMonitor XML files (bus flows only)...")
     data = []
+    detection_data = []
+    forensic_data = []
 
-    for bus in BUS_COUNTS:
-        for scenario in SCENARIOS:
-            for seed in SEEDS:
-                xml_filename = f"{scenario}_{bus}buses_{seed}.xml"
-                xml_path = os.path.join(RESULTS_DIR, xml_filename)
+    for mode in DETECTION_MODES:
+        for bus in BUS_COUNTS:
+            for scenario in SCENARIOS:
+                for seed in SEEDS:
+                    xml_filename = f"{scenario}_{bus}buses_{mode}_{seed}.xml"
+                    xml_path = os.path.join(RESULTS_DIR, xml_filename)
 
-                metrics = parse_xml(xml_path)
-                if metrics:
-                    metrics['bus_count'] = bus
-                    metrics['scenario'] = scenario
-                    metrics['seed'] = seed
-                    data.append(metrics)
-                    print(f"  {xml_filename}: {metrics['bus_flows']} bus flows, "
-                          f"PDR={100-metrics['plr_percent']:.2f}%, "
-                          f"delay={metrics['delay_ms']:.1f}ms")
-                else:
-                    print(f"  MISSING: {xml_filename}")
+                    metrics = parse_xml(xml_path)
+                    if metrics:
+                        metrics['bus_count'] = bus
+                        metrics['scenario'] = scenario
+                        metrics['seed'] = seed
+                        metrics['mode'] = mode
+                        data.append(metrics)
+                        print(f"  {xml_filename}: {metrics['bus_flows']} bus flows, "
+                              f"PDR={100-metrics['plr_percent']:.2f}%, "
+                              f"delay={metrics['delay_ms']:.1f}ms")
+                    else:
+                        print(f"  MISSING: {xml_filename}")
+
+                    # Parse events CSV for detection accuracy
+                    events_file = os.path.join(
+                        RESULTS_DIR,
+                        f"{scenario}_{bus}buses_{mode}_{seed}_events.csv")
+                    events_df = parse_events_csv(events_file)
+                    accuracy = compute_detection_accuracy(events_df, scenario)
+                    accuracy['bus_count'] = bus
+                    accuracy['scenario'] = scenario
+                    accuracy['seed'] = seed
+                    accuracy['mode'] = mode
+                    detection_data.append(accuracy)
+
+                    # Parse forensics CSV for upload metrics
+                    forensics_file = os.path.join(
+                        RESULTS_DIR,
+                        f"{scenario}_{bus}buses_{mode}_{seed}_forensics.csv")
+                    forensics_df = parse_forensics_csv(forensics_file)
+                    fmetrics = compute_forensic_metrics(forensics_df)
+                    fmetrics['bus_count'] = bus
+                    fmetrics['scenario'] = scenario
+                    fmetrics['seed'] = seed
+                    fmetrics['mode'] = mode
+                    forensic_data.append(fmetrics)
 
     df = pd.DataFrame(data)
+    det_df = pd.DataFrame(detection_data)
+    for_df = pd.DataFrame(forensic_data)
 
     if df.empty:
         print("No valid XML results found.")
@@ -150,31 +280,24 @@ def main():
 
     print(f"\nParsed {len(data)} files successfully.")
 
-    # Print summary table
-    print("\n=== Summary (mean across 5 seeds) ===")
-    summary = df.groupby(['bus_count', 'scenario']).agg(
-        delay=('delay_ms', 'mean'),
-        throughput=('throughput_mbps', 'mean'),
-        plr=('plr_percent', 'mean'),
-        jitter=('jitter_ms', 'mean'),
-    ).reset_index()
-    for _, row in summary.iterrows():
-        print(f"  {row['scenario']:10s} {row['bus_count']:2.0f} buses: "
-              f"delay={row['delay']:7.1f}ms  throughput={row['throughput']:5.2f}Mbps  "
-              f"PLR={row['plr']:5.2f}%  jitter={row['jitter']:6.2f}ms")
-
-    # Calculate means and stddevs for plotting
-    grouped = df.groupby(['bus_count', 'scenario']).agg(
-        throughput_mean=('throughput_mbps', 'mean'),
-        throughput_std=('throughput_mbps', 'std'),
-        delay_mean=('delay_ms', 'mean'),
-        delay_std=('delay_ms', 'std'),
-        jitter_mean=('jitter_ms', 'mean'),
-        jitter_std=('jitter_ms', 'std'),
-        plr_mean=('plr_percent', 'mean'),
-        plr_std=('plr_percent', 'std')
-    ).reset_index()
-    grouped = grouped.fillna(0)
+    # Print summary table per mode
+    for mode in DETECTION_MODES:
+        mode_df = df[df['mode'] == mode]
+        if mode_df.empty:
+            continue
+        print(f"\n=== Summary [{mode} mode] (mean across 5 seeds) ===")
+        summary = mode_df.groupby(['bus_count', 'scenario']).agg(
+            delay=('delay_ms', 'mean'),
+            throughput=('throughput_mbps', 'mean'),
+            plr=('plr_percent', 'mean'),
+            jitter=('jitter_ms', 'mean'),
+            queue_delay=('queue_delay_ms', 'mean'),
+        ).reset_index()
+        for _, row in summary.iterrows():
+            print(f"  {row['scenario']:10s} {row['bus_count']:2.0f} buses: "
+                  f"delay={row['delay']:7.1f}ms  throughput={row['throughput']:5.2f}Mbps  "
+                  f"PLR={row['plr']:5.2f}%  jitter={row['jitter']:6.2f}ms  "
+                  f"queueDelay={row['queue_delay']:6.2f}ms")
 
     # Scenario display names and colors
     scenario_labels = {
@@ -187,16 +310,24 @@ def main():
         'ddos': '#E8793A',
         'ddos_gps': '#5CB85C'
     }
+    mode_colors = {
+        'any': '#4A90D9',
+        'voting': '#E8793A'
+    }
 
-    def plot_metric(metric_mean, metric_std, ylabel, title, filename):
+    def plot_metric(grouped_df, metric_mean, metric_std, ylabel, title, filename,
+                    mode_filter=None):
+        gdf = grouped_df if mode_filter is None else grouped_df[
+            grouped_df['mode'] == mode_filter]
+        if gdf.empty:
+            return
+
         fig, ax = plt.subplots(figsize=(10, 6))
-
         bar_width = 0.25
         index = np.arange(len(BUS_COUNTS))
 
         for i, scenario in enumerate(SCENARIOS):
-            scenario_data = grouped[grouped['scenario'] == scenario]
-
+            scenario_data = gdf[gdf['scenario'] == scenario]
             means = []
             stds = []
             for b in BUS_COUNTS:
@@ -213,9 +344,10 @@ def main():
                    color=scenario_colors[scenario],
                    capsize=5, edgecolor='black', linewidth=0.5)
 
+        suffix = f" [{mode_filter}]" if mode_filter else ""
         ax.set_xlabel('Number of Buses', fontsize=12)
         ax.set_ylabel(ylabel, fontsize=12)
-        ax.set_title(title, fontsize=14, fontweight='bold')
+        ax.set_title(title + suffix, fontsize=14, fontweight='bold')
         ax.set_xticks(index + bar_width)
         ax.set_xticklabels(BUS_COUNTS)
         ax.legend(fontsize=10)
@@ -226,23 +358,180 @@ def main():
         plt.close()
         print(f"Generated {filename}")
 
-    print("\nGenerating graphs...")
-    plot_metric('delay_mean', 'delay_std',
-                'Avg End-to-End Delay (ms)',
-                'End-to-End Delay Comparison (Bus Traffic Only)',
-                'delay_comparison.png')
-    plot_metric('throughput_mean', 'throughput_std',
-                'Avg Throughput (Mbps)',
-                'Throughput Comparison (Bus Traffic Only)',
-                'throughput_comparison.png')
-    plot_metric('plr_mean', 'plr_std',
-                'Packet Loss Rate (%)',
-                'Packet Loss Rate Comparison (Bus Traffic Only)',
-                'plr_comparison.png')
-    plot_metric('jitter_mean', 'jitter_std',
-                'Avg Jitter (ms)',
-                'Jitter Comparison (Bus Traffic Only)',
-                'jitter_comparison.png')
+    # Generate per-mode grouped stats
+    for mode in DETECTION_MODES:
+        mode_df = df[df['mode'] == mode]
+        if mode_df.empty:
+            continue
+
+        grouped = mode_df.groupby(['bus_count', 'scenario', 'mode']).agg(
+            throughput_mean=('throughput_mbps', 'mean'),
+            throughput_std=('throughput_mbps', 'std'),
+            delay_mean=('delay_ms', 'mean'),
+            delay_std=('delay_ms', 'std'),
+            jitter_mean=('jitter_ms', 'mean'),
+            jitter_std=('jitter_ms', 'std'),
+            plr_mean=('plr_percent', 'mean'),
+            plr_std=('plr_percent', 'std'),
+            queue_delay_mean=('queue_delay_ms', 'mean'),
+            queue_delay_std=('queue_delay_ms', 'std'),
+        ).reset_index()
+        grouped = grouped.fillna(0)
+
+        print(f"\nGenerating graphs for {mode} mode...")
+        plot_metric(grouped, 'delay_mean', 'delay_std',
+                    'Avg End-to-End Delay (ms)',
+                    'End-to-End Delay Comparison',
+                    f'delay_comparison_{mode}.png', mode)
+        plot_metric(grouped, 'throughput_mean', 'throughput_std',
+                    'Avg Throughput (Mbps)',
+                    'Throughput Comparison',
+                    f'throughput_comparison_{mode}.png', mode)
+        plot_metric(grouped, 'plr_mean', 'plr_std',
+                    'Packet Loss Rate (%)',
+                    'Packet Loss Rate Comparison',
+                    f'plr_comparison_{mode}.png', mode)
+        plot_metric(grouped, 'jitter_mean', 'jitter_std',
+                    'Avg Jitter (ms)',
+                    'Jitter Comparison',
+                    f'jitter_comparison_{mode}.png', mode)
+        plot_metric(grouped, 'queue_delay_mean', 'queue_delay_std',
+                    'Estimated Queue Delay (ms)',
+                    'Queue Delay Comparison',
+                    f'queue_delay_comparison_{mode}.png', mode)
+
+    # === Detection time comparison (any vs voting) ===
+    print("\nGenerating detection comparison graphs...")
+    det_attack_df = det_df[det_df['scenario'].isin(['ddos', 'ddos_gps'])]
+    if not det_attack_df.empty:
+        # DDoS detection time: any vs voting
+        ddos_det = det_attack_df[det_attack_df['ddos_detected'] == True].copy()
+        if not ddos_det.empty:
+            fig, ax = plt.subplots(figsize=(10, 6))
+            bar_width = 0.35
+            index = np.arange(len(BUS_COUNTS))
+            for i, mode in enumerate(DETECTION_MODES):
+                mode_data = ddos_det[ddos_det['mode'] == mode]
+                means = []
+                stds = []
+                for b in BUS_COUNTS:
+                    bdata = mode_data[mode_data['bus_count'] == b]['ddos_time_to_detect'].dropna()
+                    means.append(bdata.mean() if len(bdata) > 0 else 0)
+                    stds.append(bdata.std() if len(bdata) > 1 else 0)
+                ax.bar(index + i * bar_width, means, bar_width,
+                       yerr=stds, label=f'{mode} mode',
+                       color=mode_colors[mode], capsize=5,
+                       edgecolor='black', linewidth=0.5)
+            ax.set_xlabel('Number of Buses', fontsize=12)
+            ax.set_ylabel('Time to Detect DDoS (s)', fontsize=12)
+            ax.set_title('DDoS Detection Time: Any vs Voting', fontsize=14, fontweight='bold')
+            ax.set_xticks(index + bar_width / 2)
+            ax.set_xticklabels(BUS_COUNTS)
+            ax.legend(fontsize=10)
+            ax.grid(axis='y', linestyle='--', alpha=0.5)
+            plt.tight_layout()
+            plt.savefig(os.path.join(GRAPHS_DIR, 'ddos_detection_time_comparison.png'), dpi=150)
+            plt.close()
+            print("Generated ddos_detection_time_comparison.png")
+
+    # GPS detection time comparison
+    gps_det = det_df[(det_df['scenario'] == 'ddos_gps') & (det_df['gps_detected'] == True)].copy()
+    if not gps_det.empty:
+        fig, ax = plt.subplots(figsize=(10, 6))
+        bar_width = 0.35
+        index = np.arange(len(BUS_COUNTS))
+        for i, mode in enumerate(DETECTION_MODES):
+            mode_data = gps_det[gps_det['mode'] == mode]
+            means = []
+            stds = []
+            for b in BUS_COUNTS:
+                bdata = mode_data[mode_data['bus_count'] == b]['gps_time_to_detect'].dropna()
+                means.append(bdata.mean() if len(bdata) > 0 else 0)
+                stds.append(bdata.std() if len(bdata) > 1 else 0)
+            ax.bar(index + i * bar_width, means, bar_width,
+                   yerr=stds, label=f'{mode} mode',
+                   color=mode_colors[mode], capsize=5,
+                   edgecolor='black', linewidth=0.5)
+        ax.set_xlabel('Number of Buses', fontsize=12)
+        ax.set_ylabel('Time to Detect GPS Spoof (s)', fontsize=12)
+        ax.set_title('GPS Spoof Detection Time: Any vs Voting', fontsize=14, fontweight='bold')
+        ax.set_xticks(index + bar_width / 2)
+        ax.set_xticklabels(BUS_COUNTS)
+        ax.legend(fontsize=10)
+        ax.grid(axis='y', linestyle='--', alpha=0.5)
+        plt.tight_layout()
+        plt.savefig(os.path.join(GRAPHS_DIR, 'gps_detection_time_comparison.png'), dpi=150)
+        plt.close()
+        print("Generated gps_detection_time_comparison.png")
+
+    # === Forensic upload duration ===
+    for_started = for_df[for_df['upload_started'] == True].copy()
+    if not for_started.empty:
+        fig, ax = plt.subplots(figsize=(10, 6))
+        bar_width = 0.35
+        index = np.arange(len(BUS_COUNTS))
+        for i, mode in enumerate(DETECTION_MODES):
+            mode_data = for_started[for_started['mode'] == mode]
+            means = []
+            stds = []
+            for b in BUS_COUNTS:
+                bdata = mode_data[mode_data['bus_count'] == b]['upload_duration'].dropna()
+                means.append(bdata.mean() if len(bdata) > 0 else 0)
+                stds.append(bdata.std() if len(bdata) > 1 else 0)
+            ax.bar(index + i * bar_width, means, bar_width,
+                   yerr=stds, label=f'{mode} mode',
+                   color=mode_colors[mode], capsize=5,
+                   edgecolor='black', linewidth=0.5)
+        ax.set_xlabel('Number of Buses', fontsize=12)
+        ax.set_ylabel('Upload Duration (s)', fontsize=12)
+        ax.set_title('Forensic Upload Duration (10MB)', fontsize=14, fontweight='bold')
+        ax.set_xticks(index + bar_width / 2)
+        ax.set_xticklabels(BUS_COUNTS)
+        ax.legend(fontsize=10)
+        ax.grid(axis='y', linestyle='--', alpha=0.5)
+        plt.tight_layout()
+        plt.savefig(os.path.join(GRAPHS_DIR, 'forensic_upload_duration.png'), dpi=150)
+        plt.close()
+        print("Generated forensic_upload_duration.png")
+
+    # === Detection accuracy summary ===
+    print("\n=== Detection Accuracy Summary ===")
+    for mode in DETECTION_MODES:
+        mode_det = det_df[det_df['mode'] == mode]
+        for scenario in SCENARIOS:
+            s_det = mode_det[mode_det['scenario'] == scenario]
+            if s_det.empty:
+                continue
+            n = len(s_det)
+            ddos_tp = s_det['ddos_true_positive'].sum()
+            ddos_fp = s_det['ddos_false_positive'].sum()
+            gps_tp = s_det['gps_true_positive'].sum()
+            gps_fp = s_det['gps_false_positive'].sum()
+            ddos_ttd = s_det['ddos_time_to_detect'].dropna()
+            gps_ttd = s_det['gps_time_to_detect'].dropna()
+            print(f"  [{mode}] {scenario}: "
+                  f"DDoS TP={ddos_tp}/{n} FP={ddos_fp}/{n} "
+                  f"avgTTD={ddos_ttd.mean():.1f}s | " if len(ddos_ttd) > 0 else
+                  f"  [{mode}] {scenario}: "
+                  f"DDoS TP={ddos_tp}/{n} FP={ddos_fp}/{n} | ", end='')
+            if len(gps_ttd) > 0:
+                print(f"GPS TP={gps_tp}/{n} FP={gps_fp}/{n} avgTTD={gps_ttd.mean():.1f}s")
+            else:
+                print(f"GPS TP={gps_tp}/{n} FP={gps_fp}/{n}")
+
+    # === Upload success rate ===
+    print("\n=== Forensic Upload Success Rate ===")
+    for mode in DETECTION_MODES:
+        mode_for = for_df[(for_df['mode'] == mode) & (for_df['upload_started'] == True)]
+        if mode_for.empty:
+            continue
+        completed = mode_for['upload_completed'].sum()
+        total = len(mode_for)
+        avg_dur = mode_for['upload_duration'].dropna().mean()
+        print(f"  [{mode}]: {completed}/{total} completed "
+              f"({completed/total*100:.0f}%), avg duration={avg_dur:.1f}s"
+              if total > 0 and not np.isnan(avg_dur) else
+              f"  [{mode}]: {completed}/{total} completed")
 
     print(f"\nAnalysis complete. Graphs saved to {GRAPHS_DIR}/")
 

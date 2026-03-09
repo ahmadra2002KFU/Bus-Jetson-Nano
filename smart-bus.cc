@@ -9,14 +9,10 @@
  *    deprecated and removed in recent ns-3 versions.
  * 
  * 2. Ticketing TCP Reconnection Bug (Runtime Crash Fix):
- *    Changed the Ticketing application from TcpSocketFactory to 
- *    UdpSocketFactory. 
- *    Reason: The standard ns-3 OnOffApplication struggles with TCP connection 
- *    teardown and reconstruction during its "Off" phase. When the exponential 
- *    random variable turns the app back "On", the socket state machine crashes 
- *    leading to NS_FATAL_ERROR("Can't connect") (e.g., at t=194s). 
- *    UDP perfectly simulates the 50kbps bursty ticketing traffic without 
- *    crashing the simulator state machine.
+ *    Restored TcpSocketFactory for ticketing (supervisor requirement) but
+ *    uses always-on mode (ConstantRandomVariable OnTime=1, OffTime=0)
+ *    to avoid the OnOff TCP reconnection crash that occurs when the
+ *    exponential random variable cycles the app through Off/On phases.
  * ==============================================================================
  */
 
@@ -61,7 +57,7 @@ static const double BUS_SPEED_MS = 11.1; // ~40 km/h
 // Detection thresholds
 static const double DDOS_RATE_THRESHOLD = 15e6;    // 15 Mbps
 static const double DDOS_LOSS_THRESHOLD = 0.05;     // 5%
-static const double DDOS_DELAY_THRESHOLD = 0.02;    // 20ms
+static const double DDOS_DELAY_THRESHOLD = 0.1;     // 100ms
 static const double GPS_SPEED_THRESHOLD = 22.2;     // 80 km/h
 static const double GPS_JUMP_THRESHOLD = 1000.0;    // 1 km
 static const double GPS_CORRIDOR_THRESHOLD = 1500.0; // 1500m
@@ -109,6 +105,10 @@ struct ForensicEvent {
     double triggerTime;
     uint32_t busId;
     std::string attackType;
+    double uploadStartTime;
+    double uploadFinishTime;
+    bool uploadCompleted;
+    uint64_t bytesReceived;
 };
 
 // ============================================================
@@ -120,6 +120,8 @@ static std::vector<ForensicEvent> g_forensicEvents;
 static bool g_ddosDetected = false;
 static double g_ddosDetectionTime = 0.0;
 static bool g_forensicTriggered = false;
+static std::string g_detectionMode = "any";
+static Ptr<PacketSink> g_forensicSinkApp;
 
 // ============================================================
 // HELPER: Log a metric
@@ -748,12 +750,14 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
 
         uint32_t anomalyCount = (speedAnomaly ? 1 : 0) + (jumpAnomaly ? 1 : 0)
                                + (corridorAnomaly ? 1 : 0) + (srcAnomaly ? 1 : 0);
-        if (anomalyCount >= 2 && !state.detected)
+        uint32_t requiredCount = (g_detectionMode == "any") ? 1 : 2;
+        if (anomalyCount >= requiredCount && !state.detected)
         {
             state.detected = true;
 
             std::ostringstream detail;
-            detail << "speed=" << speed << "m/s"
+            detail << "mode=" << g_detectionMode
+                   << " speed=" << speed << "m/s"
                    << " jump=" << distance << "m"
                    << " corridor=" << corridorAnomaly
                    << " srcIP=" << srcAnomaly;
@@ -813,18 +817,18 @@ CheckDDoS(Ptr<FlowMonitor> flowMonitor,
     bool lossExceeded = lossRate > DDOS_LOSS_THRESHOLD;
     bool delayExceeded = maxDelay > DDOS_DELAY_THRESHOLD;
 
-    // 2-of-3 voting: avoids false positives from single-threshold breaches
-    // while still detecting volumetric DDoS where rate spikes with loss or delay
     uint32_t condCount = (rateExceeded ? 1 : 0)
                        + (lossExceeded ? 1 : 0)
                        + (delayExceeded ? 1 : 0);
-    if (condCount >= 2 && !g_ddosDetected)
+    uint32_t requiredCount = (g_detectionMode == "any") ? 1 : 2;
+    if (condCount >= requiredCount && !g_ddosDetected)
     {
         g_ddosDetected = true;
         g_ddosDetectionTime = now;
 
         std::ostringstream detail;
-        detail << "intervalRate=" << intervalRate
+        detail << "mode=" << g_detectionMode
+               << " intervalRate=" << intervalRate
                << "bps loss=" << lossRate
                << " maxDelay=" << maxDelay << "s";
 
@@ -837,6 +841,65 @@ CheckDDoS(Ptr<FlowMonitor> flowMonitor,
     // Reschedule
     Simulator::Schedule(Seconds(interval),
                         &CheckDDoS, flowMonitor, classifier, interval);
+}
+
+// ============================================================
+// FREE FUNCTION: LogQueueStatus
+// Periodically logs P2P server link queue size
+// ============================================================
+static void
+LogQueueStatus(Ptr<NetDevice> device, double interval)
+{
+    double now = Simulator::Now().GetSeconds();
+    Ptr<PointToPointNetDevice> p2pDev = DynamicCast<PointToPointNetDevice>(device);
+    uint32_t nPkts = 0;
+    uint32_t nBytes = 0;
+    if (p2pDev)
+    {
+        Ptr<Queue<Packet>> queue = p2pDev->GetQueue();
+        if (queue)
+        {
+            nPkts = queue->GetNPackets();
+            nBytes = queue->GetNBytes();
+        }
+    }
+    LogMetric(now, 999, "queue_status", (double)nPkts, (double)nBytes,
+              "server_p2p_queue");
+
+    Simulator::Schedule(Seconds(interval),
+                        &LogQueueStatus, device, interval);
+}
+
+// ============================================================
+// FREE FUNCTION: CheckForensicUploadComplete
+// Polls PacketSink::GetTotalRx() every 1s to detect upload finish
+// ============================================================
+static void
+CheckForensicUploadComplete(uint32_t evtIndex)
+{
+    if (evtIndex >= g_forensicEvents.size()) return;
+    ForensicEvent &evt = g_forensicEvents[evtIndex];
+    if (evt.uploadCompleted) return;
+
+    uint64_t rxBytes = 0;
+    if (g_forensicSinkApp)
+    {
+        rxBytes = g_forensicSinkApp->GetTotalRx();
+    }
+    evt.bytesReceived = rxBytes;
+
+    if (rxBytes >= 10485760) // 10 MB
+    {
+        evt.uploadFinishTime = Simulator::Now().GetSeconds();
+        evt.uploadCompleted = true;
+        NS_LOG_INFO("[FORENSIC] Upload complete at t=" << evt.uploadFinishTime
+                    << " bytes=" << rxBytes);
+    }
+    else
+    {
+        Simulator::Schedule(Seconds(1.0),
+                            &CheckForensicUploadComplete, evtIndex);
+    }
 }
 
 // ============================================================
@@ -862,7 +925,16 @@ StartForensicUpload(Ptr<Node> busNode, Ipv4Address serverAddr)
     evt.triggerTime = now;
     evt.busId = 0;
     evt.attackType = "ddos";
+    evt.uploadStartTime = now;
+    evt.uploadFinishTime = 0.0;
+    evt.uploadCompleted = false;
+    evt.bytesReceived = 0;
     g_forensicEvents.push_back(evt);
+
+    // Schedule polling to track upload completion
+    uint32_t evtIndex = g_forensicEvents.size() - 1;
+    Simulator::Schedule(Seconds(1.0),
+                        &CheckForensicUploadComplete, evtIndex);
 }
 
 // ============================================================
@@ -909,13 +981,17 @@ static void
 WriteForensicsCsv(const std::string &filename)
 {
     std::ofstream file(filename);
-    file << "triggerTime,busId,attackType\n";
+    file << "triggerTime,busId,attackType,uploadStartTime,uploadFinishTime,uploadCompleted,bytesReceived\n";
     for (size_t i = 0; i < g_forensicEvents.size(); i++)
     {
         const ForensicEvent &evt = g_forensicEvents[i];
         file << std::fixed << std::setprecision(3)
              << evt.triggerTime << "," << evt.busId << ","
-             << evt.attackType << "\n";
+             << evt.attackType << ","
+             << evt.uploadStartTime << ","
+             << evt.uploadFinishTime << ","
+             << (evt.uploadCompleted ? 1 : 0) << ","
+             << evt.bytesReceived << "\n";
     }
     file.close();
 }
@@ -952,6 +1028,7 @@ main(int argc, char *argv[])
     double gpsStart = 150.0;
     uint32_t gpsBusTarget = 0;
     std::string resultsDir = "results/";
+    std::string detectionMode = "any";
 
     CommandLine cmd;
     cmd.AddValue("numBuses", "Number of buses (1, 10, or 41)", numBuses);
@@ -965,14 +1042,17 @@ main(int argc, char *argv[])
     cmd.AddValue("gpsStart", "GPS spoofing start time", gpsStart);
     cmd.AddValue("gpsBusTarget", "Target bus ID for GPS spoofing", gpsBusTarget);
     cmd.AddValue("resultsDir", "Output directory", resultsDir);
+    cmd.AddValue("detectionMode", "Detection mode: any or voting", detectionMode);
     cmd.Parse(argc, argv);
+    g_detectionMode = detectionMode;
 
     if (numBuses > MAX_BUSES) numBuses = MAX_BUSES;
 
     NS_LOG_INFO("=== Al-Ahsa Smart Bus Simulation ===");
     NS_LOG_INFO("Scenario: " << scenario << " | Buses: " << numBuses
                 << " | DDoS: " << (enableDDoS ? "ON" : "OFF")
-                << " | GPS Spoof: " << (enableGpsSpoofing ? "ON" : "OFF"));
+                << " | GPS Spoof: " << (enableGpsSpoofing ? "ON" : "OFF")
+                << " | Detection: " << g_detectionMode);
 
     // Clear globals for fresh run
     g_gpsStates.clear();
@@ -981,6 +1061,7 @@ main(int argc, char *argv[])
     g_ddosDetected = false;
     g_ddosDetectionTime = 0.0;
     g_forensicTriggered = false;
+    g_forensicSinkApp = 0;
 
     // ========== LTE + EPC Setup ==========
     Ptr<LteHelper> lteHelper = CreateObject<LteHelper>();
@@ -1088,7 +1169,7 @@ main(int argc, char *argv[])
         OnOffHelper cctvStream("ns3::UdpSocketFactory",
             InetSocketAddress(serverAddr, cctvPort));
         cctvStream.SetAttribute("DataRate",
-            DataRateValue(DataRate("500kbps")));
+            DataRateValue(DataRate("1500kbps")));
         cctvStream.SetAttribute("PacketSize", UintegerValue(1400));
         cctvStream.SetAttribute("OnTime",
             StringValue("ns3::ConstantRandomVariable[Constant=1]"));
@@ -1100,8 +1181,8 @@ main(int argc, char *argv[])
         app.Stop(Seconds(simTime));
     }
 
-    // Ticketing: TCP with exponential on/off
-    PacketSinkHelper ticketSink("ns3::UdpSocketFactory",
+    // Ticketing: TCP (always-on to avoid OnOff TCP reconnection crash)
+    PacketSinkHelper ticketSink("ns3::TcpSocketFactory",
         InetSocketAddress(Ipv4Address::GetAny(), TICKET_PORT));
     ApplicationContainer ticketSinkApps = ticketSink.Install(remoteServer);
     ticketSinkApps.Start(Seconds(1.0));
@@ -1109,15 +1190,16 @@ main(int argc, char *argv[])
 
     for (uint32_t i = 0; i < numBuses; i++)
     {
-        OnOffHelper ticketClient("ns3::UdpSocketFactory",
+        OnOffHelper ticketClient("ns3::TcpSocketFactory",
             InetSocketAddress(serverAddr, TICKET_PORT));
         ticketClient.SetAttribute("DataRate",
             DataRateValue(DataRate("50kbps")));
         ticketClient.SetAttribute("PacketSize", UintegerValue(512));
+        // Always-on to avoid TCP OnOff reconnection crash (see header notes)
         ticketClient.SetAttribute("OnTime",
-            StringValue("ns3::ExponentialRandomVariable[Mean=2]"));
+            StringValue("ns3::ConstantRandomVariable[Constant=1]"));
         ticketClient.SetAttribute("OffTime",
-            StringValue("ns3::ExponentialRandomVariable[Mean=10]"));
+            StringValue("ns3::ConstantRandomVariable[Constant=0]"));
 
         ApplicationContainer app = ticketClient.Install(busNodes.Get(i));
         app.Start(Seconds(5.0 + i * 0.5));
@@ -1130,6 +1212,7 @@ main(int argc, char *argv[])
     ApplicationContainer forensicSinkApps = forensicSink.Install(remoteServer);
     forensicSinkApps.Start(Seconds(1.0));
     forensicSinkApps.Stop(Seconds(simTime));
+    g_forensicSinkApp = DynamicCast<PacketSink>(forensicSinkApps.Get(0));
 
     // ========== DDoS Attack ==========
     NodeContainer attackerNode;
@@ -1236,6 +1319,10 @@ main(int argc, char *argv[])
     Simulator::Schedule(Seconds(10.0),
                         &CheckDDoS, flowMonitor, classifier, 5.0);
 
+    // Queue status logging every 5s on the PGW-side P2P device
+    Simulator::Schedule(Seconds(5.0),
+                        &LogQueueStatus, serverDevices.Get(0), 5.0);
+
     // Forensic trigger polling every 2s (checks if DDoS detected)
     if (enableDDoS && numBuses > 0)
     {
@@ -1255,7 +1342,7 @@ main(int argc, char *argv[])
     uint32_t rngRun = RngSeedManager::GetRun();
     std::ostringstream prefix;
     prefix << resultsDir << scenario << "_" << numBuses << "buses_"
-           << rngRun;
+           << g_detectionMode << "_" << rngRun;
 
     // FlowMonitor XML
     std::string xmlFile = prefix.str() + ".xml";
