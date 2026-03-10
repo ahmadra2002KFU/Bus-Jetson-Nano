@@ -1,0 +1,2 @@
+triggerTime,busId,attackType,uploadStartTime,uploadFinishTime,uploadCompleted,bytesReceived
+106.000,0,ddos,106.000,228.000,1,10485760
