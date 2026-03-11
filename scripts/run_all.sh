@@ -9,7 +9,7 @@ echo "Starting Al-Ahsa Smart Bus Network Simulation Runs..."
 # Arrays
 BUS_COUNTS=(1 10 41)
 SCENARIOS=("baseline" "ddos" "ddos_gps")
-DETECTION_MODES=("any" "voting")
+DETECTION_MODES=("any")
 SEEDS=(1)
 
 TOTAL_RUNS=$(( ${#BUS_COUNTS[@]} * ${#SCENARIOS[@]} * ${#DETECTION_MODES[@]} * ${#SEEDS[@]} ))

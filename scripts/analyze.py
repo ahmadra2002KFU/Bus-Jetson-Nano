@@ -19,13 +19,13 @@ import sys
 import glob as globmod
 
 # Constants
-RESULTS_DIR = os.environ.get('RESULTS_DIR', '../results/full_v3_20260304')
+RESULTS_DIR = os.environ.get('RESULTS_DIR', '../results')
 GRAPHS_DIR = os.path.join(os.path.dirname(RESULTS_DIR), 'graphs')
 os.makedirs(GRAPHS_DIR, exist_ok=True)
 
 BUS_COUNTS = [1, 10, 41]
 SCENARIOS = ['baseline', 'ddos', 'ddos_gps']
-DETECTION_MODES = ['any', 'voting']
+DETECTION_MODES = ['any']
 SEEDS = [1]
 SIM_TIME = 300.0  # seconds
 
