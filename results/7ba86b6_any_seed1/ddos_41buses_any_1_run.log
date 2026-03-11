@@ -1,0 +1,6 @@
+[0/2] Re-checking globbed directories...
+ninja: no work to do.
+msg="Can't connect", +205.000000000s 29 file=/home/ahmed/ns-3/src/applications/model/onoff-application.cc, line=423
+NS_FATAL, terminating
+terminate called without an active exception
+Command 'build/scratch/smart-bus/ns3.40-smart-bus-default --numBuses=41 --scenario=ddos --detectionMode=any --enableDDoS=true --RngRun=1 --resultsDir=results_7ba86b6_any_seed1/' died with <Signals.SIGABRT: 6>.

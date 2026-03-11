@@ -1,0 +1,4 @@
+[0/2] Re-checking globbed directories...
+[1/2] Building CXX object scratch/CMakeFiles/scratch_smart-bus_smart-bus.dir/smart-bus/smart-bus.cc.o
+cc1plus: warning: /home/ahmed/ns-3/cmake-cache/CMakeFiles/stdlib_pch_exec.dir/cmake_pch.hxx.gch: not used because `__FLT32X_DENORM_MIN__' defined as ` 4.94065645841246544176568792868221372e-324F32x' not ` 4.94065645841246544176568792868221372e-324F32' [-Winvalid-pch]
+[2/2] Linking CXX executable /home/ahmed/ns-3/build/scratch/smart-bus/ns3.40-smart-bus-default
