@@ -55,7 +55,7 @@ static const double STATION_STOP_TIME = 30.0;
 static const double BUS_SPEED_MS = 11.1; // ~40 km/h
 
 // Detection thresholds
-static const double DDOS_RATE_THRESHOLD = 15e6;    // 15 Mbps
+static const double DDOS_RATE_THRESHOLD = 100e6;   // 100 Mbps
 static const double DDOS_LOSS_THRESHOLD = 0.05;     // 5%
 static const double DDOS_DELAY_THRESHOLD = 0.1;     // 100ms
 static const double GPS_SPEED_THRESHOLD = 22.2;     // 80 km/h
@@ -1113,7 +1113,9 @@ main(int argc, char *argv[])
     enbMobility.Install(enbNodes);
 
     NetDeviceContainer enbDevices = lteHelper->InstallEnbDevice(enbNodes);
-    lteHelper->AddX2Interface(enbNodes);
+    // X2 handover disabled: prevents TCP connection breaks during handover
+    // which crash the OnOff TCP ticketing app at 41 buses.
+    // Each bus stays attached to its initial closest eNB.
 
     // ========== Bus UEs ==========
     NodeContainer busNodes;
@@ -1138,6 +1140,7 @@ main(int argc, char *argv[])
             epcHelper->GetUeDefaultGatewayAddress(), 1);
     }
 
+    // Attach each UE to the closest eNB (no handover)
     lteHelper->Attach(busDevices);
 
     // ========== Normal Traffic ==========
