@@ -1068,6 +1068,10 @@ main(int argc, char *argv[])
     Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper>();
     lteHelper->SetEpcHelper(epcHelper);
 
+    // 20 MHz bandwidth (100 RBs) — matches real LTE deployment capacity
+    lteHelper->SetEnbDeviceAttribute("DlBandwidth", UintegerValue(100));
+    lteHelper->SetEnbDeviceAttribute("UlBandwidth", UintegerValue(100));
+
     Ptr<Node> pgw = epcHelper->GetPgwNode();
 
     // ========== Remote Server ==========
