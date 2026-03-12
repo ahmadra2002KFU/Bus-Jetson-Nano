@@ -9,10 +9,9 @@
  *    deprecated and removed in recent ns-3 versions.
  * 
  * 2. Ticketing TCP Reconnection Bug (Runtime Crash Fix):
- *    Restored TcpSocketFactory for ticketing (supervisor requirement) but
- *    uses always-on mode (ConstantRandomVariable OnTime=1, OffTime=0)
- *    to avoid the OnOff TCP reconnection crash that occurs when the
- *    exponential random variable cycles the app through Off/On phases.
+ *    Replaced TCP OnOff ticketing with a custom TicketingApp that keeps one
+ *    TCP socket open and emits small random bursts. This matches the project
+ *    requirement without triggering the known OnOff TCP reconnect crash.
  * ==============================================================================
  */
 
@@ -55,12 +54,14 @@ static const double STATION_STOP_TIME = 30.0;
 static const double BUS_SPEED_MS = 11.1; // ~40 km/h
 
 // Detection thresholds
-static const double DDOS_RATE_THRESHOLD = 100e6;   // 100 Mbps
+static const double DDOS_RATE_THRESHOLD = 15e6;    // 15 Mbps
 static const double DDOS_LOSS_THRESHOLD = 0.05;     // 5%
 static const double DDOS_DELAY_THRESHOLD = 0.1;     // 100ms
 static const double GPS_SPEED_THRESHOLD = 22.2;     // 80 km/h
 static const double GPS_JUMP_THRESHOLD = 1000.0;    // 1 km
 static const double GPS_CORRIDOR_THRESHOLD = 1500.0; // 1500m
+static const double DETECTION_WARMUP_TIME = 60.0;
+static const double SERVER_LINK_RATE_BPS = 1e9;
 
 // GPS telemetry packet format:
 // [0..3]   magic (uint32)
@@ -119,6 +120,8 @@ static std::vector<MetricsRecord> g_metricsLog;
 static std::vector<ForensicEvent> g_forensicEvents;
 static bool g_ddosDetected = false;
 static double g_ddosDetectionTime = 0.0;
+static bool g_gpsSpoofDetected = false;
+static double g_gpsSpoofDetectionTime = 0.0;
 static bool g_forensicTriggered = false;
 static std::string g_detectionMode = "any";
 static Ptr<PacketSink> g_forensicSinkApp;
@@ -439,6 +442,194 @@ GpsTelemetryApp::ScheduleNextSend(void)
         m_sendEvent = Simulator::Schedule(Seconds(m_interval),
                                           &GpsTelemetryApp::SendPacket, this);
     }
+}
+
+// ============================================================
+// CUSTOM APPLICATION: TicketingApp
+// Keeps one TCP socket open and emits small random bursts.
+// ============================================================
+class TicketingApp : public Application
+{
+public:
+    TicketingApp();
+    virtual ~TicketingApp();
+    static TypeId GetTypeId(void);
+
+    void Setup(Address serverAddress,
+               double minInterval,
+               double maxInterval,
+               uint32_t packetSize,
+               uint32_t minBurstPackets,
+               uint32_t maxBurstPackets);
+
+private:
+    virtual void StartApplication(void);
+    virtual void StopApplication(void);
+
+    void HandleConnectSuccess(Ptr<Socket> socket);
+    void HandleConnectFail(Ptr<Socket> socket);
+    void ScheduleNextBurst(void);
+    void SendBurst(void);
+
+    Ptr<Socket> m_socket;
+    Address m_serverAddress;
+    bool m_running;
+    bool m_connected;
+    EventId m_burstEvent;
+    EventId m_retryEvent;
+    Ptr<UniformRandomVariable> m_intervalRv;
+    Ptr<UniformRandomVariable> m_burstRv;
+    double m_minInterval;
+    double m_maxInterval;
+    uint32_t m_packetSize;
+    uint32_t m_minBurstPackets;
+    uint32_t m_maxBurstPackets;
+};
+
+NS_OBJECT_ENSURE_REGISTERED(TicketingApp);
+
+TypeId
+TicketingApp::GetTypeId(void)
+{
+    static TypeId tid = TypeId("ns3::TicketingApp")
+        .SetParent<Application>()
+        .SetGroupName("Applications")
+        .AddConstructor<TicketingApp>();
+    return tid;
+}
+
+TicketingApp::TicketingApp()
+    : m_socket(0),
+      m_running(false),
+      m_connected(false),
+      m_minInterval(6.0),
+      m_maxInterval(20.0),
+      m_packetSize(256),
+      m_minBurstPackets(1),
+      m_maxBurstPackets(3)
+{
+    m_intervalRv = CreateObject<UniformRandomVariable>();
+    m_burstRv = CreateObject<UniformRandomVariable>();
+}
+
+TicketingApp::~TicketingApp()
+{
+    m_socket = 0;
+}
+
+void
+TicketingApp::Setup(Address serverAddress,
+                    double minInterval,
+                    double maxInterval,
+                    uint32_t packetSize,
+                    uint32_t minBurstPackets,
+                    uint32_t maxBurstPackets)
+{
+    m_serverAddress = serverAddress;
+    m_minInterval = minInterval;
+    m_maxInterval = maxInterval;
+    m_packetSize = packetSize;
+    m_minBurstPackets = minBurstPackets;
+    m_maxBurstPackets = maxBurstPackets;
+}
+
+void
+TicketingApp::StartApplication(void)
+{
+    m_running = true;
+    m_connected = false;
+
+    if (!m_socket)
+    {
+        m_socket = Socket::CreateSocket(GetNode(), TcpSocketFactory::GetTypeId());
+        m_socket->SetConnectCallback(
+            MakeCallback(&TicketingApp::HandleConnectSuccess, this),
+            MakeCallback(&TicketingApp::HandleConnectFail, this));
+    }
+
+    m_socket->Connect(m_serverAddress);
+}
+
+void
+TicketingApp::StopApplication(void)
+{
+    m_running = false;
+    m_connected = false;
+
+    if (m_burstEvent.IsRunning())
+    {
+        Simulator::Cancel(m_burstEvent);
+    }
+    if (m_retryEvent.IsRunning())
+    {
+        Simulator::Cancel(m_retryEvent);
+    }
+    if (m_socket)
+    {
+        m_socket->Close();
+    }
+}
+
+void
+TicketingApp::HandleConnectSuccess(Ptr<Socket> socket)
+{
+    m_connected = true;
+    ScheduleNextBurst();
+}
+
+void
+TicketingApp::HandleConnectFail(Ptr<Socket> socket)
+{
+    m_connected = false;
+    if (m_running)
+    {
+        m_retryEvent = Simulator::Schedule(Seconds(2.0),
+                                           &TicketingApp::StartApplication,
+                                           this);
+    }
+}
+
+void
+TicketingApp::ScheduleNextBurst(void)
+{
+    if (!m_running || !m_connected)
+    {
+        return;
+    }
+
+    double nextInterval = m_intervalRv->GetValue(m_minInterval, m_maxInterval);
+    m_burstEvent = Simulator::Schedule(Seconds(nextInterval),
+                                       &TicketingApp::SendBurst,
+                                       this);
+}
+
+void
+TicketingApp::SendBurst(void)
+{
+    if (!m_running || !m_connected || !m_socket)
+    {
+        return;
+    }
+
+    uint32_t burstPackets = static_cast<uint32_t>(
+        std::floor(m_burstRv->GetValue(m_minBurstPackets,
+                                       m_maxBurstPackets + 1)));
+    if (burstPackets < m_minBurstPackets)
+    {
+        burstPackets = m_minBurstPackets;
+    }
+
+    for (uint32_t i = 0; i < burstPackets; ++i)
+    {
+        Ptr<Packet> packet = Create<Packet>(m_packetSize);
+        int sent = m_socket->Send(packet);
+        if (sent < 0)
+        {
+            break;
+        }
+    }
+
+    ScheduleNextBurst();
 }
 
 // ============================================================
@@ -765,6 +956,12 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
             LogMetric(now, busId, "gps_spoof_detect", speed, distance,
                       detail.str());
 
+            if (!g_gpsSpoofDetected)
+            {
+                g_gpsSpoofDetected = true;
+                g_gpsSpoofDetectionTime = now;
+            }
+
             NS_LOG_WARN("[GPS SPOOF DETECTED] Bus " << busId
                         << " at t=" << now << " " << detail.str());
         }
@@ -781,56 +978,82 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
 static void
 CheckDDoS(Ptr<FlowMonitor> flowMonitor,
            Ptr<Ipv4FlowClassifier> classifier,
-           double interval)
+           Ipv4Address serverAddr,
+           double interval,
+           double detectionStartTime)
 {
     static uint64_t s_prevRxBytes = 0;
     double now = Simulator::Now().GetSeconds();
     FlowMonitor::FlowStatsContainer stats = flowMonitor->GetFlowStats();
 
-    double totalRxBytes = 0;
-    double totalLostPackets = 0;
-    double totalTxPackets = 0;
-    double maxDelay = 0;
+    if (now < detectionStartTime)
+    {
+        Simulator::Schedule(Seconds(interval),
+                            &CheckDDoS,
+                            flowMonitor,
+                            classifier,
+                            serverAddr,
+                            interval,
+                            detectionStartTime);
+        return;
+    }
+
+    double telemetryRxBytes = 0;
+    double telemetryLostPackets = 0;
+    double telemetryTxPackets = 0;
+    double telemetryMaxDelay = 0;
 
     for (auto &flow : stats)
     {
-        totalRxBytes += flow.second.rxBytes;
-        totalLostPackets += flow.second.lostPackets;
-        totalTxPackets += flow.second.txPackets;
+        Ipv4FlowClassifier::FiveTuple tuple = classifier->FindFlow(flow.first);
+        bool isServerTelemetry = (tuple.destinationAddress == serverAddr)
+            && (tuple.destinationPort == TELEMETRY_PORT);
+        bool isBusFlow = tuple.sourceAddress.CombineMask(Ipv4Mask("255.0.0.0"))
+            == Ipv4Address("7.0.0.0");
+
+        if (!isServerTelemetry)
+        {
+            continue;
+        }
+
+        telemetryRxBytes += flow.second.rxBytes;
+
+        if (!isBusFlow)
+        {
+            continue;
+        }
+
+        telemetryLostPackets += flow.second.lostPackets;
+        telemetryTxPackets += flow.second.txPackets;
         if (flow.second.rxPackets > 0)
         {
             double delay = flow.second.delaySum.GetSeconds() /
                            flow.second.rxPackets;
-            if (delay > maxDelay) maxDelay = delay;
+            if (delay > telemetryMaxDelay) telemetryMaxDelay = delay;
         }
     }
 
-    double lossRate = (totalTxPackets > 0) ?
-                      (totalLostPackets / totalTxPackets) : 0;
+    double lossRate = (telemetryTxPackets > 0) ?
+                      (telemetryLostPackets / telemetryTxPackets) : 0;
 
-    // Estimate rate over the interval (not cumulative)
-    double intervalBytes = totalRxBytes - s_prevRxBytes;
+    double intervalBytes = telemetryRxBytes - s_prevRxBytes;
     double intervalRate = intervalBytes * 8.0 / interval;
-    s_prevRxBytes = totalRxBytes;
+    s_prevRxBytes = telemetryRxBytes;
 
     bool rateExceeded = intervalRate > DDOS_RATE_THRESHOLD;
     bool lossExceeded = lossRate > DDOS_LOSS_THRESHOLD;
-    bool delayExceeded = maxDelay > DDOS_DELAY_THRESHOLD;
+    bool delayExceeded = telemetryMaxDelay > DDOS_DELAY_THRESHOLD;
 
-    uint32_t condCount = (rateExceeded ? 1 : 0)
-                       + (lossExceeded ? 1 : 0)
-                       + (delayExceeded ? 1 : 0);
-    uint32_t requiredCount = (g_detectionMode == "any") ? 1 : 2;
-    if (condCount >= requiredCount && !g_ddosDetected)
+    if ((rateExceeded || lossExceeded || delayExceeded) && !g_ddosDetected)
     {
         g_ddosDetected = true;
         g_ddosDetectionTime = now;
 
         std::ostringstream detail;
-        detail << "mode=" << g_detectionMode
-               << " intervalRate=" << intervalRate
+        detail << "mode=requirements_any"
+               << " telemetryRate=" << intervalRate
                << "bps loss=" << lossRate
-               << " maxDelay=" << maxDelay << "s";
+               << " maxDelay=" << telemetryMaxDelay << "s";
 
         LogMetric(now, 999, "ddos_detect", intervalRate,
                   lossRate, detail.str());
@@ -838,9 +1061,13 @@ CheckDDoS(Ptr<FlowMonitor> flowMonitor,
         NS_LOG_WARN("[DDoS DETECTED] t=" << now << " " << detail.str());
     }
 
-    // Reschedule
     Simulator::Schedule(Seconds(interval),
-                        &CheckDDoS, flowMonitor, classifier, interval);
+                        &CheckDDoS,
+                        flowMonitor,
+                        classifier,
+                        serverAddr,
+                        interval,
+                        detectionStartTime);
 }
 
 // ============================================================
@@ -865,6 +1092,8 @@ LogQueueStatus(Ptr<NetDevice> device, double interval)
     }
     LogMetric(now, 999, "queue_status", (double)nPkts, (double)nBytes,
               "server_p2p_queue");
+    LogMetric(now, 999, "queue_delay", (nBytes * 8.0) / SERVER_LINK_RATE_BPS,
+              (double)nPkts, "estimated_server_queue_delay_seconds");
 
     Simulator::Schedule(Seconds(interval),
                         &LogQueueStatus, device, interval);
@@ -924,7 +1153,7 @@ StartForensicUpload(Ptr<Node> busNode, Ipv4Address serverAddr)
     ForensicEvent evt;
     evt.triggerTime = now;
     evt.busId = 0;
-    evt.attackType = "ddos";
+    evt.attackType = g_ddosDetected ? "ddos" : "gps_spoof";
     evt.uploadStartTime = now;
     evt.uploadFinishTime = 0.0;
     evt.uploadCompleted = false;
@@ -944,7 +1173,7 @@ StartForensicUpload(Ptr<Node> busNode, Ipv4Address serverAddr)
 static void
 CheckForensicTrigger(Ptr<Node> busNode, Ipv4Address serverAddr, double interval)
 {
-    if (g_ddosDetected && !g_forensicTriggered)
+    if ((g_ddosDetected || g_gpsSpoofDetected) && !g_forensicTriggered)
     {
         g_forensicTriggered = true;
         StartForensicUpload(busNode, serverAddr);
@@ -1060,6 +1289,8 @@ main(int argc, char *argv[])
     g_forensicEvents.clear();
     g_ddosDetected = false;
     g_ddosDetectionTime = 0.0;
+    g_gpsSpoofDetected = false;
+    g_gpsSpoofDetectionTime = 0.0;
     g_forensicTriggered = false;
     g_forensicSinkApp = 0;
 
@@ -1113,9 +1344,7 @@ main(int argc, char *argv[])
     enbMobility.Install(enbNodes);
 
     NetDeviceContainer enbDevices = lteHelper->InstallEnbDevice(enbNodes);
-    // X2 handover disabled: prevents TCP connection breaks during handover
-    // which crash the OnOff TCP ticketing app at 41 buses.
-    // Each bus stays attached to its initial closest eNB.
+    lteHelper->AddX2Interface(enbNodes);
 
     // ========== Bus UEs ==========
     NodeContainer busNodes;
@@ -1140,8 +1369,8 @@ main(int argc, char *argv[])
             epcHelper->GetUeDefaultGatewayAddress(), 1);
     }
 
-    // Attach each UE to the closest eNB (no handover)
-    lteHelper->Attach(busDevices);
+    // Initial closest-cell attachment with LTE handover support.
+    lteHelper->AttachToClosestEnb(busDevices, enbDevices);
 
     // ========== Normal Traffic ==========
 
@@ -1164,7 +1393,7 @@ main(int argc, char *argv[])
         telemetryApp->SetStopTime(Seconds(simTime));
     }
 
-    // CCTV: 1.5 Mbps UDP per bus
+    // CCTV: 1 Mbps UDP per bus (within the required 1-2 Mbps range)
     uint16_t cctvPort = CCTV_PORT;
     UdpServerHelper cctvServer(cctvPort);
     ApplicationContainer cctvSink = cctvServer.Install(remoteServer);
@@ -1176,7 +1405,7 @@ main(int argc, char *argv[])
         OnOffHelper cctvStream("ns3::UdpSocketFactory",
             InetSocketAddress(serverAddr, cctvPort));
         cctvStream.SetAttribute("DataRate",
-            DataRateValue(DataRate("1500kbps")));
+            DataRateValue(DataRate("1000kbps")));
         cctvStream.SetAttribute("PacketSize", UintegerValue(1400));
         cctvStream.SetAttribute("OnTime",
             StringValue("ns3::ConstantRandomVariable[Constant=1]"));
@@ -1188,7 +1417,7 @@ main(int argc, char *argv[])
         app.Stop(Seconds(simTime));
     }
 
-    // Ticketing: TCP (always-on to avoid OnOff TCP reconnection crash)
+    // Ticketing: random small TCP bursts over one persistent connection.
     PacketSinkHelper ticketSink("ns3::TcpSocketFactory",
         InetSocketAddress(Ipv4Address::GetAny(), TICKET_PORT));
     ApplicationContainer ticketSinkApps = ticketSink.Install(remoteServer);
@@ -1197,20 +1426,16 @@ main(int argc, char *argv[])
 
     for (uint32_t i = 0; i < numBuses; i++)
     {
-        OnOffHelper ticketClient("ns3::TcpSocketFactory",
-            InetSocketAddress(serverAddr, TICKET_PORT));
-        ticketClient.SetAttribute("DataRate",
-            DataRateValue(DataRate("50kbps")));
-        ticketClient.SetAttribute("PacketSize", UintegerValue(512));
-        // Always-on to avoid TCP OnOff reconnection crash (see header notes)
-        ticketClient.SetAttribute("OnTime",
-            StringValue("ns3::ConstantRandomVariable[Constant=1]"));
-        ticketClient.SetAttribute("OffTime",
-            StringValue("ns3::ConstantRandomVariable[Constant=0]"));
-
-        ApplicationContainer app = ticketClient.Install(busNodes.Get(i));
-        app.Start(Seconds(5.0 + i * 0.5));
-        app.Stop(Seconds(simTime));
+        Ptr<TicketingApp> ticketApp = CreateObject<TicketingApp>();
+        ticketApp->Setup(InetSocketAddress(serverAddr, TICKET_PORT),
+                         6.0,
+                         20.0,
+                         256,
+                         1,
+                         3);
+        busNodes.Get(i)->AddApplication(ticketApp);
+        ticketApp->SetStartTime(Seconds(5.0 + i * 0.2));
+        ticketApp->SetStopTime(Seconds(simTime));
     }
 
     // Forensic upload sink (TCP)
@@ -1323,8 +1548,14 @@ main(int argc, char *argv[])
 
     // ========== Schedule Monitoring ==========
     // DDoS detection every 5s
+    double detectionStartTime = enableDDoS ? ddosStart : DETECTION_WARMUP_TIME;
     Simulator::Schedule(Seconds(10.0),
-                        &CheckDDoS, flowMonitor, classifier, 5.0);
+                        &CheckDDoS,
+                        flowMonitor,
+                        classifier,
+                        serverAddr,
+                        5.0,
+                        detectionStartTime);
 
     // Queue status logging every 5s on the PGW-side P2P device
     Simulator::Schedule(Seconds(5.0),
