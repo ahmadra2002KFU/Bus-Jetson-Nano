@@ -75,24 +75,27 @@ Source run directories on the ns-3 workspace:
 - `/home/ahmed/ns-3/results_fix7_router33pcmax_20260312/`
 - `/home/ahmed/ns-3/results_fix8_router33pcmax_det10_20260312/`
 - `/home/ahmed/ns-3/results_parallel_attack_20260312/`
+- `/home/ahmed/ns-3/results_fix9_topology_20260312/`
 
 ### Current nine-scenario status
 
 `baseline / 1 bus` and `baseline / 10 buses` are carried forward from the last
 clean baseline validation set in `results_fix4_20260312`. The latest reruns in
-this update focused on the `41`-bus baseline and the `6` attack scenarios.
+this update focused on the `41`-bus baseline and the `6` attack scenarios. A
+follow-up rerun then retested the `41`-bus trio after moving the `3` eNBs to a
+route-weighted placement.
 
 | Scenario | Result | Notes |
 | --- | --- | --- |
 | baseline / 1 bus | pass | Clean baseline from `results_fix4_20260312` |
 | baseline / 10 buses | pass | Clean baseline from `results_fix4_20260312` |
-| baseline / 41 buses | fail | Marginal false `ddos_detect` at `190 s`, `deltaLoss=0.0512821` |
+| baseline / 41 buses | fail | Latest rerun still shows marginal false `ddos_detect` at `170 s`, `deltaLoss=0.0512195` |
 | ddos / 1 bus | pass | DDoS detected at `110 s`, forensic upload completed |
 | ddos / 10 buses | pass | DDoS detected at `110 s`, forensic upload completed |
-| ddos / 41 buses | partial | DDoS detected at `110 s`, forensic upload stalled at `1269248` bytes |
+| ddos / 41 buses | partial | Latest rerun detects at `110 s`; forensic upload improves to `4561360` bytes but still does not finish |
 | ddos_gps / 1 bus | pass | DDoS at `110 s`, GPS spoof at `152.015 s`, forensic upload completed |
 | ddos_gps / 10 buses | pass | DDoS at `110 s`, GPS spoof at `152.015 s`, forensic upload completed |
-| ddos_gps / 41 buses | partial | Both detections fire, forensic upload stalls at `1269248` bytes |
+| ddos_gps / 41 buses | partial | Latest rerun fires both detections; forensic upload improves to `4561360` bytes but still does not finish |
 
 ### What improved
 
@@ -101,6 +104,8 @@ this update focused on the `41`-bus baseline and the `6` attack scenarios.
 - DDoS attack detection is stable across `1`, `10`, and `41` buses.
 - DDoS+GPS combined attack detection is stable across `1`, `10`, and `41`
   buses.
+- The route-weighted `3`-tower placement improved the `41`-bus forensic upload
+  progress from `1269248` bytes to `4561360` bytes.
 
 ### What is still open
 
@@ -110,11 +115,14 @@ this update focused on the `41`-bus baseline and the `6` attack scenarios.
   once the network is under attack.
 - `queue_delay` is still measured on the wrong link and remains effectively
   zero.
+- The new tower layout improves coverage geometry, but it is not sufficient on
+  its own to clear the last `41`-bus baseline loss blip.
 
 ## Next Steps
 
-1. Inspect which telemetry flows create the remaining `~5.13%` baseline loss in
-   the `41`-bus run.
+1. Inspect the remaining `~5.12%` baseline loss in the latest `41`-bus rerun and
+   decide whether the next fix should target bearer choice, traffic start
+   timing, or detection logic.
 2. Fix forensic upload completion for `41`-bus attack scenarios.
 3. Correct queue delay measurement.
 4. Rerun the `41`-bus trio and then rerun the full `9`-scenario matrix.

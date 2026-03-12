@@ -1497,9 +1497,11 @@ main(int argc, char *argv[])
 
     MobilityHelper enbMobility;
     Ptr<ListPositionAllocator> enbPos = CreateObject<ListPositionAllocator>();
-    enbPos->Add(Vector(3750, 5000, 30));
-    enbPos->Add(Vector(7500, 12000, 30));
-    enbPos->Add(Vector(11250, 17000, 30));
+    // Route-weighted 3-site placement chosen to minimize worst-case distance
+    // to the 10 bus corridors while preserving the required 3-eNB topology.
+    enbPos->Add(Vector(4500, 6000, 30));
+    enbPos->Add(Vector(12000, 6500, 30));
+    enbPos->Add(Vector(8000, 16000, 30));
     enbMobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
     enbMobility.SetPositionAllocator(enbPos);
     enbMobility.Install(enbNodes);
