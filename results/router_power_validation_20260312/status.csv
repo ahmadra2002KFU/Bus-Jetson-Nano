@@ -1,0 +1,10 @@
+scenario,num_buses,expected_ddos_detect,expected_gps_detect,observed_ddos_detect,observed_ddos_time_s,observed_gps_detect,observed_gps_time_s,forensic_completed,status,notes
+baseline,1,false,false,false,,false,,false,pass,"clean baseline from results_fix4_20260312"
+baseline,10,false,false,false,,false,,false,pass,"clean baseline from results_fix4_20260312"
+baseline,41,false,false,true,190.000,false,,false,fail,"false ddos_detect from deltaLoss=0.0512821"
+ddos,1,true,false,true,110.000,false,,true,pass,"forensic upload completed"
+ddos,10,true,false,true,110.000,false,,true,pass,"forensic upload completed"
+ddos,41,true,false,true,110.000,false,,false,partial,"forensic upload stalled at 1269248 bytes"
+ddos_gps,1,true,true,true,110.000,true,152.015,true,pass,"both detections fired and forensic upload completed"
+ddos_gps,10,true,true,true,110.000,true,152.015,true,pass,"both detections fired and forensic upload completed"
+ddos_gps,41,true,true,true,110.000,true,152.015,false,partial,"both detections fired but forensic upload stalled at 1269248 bytes"
