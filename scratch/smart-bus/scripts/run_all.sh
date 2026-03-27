@@ -2,7 +2,9 @@
 # run_all.sh
 
 # Ensure results directory exists
-mkdir -p ../../../results
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+RESULTS_DIR="$SCRIPT_DIR/../results"
+mkdir -p "$RESULTS_DIR"
 
 echo "Starting Al-Ahsa Smart Bus Network Simulation Runs..."
 
@@ -30,10 +32,10 @@ for buses in "${BUS_COUNTS[@]}"; do
         flags="$flags --enableGpsSpoofing=true"
       fi
       
-      ./ns3 run "smart-bus --numBuses=$buses --scenario=$scenario $flags --RngRun=$seed --resultsDir=results/" > /dev/null 2>&1
-      
+      ./ns3 run "smart-bus --numBuses=$buses --scenario=$scenario $flags --RngRun=$seed --resultsDir=$RESULTS_DIR/" > /dev/null 2>&1
+
       # Optional: check if the XML was actually generated
-      xml_file="results/${scenario}_${buses}buses_${seed}.xml"
+      xml_file="$RESULTS_DIR/${scenario}_${buses}buses_${seed}.xml"
       if [ ! -f "$xml_file" ]; then
         echo "  [ERROR] $xml_file was not created!"
       fi

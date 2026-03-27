@@ -1,1 +1,1 @@
-triggerTime,busId,attackType
+triggerTime,finishTime,uploadDuration,completed,busId,attackType

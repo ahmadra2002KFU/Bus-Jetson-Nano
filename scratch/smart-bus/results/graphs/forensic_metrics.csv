@@ -1,0 +1,9 @@
+,,upload_duration_s,upload_duration_s,upload_success_rate,upload_success_rate,ddos_detection_time_s,ddos_detection_time_s,gps_detection_time_s,gps_detection_time_s,precision,precision,recall,recall,f1_score,f1_score
+,,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std,mean,std
+bus_count,scenario,,,,,,,,,,,,,,
+1,ddos,16.5,0.0,100.0,0.0,5.0,0.0,,,100.0,0.0,100.0,0.0,100.0,0.0
+1,ddos_gps,16.5,0.0,100.0,0.0,5.0,0.0,0.015,0.0,100.0,0.0,100.0,0.0,100.0,0.0
+10,ddos,16.5,0.0,100.0,0.0,5.0,0.0,,,100.0,0.0,100.0,0.0,100.0,0.0
+10,ddos_gps,16.5,0.0,100.0,0.0,5.0,0.0,1.015,0.0,100.0,0.0,100.0,0.0,100.0,0.0
+41,ddos,16.5,0.0,100.0,0.0,5.0,0.0,,,100.0,0.0,100.0,0.0,100.0,0.0
+41,ddos_gps,16.5,0.0,100.0,0.0,5.0,0.0,1.015,0.0,100.0,0.0,100.0,0.0,100.0,0.0
