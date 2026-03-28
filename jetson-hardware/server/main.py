@@ -10,8 +10,8 @@ import threading
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from server.gps_receiver import GPSReceiver
-from server.cctv_receiver import CCTVReceiver
+from server.gps_receiver import GpsReceiver
+from server.cctv_receiver import CctvReceiver
 from server.ticketing_receiver import TicketingReceiver
 from server.forensic_receiver import ForensicReceiver
 from server.heartbeat_server import HeartbeatServer
@@ -50,20 +50,20 @@ def main():
     # Create all receivers
     services = []
 
-    gps = GPSReceiver(bind=args.bind, port=5000)
+    gps = GpsReceiver(bind_ip=args.bind, bind_port=5000)
     services.append(('GPS Receiver :5000', gps))
 
-    cctv = CCTVReceiver(bind=args.bind, port=6000)
+    cctv = CctvReceiver(bind_ip=args.bind, bind_port=6000)
     services.append(('CCTV Receiver :6000', cctv))
 
-    ticketing = TicketingReceiver(bind=args.bind, port=7000)
+    ticketing = TicketingReceiver(bind_ip=args.bind, bind_port=7000)
     services.append(('Ticketing Receiver :7000', ticketing))
 
-    forensic = ForensicReceiver(bind=args.bind, port=8000,
-                                evidence_dir=args.evidence_dir)
+    forensic = ForensicReceiver(bind_ip=args.bind, bind_port=8000,
+                                output_dir=args.evidence_dir)
     services.append(('Forensic Receiver :8000', forensic))
 
-    heartbeat = HeartbeatServer(bind=args.bind, port=5001)
+    heartbeat = HeartbeatServer(bind_ip=args.bind, bind_port=5001)
     services.append(('Heartbeat Echo :5001', heartbeat))
 
     # Start all services
