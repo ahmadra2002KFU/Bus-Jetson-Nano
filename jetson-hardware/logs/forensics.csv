@@ -1,2 +1,2 @@
 triggerTime,busId,attackType,uploadStartTime,uploadFinishTime,uploadCompleted,bytesReceived
-1774710530.010,0,ddos,1774710530.158,1774710531.241,1,10485760
+1774712655.077,0,gps_spoof,1774712655.119,1774712656.609,1,10485760
