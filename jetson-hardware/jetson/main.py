@@ -19,15 +19,16 @@ from jetson.config_loader import Config
 from jetson.camera.camera_factory import create_camera
 from jetson.alerting.csv_logger import CSVLogger
 from jetson.alerting.telegram_bot import TelegramAlert
-from jetson.traffic.gps_telemetry import GPSTelemetry
-from jetson.traffic.cctv_stream import CCTVStream
-from jetson.traffic.ticketing import TicketingClient
+from jetson.traffic.gps_telemetry import GpsTelemetryGenerator
+from jetson.traffic.cctv_stream import CctvStreamGenerator
+from jetson.traffic.ticketing import TicketingGenerator
 from jetson.detection.heartbeat import HeartbeatProbe
 from jetson.detection.ddos_detector import DDoSDetector
 from jetson.detection.gps_detector import GpsDetector
 from jetson.network.traffic_monitor import TrafficMonitor
 from jetson.forensic.evidence_capture import capture_evidence
 from jetson.forensic.evidence_upload import upload_evidence
+from jetson.routes import create_routes, get_route_for_bus
 
 logging.basicConfig(
     level=logging.INFO,
@@ -63,7 +64,7 @@ class BusAgent:
 
         logger.info("Bus ID: %d", cfg.bus_id)
         logger.info("Server: %s", cfg.server_ip)
-        logger.info("Interface: %s", cfg.interface)
+        logger.info("Interface: %s", cfg.lte_interface)
 
         # CSV Logger
         self.csv_logger = CSVLogger(log_dir="logs")
@@ -71,93 +72,105 @@ class BusAgent:
 
         # Telegram
         self.telegram = TelegramAlert(
-            bot_token=cfg.telegram_token,
+            bot_token=cfg.telegram_bot_token,
             chat_id=cfg.telegram_chat_id,
-            enabled=cfg.telegram_enabled,
         )
 
         # Camera
         self.camera = create_camera(
-            use_real_camera=cfg.use_real_camera,
-            width=cfg.camera_width,
-            height=cfg.camera_height,
+            use_real_camera=False,
+            width=cfg.camera_frame_width,
+            height=cfg.camera_frame_height,
+            fps=cfg.camera_fps,
         )
         self._components.append(('Camera', self.camera))
 
-        # Traffic generators
-        self.gps = GPSTelemetry(
-            server_ip=cfg.server_ip, port=cfg.telemetry_port,
-            bus_id=cfg.bus_id, route_index=cfg.bus_route_index,
-            interval=cfg.gps_interval,
-        )
-        self._start_thread('GPS-Telemetry', self.gps.run)
+        # Route waypoints for this bus
+        routes = create_routes()
+        route_index = get_route_for_bus(cfg.bus_id)
+        waypoints = routes[route_index]
 
-        self.cctv = CCTVStream(
-            server_ip=cfg.server_ip, port=cfg.cctv_port,
-            rate_kbps=cfg.cctv_rate_kbps, packet_size=cfg.cctv_packet_size,
+        # Traffic generators (Thread subclasses — use .start())
+        self.gps = GpsTelemetryGenerator(
+            server_ip=cfg.server_ip,
+            bus_id=cfg.bus_id,
+            route_waypoints=waypoints,
+            server_port=cfg.telemetry_port,
+            send_interval=cfg.gps_interval_s,
         )
-        self._start_thread('CCTV-Stream', self.cctv.run)
+        self.gps.start()
+        logger.info("Started GPS-Telemetry")
 
-        self.ticketing = TicketingClient(
-            server_ip=cfg.server_ip, port=cfg.ticketing_port,
-            min_interval=cfg.ticket_min_interval,
-            max_interval=cfg.ticket_max_interval,
-            packet_size=cfg.ticket_packet_size,
-            min_burst=cfg.ticket_min_burst,
-            max_burst=cfg.ticket_max_burst,
+        self.cctv = CctvStreamGenerator(
+            server_ip=cfg.server_ip,
+            bus_id=cfg.bus_id,
+            server_port=cfg.cctv_port,
         )
-        self._start_thread('Ticketing', self.ticketing.run)
+        self.cctv.start()
+        logger.info("Started CCTV-Stream")
 
-        # Monitoring
+        self.ticketing = TicketingGenerator(
+            server_ip=cfg.server_ip,
+            bus_id=cfg.bus_id,
+            server_port=cfg.ticket_port,
+        )
+        self.ticketing.start()
+        logger.info("Started Ticketing")
+
+        # Monitoring (plain classes with .start() that spawn internal threads)
         self.traffic_monitor = TrafficMonitor(
-            interface=cfg.interface,
-            window_seconds=cfg.ddos_check_interval,
+            interface=cfg.lte_interface,
         )
-        self._start_thread('Traffic-Monitor', self.traffic_monitor.run)
+        self.traffic_monitor.start()
+        logger.info("Started Traffic-Monitor")
 
         self.heartbeat = HeartbeatProbe(
-            server_ip=cfg.server_ip, port=cfg.heartbeat_port,
+            server_ip=cfg.server_ip,
+            server_port=5001,
         )
-        self._start_thread('Heartbeat', self.heartbeat.run)
+        self.heartbeat.start()
+        logger.info("Started Heartbeat")
 
         # Detection engines
         self.ddos_detector = DDoSDetector(
             traffic_monitor=self.traffic_monitor,
             heartbeat=self.heartbeat,
-            detection_event=self.ddos_detected,
             callback=self._on_ddos_detected,
+            warmup=cfg.warmup_time_s,
+            check_interval=cfg.ddos_check_interval_s,
             rate_threshold=cfg.ddos_rate_bps,
-            loss_threshold=cfg.ddos_loss_pct / 100.0,
-            delay_threshold=cfg.ddos_delay_ms / 1000.0,
-            check_interval=cfg.ddos_check_interval,
-            warmup=cfg.ddos_warmup,
+            loss_threshold=cfg.ddos_loss_pct,
+            delay_threshold=cfg.ddos_delay_s,
         )
-        self._start_thread('DDoS-Detector', self.ddos_detector.run)
+        self.ddos_detector.start()
+        logger.info("Started DDoS-Detector")
 
         self.gps_detector = GpsDetector(
-            port=cfg.telemetry_port,
-            bus_id=cfg.bus_id,
-            route_index=cfg.bus_route_index,
-            detection_event=self.gps_detected,
+            listen_port=cfg.telemetry_port,
             callback=self._on_gps_detected,
+            detection_mode=cfg.detection_mode,
+            speed_threshold=cfg.gps_speed_ms,
+            jump_threshold=cfg.gps_jump_m,
+            corridor_threshold=cfg.gps_corridor_m,
+            streak_required=cfg.gps_streak_required,
         )
-        self._start_thread('GPS-Detector', self.gps_detector.run)
+        self.gps_detector.start()
+        logger.info("Started GPS-Detector")
 
         # Forensic trigger poller
-        self._start_thread('Forensic-Trigger', self._forensic_trigger_loop)
+        t = threading.Thread(target=self._forensic_trigger_loop,
+                             name='Forensic-Trigger', daemon=True)
+        t.start()
+        self._threads.append(t)
+        logger.info("Started Forensic-Trigger")
 
-        logger.info("All subsystems started. Warmup: %ds", int(cfg.ddos_warmup))
+        logger.info("All subsystems started. Warmup: %ds", int(cfg.warmup_time_s))
         logger.info("Press Ctrl+C to stop.")
         print()
 
-    def _start_thread(self, name, target):
-        t = threading.Thread(target=target, name=name, daemon=True)
-        t.start()
-        self._threads.append(t)
-        logger.info("Started %s", name)
-
     def _on_ddos_detected(self, details):
         """Callback when DDoS is detected."""
+        self.ddos_detected.set()
         self._detection_details['ddos'] = details
         bus_id = self.config.bus_id
 
@@ -177,6 +190,7 @@ class BusAgent:
 
     def _on_gps_detected(self, details):
         """Callback when GPS spoofing is detected."""
+        self.gps_detected.set()
         self._detection_details['gps'] = details
         bus_id = details.get('bus_id', self.config.bus_id)
 
