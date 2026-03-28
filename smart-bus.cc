@@ -1013,7 +1013,7 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
 
         // Require 3 consecutive anomalous readings to suppress startup transients
         // and momentary WaypointMobilityModel position jumps.
-        static const uint32_t GPS_STREAK_REQUIRED = 3;
+        static const uint32_t GPS_STREAK_REQUIRED = 5;
 
         if (isAnomalous)
         {
