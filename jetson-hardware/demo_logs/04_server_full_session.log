@@ -1,0 +1,1595 @@
+18:04:56 [server.main         ] INFO  Started GPS Receiver :5000
+18:04:56 [server.main         ] INFO  Started CCTV Receiver :6000
+18:04:56 [server.gps_receiver ] INFO  GPS receiver listening on 0.0.0.0:5000
+18:04:56 [server.cctv_receiver] INFO  CCTV receiver listening on 0.0.0.0:6000
+18:04:56 [server.main         ] INFO  Started Ticketing Receiver :7000
+18:04:56 [server.ticketing_receiver] INFO  Ticketing receiver listening on 0.0.0.0:7000
+18:04:56 [server.main         ] INFO  Started Forensic Receiver :8000
+18:04:56 [server.main         ] INFO  Started Heartbeat Echo :5001
+18:04:56 [server.main         ] INFO  Server ready. Press Ctrl+C to stop.
+18:04:56 [server.heartbeat_server] INFO  Heartbeat server listening on 0.0.0.0:5001
+18:04:56 [server.forensic_receiver] INFO  Forensic receiver listening on 0.0.0.0:8000 (output: evidence)
+18:05:01 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:06 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:11 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:16 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:21 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 0
+18:05:26 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:31 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:36 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:41 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:46 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:51 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:05:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 0
+18:05:56 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:01 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:06 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:11 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:16 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:21 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 0
+18:06:26 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:31 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:36 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:41 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:46 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:51 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:06:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 0
+18:06:56 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:07:01 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:07:06 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:07:11 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:07:16 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+18:07:20 [server.gps_receiver ] INFO  [2026-03-28 18:07:20] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:21 [server.cctv_receiver] INFO  CCTV throughput: 0.16 Mbps (70 pkts / 5s) | Total: 70 pkts, 98000 bytes
+18:07:21 [server.gps_receiver ] INFO  [2026-03-28 18:07:21] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:22 [server.gps_receiver ] INFO  [2026-03-28 18:07:22] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:23 [server.gps_receiver ] INFO  [2026-03-28 18:07:23] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:24 [server.gps_receiver ] INFO  [2026-03-28 18:07:24] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:25 [server.gps_receiver ] INFO  [2026-03-28 18:07:25] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:26 [server.heartbeat_server] INFO  Heartbeat: 6 probes in last 30s | Total: 6
+18:07:26 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (432 pkts / 5s) | Total: 502 pkts, 702800 bytes
+18:07:26 [server.gps_receiver ] INFO  [2026-03-28 18:07:26] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:27 [server.gps_receiver ] INFO  [2026-03-28 18:07:27] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:28 [server.gps_receiver ] INFO  [2026-03-28 18:07:28] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:29 [server.gps_receiver ] INFO  [2026-03-28 18:07:29] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:30 [server.gps_receiver ] INFO  [2026-03-28 18:07:30] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:31 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (433 pkts / 5s) | Total: 935 pkts, 1309000 bytes
+18:07:31 [server.gps_receiver ] INFO  [2026-03-28 18:07:31] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:32 [server.gps_receiver ] INFO  [2026-03-28 18:07:32] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:33 [server.gps_receiver ] INFO  [2026-03-28 18:07:33] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:34 [server.gps_receiver ] INFO  [2026-03-28 18:07:34] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:35 [server.gps_receiver ] INFO  [2026-03-28 18:07:35] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:36 [server.cctv_receiver] INFO  CCTV throughput: 0.95 Mbps (425 pkts / 5s) | Total: 1360 pkts, 1904000 bytes
+18:07:36 [server.gps_receiver ] INFO  [2026-03-28 18:07:36] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:37 [server.gps_receiver ] INFO  [2026-03-28 18:07:37] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:38 [server.gps_receiver ] INFO  [2026-03-28 18:07:38] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:39 [server.gps_receiver ] INFO  [2026-03-28 18:07:39] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:40 [server.gps_receiver ] INFO  [2026-03-28 18:07:40] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:41 [server.cctv_receiver] INFO  CCTV throughput: 0.98 Mbps (437 pkts / 5s) | Total: 1797 pkts, 2515800 bytes
+18:07:41 [server.gps_receiver ] INFO  [2026-03-28 18:07:41] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:42 [server.gps_receiver ] INFO  [2026-03-28 18:07:42] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:44 [server.gps_receiver ] INFO  [2026-03-28 18:07:44] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:45 [server.gps_receiver ] INFO  [2026-03-28 18:07:45] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:46 [server.cctv_receiver] INFO  CCTV throughput: 0.96 Mbps (427 pkts / 5s) | Total: 2224 pkts, 3113600 bytes
+18:07:46 [server.gps_receiver ] INFO  [2026-03-28 18:07:46] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:47 [server.gps_receiver ] INFO  [2026-03-28 18:07:47] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:48 [server.gps_receiver ] INFO  [2026-03-28 18:07:48] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:49 [server.gps_receiver ] INFO  [2026-03-28 18:07:49] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+18:07:50 [server.gps_receiver ] INFO  [2026-03-28 18:07:50] GPS RX: bus_id=  0 pos=(    7500.0,     1011.1) src=192.168.3.199:58800
+18:07:51 [server.cctv_receiver] INFO  CCTV throughput: 0.94 Mbps (419 pkts / 5s) | Total: 2643 pkts, 3700200 bytes
+18:07:51 [server.gps_receiver ] INFO  [2026-03-28 18:07:51] GPS RX: bus_id=  0 pos=(    7500.0,     1022.2) src=192.168.3.199:58800
+18:07:52 [server.gps_receiver ] INFO  [2026-03-28 18:07:52] GPS RX: bus_id=  0 pos=(    7500.0,     1033.3) src=192.168.3.199:58800
+18:07:53 [server.gps_receiver ] INFO  [2026-03-28 18:07:53] GPS RX: bus_id=  0 pos=(    7500.0,     1044.4) src=192.168.3.199:58800
+18:07:54 [server.gps_receiver ] INFO  [2026-03-28 18:07:54] GPS RX: bus_id=  0 pos=(    7500.0,     1055.5) src=192.168.3.199:58800
+18:07:55 [server.gps_receiver ] INFO  [2026-03-28 18:07:55] GPS RX: bus_id=  0 pos=(    7500.0,     1066.6) src=192.168.3.199:58800
+18:07:56 [server.heartbeat_server] INFO  Heartbeat: 29 probes in last 30s | Total: 35
+18:07:56 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (431 pkts / 5s) | Total: 3074 pkts, 4303600 bytes
+18:07:56 [server.gps_receiver ] INFO  [2026-03-28 18:07:56] GPS RX: bus_id=  0 pos=(    7500.0,     1077.7) src=192.168.3.199:58800
+18:07:57 [server.gps_receiver ] INFO  [2026-03-28 18:07:57] GPS RX: bus_id=  0 pos=(    7500.0,     1088.8) src=192.168.3.199:58800
+18:07:58 [server.gps_receiver ] INFO  [2026-03-28 18:07:58] GPS RX: bus_id=  0 pos=(    7500.0,     1099.9) src=192.168.3.199:58800
+18:07:59 [server.gps_receiver ] INFO  [2026-03-28 18:07:59] GPS RX: bus_id=  0 pos=(    7500.0,     1111.0) src=192.168.3.199:58800
+18:08:00 [server.gps_receiver ] INFO  [2026-03-28 18:08:00] GPS RX: bus_id=  0 pos=(    7500.0,     1122.1) src=192.168.3.199:58800
+18:08:01 [server.cctv_receiver] INFO  CCTV throughput: 0.95 Mbps (424 pkts / 5s) | Total: 3498 pkts, 4897200 bytes
+18:08:01 [server.gps_receiver ] INFO  [2026-03-28 18:08:01] GPS RX: bus_id=  0 pos=(    7500.0,     1133.2) src=192.168.3.199:58800
+18:08:02 [server.gps_receiver ] INFO  [2026-03-28 18:08:02] GPS RX: bus_id=  0 pos=(    7500.0,     1144.3) src=192.168.3.199:58800
+18:08:03 [server.gps_receiver ] INFO  [2026-03-28 18:08:03] GPS RX: bus_id=  0 pos=(    7500.0,     1155.4) src=192.168.3.199:58800
+18:08:04 [server.gps_receiver ] INFO  [2026-03-28 18:08:04] GPS RX: bus_id=  0 pos=(    7500.0,     1166.5) src=192.168.3.199:58800
+18:08:05 [server.gps_receiver ] INFO  [2026-03-28 18:08:05] GPS RX: bus_id=  0 pos=(    7500.0,     1177.6) src=192.168.3.199:58800
+18:08:06 [server.cctv_receiver] INFO  CCTV throughput: 0.95 Mbps (426 pkts / 5s) | Total: 3924 pkts, 5493600 bytes
+18:08:06 [server.gps_receiver ] INFO  [2026-03-28 18:08:06] GPS RX: bus_id=  0 pos=(    7500.0,     1188.7) src=192.168.3.199:58800
+18:08:07 [server.gps_receiver ] INFO  [2026-03-28 18:08:07] GPS RX: bus_id=  0 pos=(    7500.0,     1199.8) src=192.168.3.199:58800
+18:08:08 [server.gps_receiver ] INFO  [2026-03-28 18:08:08] GPS RX: bus_id=  0 pos=(    7500.0,     1210.9) src=192.168.3.199:58800
+18:08:09 [server.gps_receiver ] INFO  [2026-03-28 18:08:09] GPS RX: bus_id=  0 pos=(    7500.0,     1222.0) src=192.168.3.199:58800
+18:08:10 [server.gps_receiver ] INFO  [2026-03-28 18:08:10] GPS RX: bus_id=  0 pos=(    7500.0,     1233.1) src=192.168.3.199:58800
+18:08:11 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 4372 pkts, 6120800 bytes
+18:08:11 [server.gps_receiver ] INFO  [2026-03-28 18:08:11] GPS RX: bus_id=  0 pos=(    7500.0,     1244.2) src=192.168.3.199:58800
+18:08:12 [server.gps_receiver ] INFO  [2026-03-28 18:08:12] GPS RX: bus_id=  0 pos=(    7500.0,     1255.3) src=192.168.3.199:58800
+18:08:13 [server.gps_receiver ] INFO  [2026-03-28 18:08:13] GPS RX: bus_id=  0 pos=(    7500.0,     1266.4) src=192.168.3.199:58800
+18:08:14 [server.gps_receiver ] INFO  [2026-03-28 18:08:14] GPS RX: bus_id=  0 pos=(    7500.0,     1277.5) src=192.168.3.199:58800
+18:08:15 [server.gps_receiver ] INFO  [2026-03-28 18:08:15] GPS RX: bus_id=  0 pos=(    7500.0,     1288.6) src=192.168.3.199:58800
+18:08:16 [server.cctv_receiver] INFO  CCTV throughput: 0.96 Mbps (429 pkts / 5s) | Total: 4801 pkts, 6721400 bytes
+18:08:16 [server.gps_receiver ] INFO  [2026-03-28 18:08:16] GPS RX: bus_id=  0 pos=(    7500.0,     1299.7) src=192.168.3.199:58800
+18:08:17 [server.gps_receiver ] INFO  [2026-03-28 18:08:17] GPS RX: bus_id=  0 pos=(    7500.0,     1310.8) src=192.168.3.199:58800
+18:08:18 [server.gps_receiver ] INFO  [2026-03-28 18:08:18] GPS RX: bus_id=  0 pos=(    7500.0,     1321.9) src=192.168.3.199:58800
+18:08:19 [server.gps_receiver ] INFO  [2026-03-28 18:08:19] GPS RX: bus_id=  0 pos=(    7500.0,     1333.0) src=192.168.3.199:58800
+18:08:20 [server.gps_receiver ] INFO  [2026-03-28 18:08:20] GPS RX: bus_id=  0 pos=(    7500.0,     1344.1) src=192.168.3.199:58800
+18:08:21 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (431 pkts / 5s) | Total: 5232 pkts, 7324800 bytes
+18:08:21 [server.gps_receiver ] INFO  [2026-03-28 18:08:21] GPS RX: bus_id=  0 pos=(    7500.0,     1355.2) src=192.168.3.199:58800
+18:08:22 [server.gps_receiver ] INFO  [2026-03-28 18:08:22] GPS RX: bus_id=  0 pos=(    7500.0,     1366.3) src=192.168.3.199:58800
+18:08:23 [server.gps_receiver ] INFO  [2026-03-28 18:08:23] GPS RX: bus_id=  0 pos=(    7500.0,     1377.4) src=192.168.3.199:58800
+18:08:25 [server.gps_receiver ] INFO  [2026-03-28 18:08:25] GPS RX: bus_id=  0 pos=(    7500.0,     1399.6) src=192.168.3.199:58800
+18:08:26 [server.heartbeat_server] INFO  Heartbeat: 28 probes in last 30s | Total: 63
+18:08:26 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (431 pkts / 5s) | Total: 5663 pkts, 7928200 bytes
+18:08:26 [server.gps_receiver ] INFO  [2026-03-28 18:08:26] GPS RX: bus_id=  0 pos=(    7500.0,     1410.7) src=192.168.3.199:58800
+18:08:27 [server.gps_receiver ] INFO  [2026-03-28 18:08:27] GPS RX: bus_id=  0 pos=(    7500.0,     1421.8) src=192.168.3.199:58800
+18:08:28 [server.gps_receiver ] INFO  [2026-03-28 18:08:28] GPS RX: bus_id=  0 pos=(    7500.0,     1432.9) src=192.168.3.199:58800
+18:08:29 [server.gps_receiver ] INFO  [2026-03-28 18:08:29] GPS RX: bus_id=  0 pos=(    7500.0,     1444.0) src=192.168.3.199:58800
+18:08:30 [server.gps_receiver ] INFO  [2026-03-28 18:08:30] GPS RX: bus_id=  0 pos=(    7500.0,     1455.1) src=192.168.3.199:58800
+18:08:31 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (432 pkts / 5s) | Total: 6095 pkts, 8533000 bytes
+18:08:31 [server.gps_receiver ] INFO  [2026-03-28 18:08:31] GPS RX: bus_id=  0 pos=(    7500.0,     1466.2) src=192.168.3.199:58800
+18:08:32 [server.gps_receiver ] INFO  [2026-03-28 18:08:32] GPS RX: bus_id=  0 pos=(    7500.0,     1477.3) src=192.168.3.199:58800
+18:08:33 [server.gps_receiver ] INFO  [2026-03-28 18:08:33] GPS RX: bus_id=  0 pos=(    7500.0,     1488.4) src=192.168.3.199:58800
+18:08:34 [server.gps_receiver ] INFO  [2026-03-28 18:08:34] GPS RX: bus_id=  0 pos=(    7500.0,     1499.5) src=192.168.3.199:58800
+18:08:35 [server.gps_receiver ] INFO  [2026-03-28 18:08:35] GPS RX: bus_id=  0 pos=(    7500.0,     1510.6) src=192.168.3.199:58800
+18:08:36 [server.cctv_receiver] INFO  CCTV throughput: 0.96 Mbps (429 pkts / 5s) | Total: 6524 pkts, 9133600 bytes
+18:08:36 [server.gps_receiver ] INFO  [2026-03-28 18:08:36] GPS RX: bus_id=  0 pos=(    7500.0,     1521.7) src=192.168.3.199:58800
+18:08:37 [server.gps_receiver ] INFO  [2026-03-28 18:08:37] GPS RX: bus_id=  0 pos=(    7500.0,     1532.8) src=192.168.3.199:58800
+18:08:38 [server.gps_receiver ] INFO  [2026-03-28 18:08:38] GPS RX: bus_id=  0 pos=(    7500.0,     1543.9) src=192.168.3.199:58800
+18:08:39 [server.gps_receiver ] INFO  [2026-03-28 18:08:39] GPS RX: bus_id=  0 pos=(    7500.0,     1555.0) src=192.168.3.199:58800
+18:08:40 [server.gps_receiver ] INFO  [2026-03-28 18:08:40] GPS RX: bus_id=  0 pos=(    7500.0,     1566.1) src=192.168.3.199:58800
+18:08:41 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (434 pkts / 5s) | Total: 6958 pkts, 9741200 bytes
+18:08:41 [server.gps_receiver ] INFO  [2026-03-28 18:08:41] GPS RX: bus_id=  0 pos=(    7500.0,     1577.2) src=192.168.3.199:58800
+18:08:42 [server.gps_receiver ] INFO  [2026-03-28 18:08:42] GPS RX: bus_id=  0 pos=(    7500.0,     1588.3) src=192.168.3.199:58800
+18:08:43 [server.gps_receiver ] INFO  [2026-03-28 18:08:43] GPS RX: bus_id=  0 pos=(    7500.0,     1599.4) src=192.168.3.199:58800
+18:08:44 [server.gps_receiver ] INFO  [2026-03-28 18:08:44] GPS RX: bus_id=  0 pos=(    7500.0,     1610.5) src=192.168.3.199:58800
+18:08:45 [server.gps_receiver ] INFO  [2026-03-28 18:08:45] GPS RX: bus_id=  0 pos=(    7500.0,     1621.6) src=192.168.3.199:58800
+18:08:46 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (433 pkts / 5s) | Total: 7391 pkts, 10347400 bytes
+18:08:46 [server.gps_receiver ] INFO  [2026-03-28 18:08:46] GPS RX: bus_id=  0 pos=(    7500.0,     1632.7) src=192.168.3.199:58800
+18:08:47 [server.gps_receiver ] INFO  [2026-03-28 18:08:47] GPS RX: bus_id=  0 pos=(    7500.0,     1643.8) src=192.168.3.199:58800
+18:08:48 [server.gps_receiver ] INFO  [2026-03-28 18:08:48] GPS RX: bus_id=  0 pos=(    7500.0,     1654.9) src=192.168.3.199:58800
+18:08:50 [server.gps_receiver ] INFO  [2026-03-28 18:08:50] GPS RX: bus_id=  0 pos=(    7500.0,     1677.1) src=192.168.3.199:58800
+18:08:51 [server.cctv_receiver] INFO  CCTV throughput: 0.98 Mbps (436 pkts / 5s) | Total: 7827 pkts, 10957800 bytes
+18:08:51 [server.gps_receiver ] INFO  [2026-03-28 18:08:51] GPS RX: bus_id=  0 pos=(    7500.0,     1688.2) src=192.168.3.199:58800
+18:08:52 [server.gps_receiver ] INFO  [2026-03-28 18:08:52] GPS RX: bus_id=  0 pos=(    7500.0,     1699.3) src=192.168.3.199:58800
+18:08:53 [server.gps_receiver ] INFO  [2026-03-28 18:08:53] GPS RX: bus_id=  0 pos=(    7500.0,     1710.4) src=192.168.3.199:58800
+18:08:54 [server.gps_receiver ] INFO  [2026-03-28 18:08:54] GPS RX: bus_id=  0 pos=(    7500.0,     1721.5) src=192.168.3.199:58800
+18:08:55 [server.gps_receiver ] INFO  [2026-03-28 18:08:55] GPS RX: bus_id=  0 pos=(    7500.0,     1732.6) src=192.168.3.199:58800
+18:08:56 [server.heartbeat_server] INFO  Heartbeat: 28 probes in last 30s | Total: 91
+18:08:56 [server.cctv_receiver] INFO  CCTV throughput: 0.95 Mbps (424 pkts / 5s) | Total: 8251 pkts, 11551400 bytes
+18:08:56 [server.gps_receiver ] INFO  [2026-03-28 18:08:56] GPS RX: bus_id=  0 pos=(    7500.0,     1743.7) src=192.168.3.199:58800
+18:08:57 [server.gps_receiver ] INFO  [2026-03-28 18:08:57] GPS RX: bus_id=  0 pos=(    7500.0,     1754.8) src=192.168.3.199:58800
+18:08:58 [server.gps_receiver ] INFO  [2026-03-28 18:08:58] GPS RX: bus_id=  0 pos=(    7500.0,     1765.9) src=192.168.3.199:58800
+18:08:59 [server.gps_receiver ] INFO  [2026-03-28 18:08:59] GPS RX: bus_id=  0 pos=(    7500.0,     1777.0) src=192.168.3.199:58800
+18:09:00 [server.gps_receiver ] INFO  [2026-03-28 18:09:00] GPS RX: bus_id=  0 pos=(    7500.0,     1788.1) src=192.168.3.199:58800
+18:09:01 [server.cctv_receiver] INFO  CCTV throughput: 1.01 Mbps (451 pkts / 5s) | Total: 8702 pkts, 12182800 bytes
+18:09:01 [server.gps_receiver ] INFO  [2026-03-28 18:09:01] GPS RX: bus_id=  0 pos=(    7500.0,     1799.2) src=192.168.3.199:58800
+18:09:02 [server.gps_receiver ] INFO  [2026-03-28 18:09:02] GPS RX: bus_id=  0 pos=(    7500.0,     1810.3) src=192.168.3.199:58800
+18:09:03 [server.gps_receiver ] INFO  [2026-03-28 18:09:03] GPS RX: bus_id=  0 pos=(    7500.0,     1821.4) src=192.168.3.199:58800
+18:09:04 [server.gps_receiver ] INFO  [2026-03-28 18:09:04] GPS RX: bus_id=  0 pos=(    7500.0,     1832.5) src=192.168.3.199:58800
+18:09:05 [server.gps_receiver ] INFO  [2026-03-28 18:09:05] GPS RX: bus_id=  0 pos=(    7500.0,     1843.6) src=192.168.3.199:58800
+18:09:06 [server.cctv_receiver] INFO  CCTV throughput: 0.98 Mbps (437 pkts / 5s) | Total: 9139 pkts, 12794600 bytes
+18:09:06 [server.gps_receiver ] INFO  [2026-03-28 18:09:06] GPS RX: bus_id=  0 pos=(    7500.0,     1854.7) src=192.168.3.199:58800
+18:09:08 [server.gps_receiver ] INFO  [2026-03-28 18:09:08] GPS RX: bus_id=  0 pos=(    7500.0,     1876.9) src=192.168.3.199:58800
+18:09:09 [server.gps_receiver ] INFO  [2026-03-28 18:09:09] GPS RX: bus_id=  0 pos=(    7500.0,     1888.0) src=192.168.3.199:58800
+18:09:10 [server.gps_receiver ] INFO  [2026-03-28 18:09:10] GPS RX: bus_id=  0 pos=(    7500.0,     1899.1) src=192.168.3.199:58800
+18:09:11 [server.cctv_receiver] INFO  CCTV throughput: 0.98 Mbps (437 pkts / 5s) | Total: 9576 pkts, 13406400 bytes
+18:09:11 [server.gps_receiver ] INFO  [2026-03-28 18:09:11] GPS RX: bus_id=  0 pos=(    7500.0,     1910.2) src=192.168.3.199:58800
+18:09:12 [server.gps_receiver ] INFO  [2026-03-28 18:09:12] GPS RX: bus_id=  0 pos=(    7500.0,     1921.3) src=192.168.3.199:58800
+18:09:13 [server.gps_receiver ] INFO  [2026-03-28 18:09:13] GPS RX: bus_id=  0 pos=(    7500.0,     1932.4) src=192.168.3.199:58800
+18:09:14 [server.gps_receiver ] INFO  [2026-03-28 18:09:14] GPS RX: bus_id=  0 pos=(    7500.0,     1943.5) src=192.168.3.199:58800
+18:09:15 [server.gps_receiver ] INFO  [2026-03-28 18:09:15] GPS RX: bus_id=  0 pos=(    7500.0,     1954.6) src=192.168.3.199:58800
+18:09:16 [server.cctv_receiver] INFO  CCTV throughput: 0.96 Mbps (430 pkts / 5s) | Total: 10006 pkts, 14008400 bytes
+18:09:16 [server.gps_receiver ] INFO  [2026-03-28 18:09:16] GPS RX: bus_id=  0 pos=(    7500.0,     1965.7) src=192.168.3.199:58800
+18:09:17 [server.gps_receiver ] INFO  [2026-03-28 18:09:17] GPS RX: bus_id=  0 pos=(    7500.0,     1976.8) src=192.168.3.199:58800
+18:09:18 [server.gps_receiver ] INFO  [2026-03-28 18:09:18] GPS RX: bus_id=  0 pos=(    7500.0,     1987.9) src=192.168.3.199:58800
+18:09:19 [server.gps_receiver ] INFO  [2026-03-28 18:09:19] GPS RX: bus_id=  0 pos=(    7500.0,     1999.0) src=192.168.3.199:58800
+18:09:20 [server.gps_receiver ] INFO  [2026-03-28 18:09:20] GPS RX: bus_id=  0 pos=(    7500.0,     2010.1) src=192.168.3.199:58800
+18:09:21 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (433 pkts / 5s) | Total: 10439 pkts, 14614600 bytes
+18:09:21 [server.gps_receiver ] INFO  [2026-03-28 18:09:21] GPS RX: bus_id=  0 pos=(    7500.0,     2021.2) src=192.168.3.199:58800
+18:09:22 [server.gps_receiver ] INFO  [2026-03-28 18:09:22] GPS RX: bus_id=  0 pos=(    7500.0,     2032.3) src=192.168.3.199:58800
+18:09:23 [server.gps_receiver ] INFO  [2026-03-28 18:09:23] GPS RX: bus_id=  0 pos=(    7500.0,     2043.4) src=192.168.3.199:58800
+18:09:24 [server.gps_receiver ] INFO  [2026-03-28 18:09:24] GPS RX: bus_id=  0 pos=(    7500.0,     2054.5) src=192.168.3.199:58800
+18:09:25 [server.gps_receiver ] INFO  [2026-03-28 18:09:25] GPS RX: bus_id=  0 pos=(    7500.0,     2065.6) src=192.168.3.199:58800
+18:09:26 [server.heartbeat_server] INFO  Heartbeat: 28 probes in last 30s | Total: 119
+18:09:26 [server.cctv_receiver] INFO  CCTV throughput: 0.98 Mbps (437 pkts / 5s) | Total: 10876 pkts, 15226400 bytes
+18:09:26 [server.gps_receiver ] INFO  [2026-03-28 18:09:26] GPS RX: bus_id=  0 pos=(    7500.0,     2076.7) src=192.168.3.199:58800
+18:09:27 [server.gps_receiver ] INFO  [2026-03-28 18:09:27] GPS RX: bus_id=  0 pos=(    7500.0,     2087.8) src=192.168.3.199:58800
+18:09:28 [server.gps_receiver ] INFO  [2026-03-28 18:09:28] GPS RX: bus_id=  0 pos=(    7500.0,     2098.9) src=192.168.3.199:58800
+
+======================================================
+  Al-Ahsa Smart Bus System — Server
+  Listening for bus traffic on all ports
+======================================================
+
+
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+Heartbeat: 0 probes in last 30s | Total: 0
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+Heartbeat: 0 probes in last 30s | Total: 0
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+Heartbeat: 0 probes in last 30s | Total: 0
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+Heartbeat: 0 probes in last 30s | Total: 0
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 0 pkts, 0 bytes
+[2026-03-28 18:07:20] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+CCTV throughput: 0.16 Mbps (70 pkts / 5s) | Total: 70 pkts, 98000 bytes
+[2026-03-28 18:07:21] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:22] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:23] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:24] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:25] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+Heartbeat: 6 probes in last 30s | Total: 6
+CCTV throughput: 0.97 Mbps (432 pkts / 5s) | Total: 502 pkts, 702800 bytes
+[2026-03-28 18:07:26] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:27] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:28] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:29] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:30] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+CCTV throughput: 0.97 Mbps (433 pkts / 5s) | Total: 935 pkts, 1309000 bytes
+[2026-03-28 18:07:31] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:32] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:33] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:34] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:35] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+CCTV throughput: 0.95 Mbps (425 pkts / 5s) | Total: 1360 pkts, 1904000 bytes
+[2026-03-28 18:07:36] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:37] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:38] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:39] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:40] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+CCTV throughput: 0.98 Mbps (437 pkts / 5s) | Total: 1797 pkts, 2515800 bytes
+[2026-03-28 18:07:41] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:42] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:44] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:45] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+CCTV throughput: 0.96 Mbps (427 pkts / 5s) | Total: 2224 pkts, 3113600 bytes
+[2026-03-28 18:07:46] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:47] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:48] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:49] GPS RX: bus_id=  0 pos=(    7500.0,     1000.0) src=192.168.3.199:58800
+[2026-03-28 18:07:50] GPS RX: bus_id=  0 pos=(    7500.0,     1011.1) src=192.168.3.199:58800
+CCTV throughput: 0.94 Mbps (419 pkts / 5s) | Total: 2643 pkts, 3700200 bytes
+[2026-03-28 18:07:51] GPS RX: bus_id=  0 pos=(    7500.0,     1022.2) src=192.168.3.199:58800
+[2026-03-28 18:07:52] GPS RX: bus_id=  0 pos=(    7500.0,     1033.3) src=192.168.3.199:58800
+[2026-03-28 18:07:53] GPS RX: bus_id=  0 pos=(    7500.0,     1044.4) src=192.168.3.199:58800
+[2026-03-28 18:07:54] GPS RX: bus_id=  0 pos=(    7500.0,     1055.5) src=192.168.3.199:58800
+[2026-03-28 18:07:55] GPS RX: bus_id=  0 pos=(    7500.0,     1066.6) src=192.168.3.199:58800
+Heartbeat: 29 probes in last 30s | Total: 35
+CCTV throughput: 0.97 Mbps (431 pkts / 5s) | Total: 3074 pkts, 4303600 bytes
+[2026-03-28 18:07:56] GPS RX: bus_id=  0 pos=(    7500.0,     1077.7) src=192.168.3.199:58800
+[2026-03-28 18:07:57] GPS RX: bus_id=  0 pos=(    7500.0,     1088.8) src=192.168.3.199:58800
+[2026-03-28 18:07:58] GPS RX: bus_id=  0 pos=(    7500.0,     1099.9) src=192.168.3.199:58800
+[2026-03-28 18:07:59] GPS RX: bus_id=  0 pos=(    7500.0,     1111.0) src=192.168.3.199:58800
+[2026-03-28 18:08:00] GPS RX: bus_id=  0 pos=(    7500.0,     1122.1) src=192.168.3.199:58800
+CCTV throughput: 0.95 Mbps (424 pkts / 5s) | Total: 3498 pkts, 4897200 bytes
+[2026-03-28 18:08:01] GPS RX: bus_id=  0 pos=(    7500.0,     1133.2) src=192.168.3.199:58800
+[2026-03-28 18:08:02] GPS RX: bus_id=  0 pos=(    7500.0,     1144.3) src=192.168.3.199:58800
+[2026-03-28 18:08:03] GPS RX: bus_id=  0 pos=(    7500.0,     1155.4) src=192.168.3.199:58800
+[2026-03-28 18:08:04] GPS RX: bus_id=  0 pos=(    7500.0,     1166.5) src=192.168.3.199:58800
+[2026-03-28 18:08:05] GPS RX: bus_id=  0 pos=(    7500.0,     1177.6) src=192.168.3.199:58800
+CCTV throughput: 0.95 Mbps (426 pkts / 5s) | Total: 3924 pkts, 5493600 bytes
+[2026-03-28 18:08:06] GPS RX: bus_id=  0 pos=(    7500.0,     1188.7) src=192.168.3.199:58800
+[2026-03-28 18:08:07] GPS RX: bus_id=  0 pos=(    7500.0,     1199.8) src=192.168.3.199:58800
+[2026-03-28 18:08:08] GPS RX: bus_id=  0 pos=(    7500.0,     1210.9) src=192.168.3.199:58800
+[2026-03-28 18:08:09] GPS RX: bus_id=  0 pos=(    7500.0,     1222.0) src=192.168.3.199:58800
+[2026-03-28 18:08:10] GPS RX: bus_id=  0 pos=(    7500.0,     1233.1) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 4372 pkts, 6120800 bytes
+[2026-03-28 18:08:11] GPS RX: bus_id=  0 pos=(    7500.0,     1244.2) src=192.168.3.199:58800
+[2026-03-28 18:08:12] GPS RX: bus_id=  0 pos=(    7500.0,     1255.3) src=192.168.3.199:58800
+18:09:29 [server.gps_receiver ] INFO  [2026-03-28 18:09:29] GPS RX: bus_id=  0 pos=(    7500.0,     2110.0) src=192.168.3.199:58800
+18:09:30 [server.gps_receiver ] INFO  [2026-03-28 18:09:30] GPS RX: bus_id=  0 pos=(    7500.0,     2121.1) src=192.168.3.199:58800
+18:09:31 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (431 pkts / 5s) | Total: 11307 pkts, 15829800 bytes
+18:09:31 [server.gps_receiver ] INFO  [2026-03-28 18:09:31] GPS RX: bus_id=  0 pos=(    7500.0,     2132.2) src=192.168.3.199:58800
+18:09:32 [server.gps_receiver ] INFO  [2026-03-28 18:09:32] GPS RX: bus_id=  0 pos=(    7500.0,     2143.3) src=192.168.3.199:58800
+18:09:33 [server.gps_receiver ] INFO  [2026-03-28 18:09:33] GPS RX: bus_id=  0 pos=(    7500.0,     2154.4) src=192.168.3.199:58800
+18:09:34 [server.gps_receiver ] INFO  [2026-03-28 18:09:34] GPS RX: bus_id=  0 pos=(    7500.0,     2165.5) src=192.168.3.199:58800
+18:09:35 [server.gps_receiver ] INFO  [2026-03-28 18:09:35] GPS RX: bus_id=  0 pos=(    7500.0,     2176.6) src=192.168.3.199:58800
+18:09:36 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (445 pkts / 5s) | Total: 11752 pkts, 16452800 bytes
+18:09:36 [server.gps_receiver ] INFO  [2026-03-28 18:09:36] GPS RX: bus_id=  0 pos=(    7500.0,     2187.7) src=192.168.3.199:58800
+18:09:37 [server.gps_receiver ] INFO  [2026-03-28 18:09:37] GPS RX: bus_id=  0 pos=(    7500.0,     2198.8) src=192.168.3.199:58800
+18:09:38 [server.gps_receiver ] INFO  [2026-03-28 18:09:38] GPS RX: bus_id=  0 pos=(    7500.0,     2209.9) src=192.168.3.199:58800
+18:09:39 [server.gps_receiver ] INFO  [2026-03-28 18:09:39] GPS RX: bus_id=  0 pos=(    7500.0,     2221.0) src=192.168.3.199:58800
+18:09:40 [server.gps_receiver ] INFO  [2026-03-28 18:09:40] GPS RX: bus_id=  0 pos=(    7500.0,     2232.1) src=192.168.3.199:58800
+18:09:41 [server.cctv_receiver] INFO  CCTV throughput: 0.99 Mbps (444 pkts / 5s) | Total: 12196 pkts, 17074400 bytes
+18:09:41 [server.gps_receiver ] INFO  [2026-03-28 18:09:41] GPS RX: bus_id=  0 pos=(    7500.0,     2243.2) src=192.168.3.199:58800
+18:09:42 [server.gps_receiver ] INFO  [2026-03-28 18:09:42] GPS RX: bus_id=  0 pos=(    7500.0,     2254.3) src=192.168.3.199:58800
+18:09:43 [server.gps_receiver ] INFO  [2026-03-28 18:09:43] GPS RX: bus_id=  0 pos=(    7500.0,     2265.4) src=192.168.3.199:58800
+18:09:44 [server.gps_receiver ] INFO  [2026-03-28 18:09:44] GPS RX: bus_id=  0 pos=(    7500.0,     2276.5) src=192.168.3.199:58800
+18:09:45 [server.gps_receiver ] INFO  [2026-03-28 18:09:45] GPS RX: bus_id=  0 pos=(    7500.0,     2287.6) src=192.168.3.199:58800
+18:09:46 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (446 pkts / 5s) | Total: 12642 pkts, 17698800 bytes
+18:09:46 [server.gps_receiver ] INFO  [2026-03-28 18:09:46] GPS RX: bus_id=  0 pos=(    7500.0,     2298.7) src=192.168.3.199:58800
+18:09:47 [server.gps_receiver ] INFO  [2026-03-28 18:09:47] GPS RX: bus_id=  0 pos=(    7500.0,     2309.8) src=192.168.3.199:58800
+18:09:48 [server.gps_receiver ] INFO  [2026-03-28 18:09:48] GPS RX: bus_id=  0 pos=(    7500.0,     2320.9) src=192.168.3.199:58800
+18:09:49 [server.gps_receiver ] INFO  [2026-03-28 18:09:49] GPS RX: bus_id=  0 pos=(    7500.0,     2332.0) src=192.168.3.199:58800
+18:09:50 [server.gps_receiver ] INFO  [2026-03-28 18:09:50] GPS RX: bus_id=  0 pos=(    7500.0,     2343.1) src=192.168.3.199:58800
+18:09:51 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 13089 pkts, 18324600 bytes
+18:09:51 [server.gps_receiver ] INFO  [2026-03-28 18:09:51] GPS RX: bus_id=  0 pos=(    7500.0,     2354.2) src=192.168.3.199:58800
+18:09:52 [server.gps_receiver ] INFO  [2026-03-28 18:09:52] GPS RX: bus_id=  0 pos=(    7500.0,     2365.3) src=192.168.3.199:58800
+18:09:53 [server.gps_receiver ] INFO  [2026-03-28 18:09:53] GPS RX: bus_id=  0 pos=(    7500.0,     2376.4) src=192.168.3.199:58800
+18:09:54 [server.gps_receiver ] INFO  [2026-03-28 18:09:54] GPS RX: bus_id=  0 pos=(    7500.0,     2387.5) src=192.168.3.199:58800
+18:09:55 [server.gps_receiver ] INFO  [2026-03-28 18:09:55] GPS RX: bus_id=  0 pos=(    7500.0,     2398.6) src=192.168.3.199:58800
+18:09:56 [server.heartbeat_server] INFO  Heartbeat: 29 probes in last 30s | Total: 148
+18:09:56 [server.cctv_receiver] INFO  CCTV throughput: 0.99 Mbps (442 pkts / 5s) | Total: 13531 pkts, 18943400 bytes
+18:09:56 [server.gps_receiver ] INFO  [2026-03-28 18:09:56] GPS RX: bus_id=  0 pos=(    7500.0,     2409.7) src=192.168.3.199:58800
+18:09:57 [server.gps_receiver ] INFO  [2026-03-28 18:09:57] GPS RX: bus_id=  0 pos=(    7500.0,     2420.8) src=192.168.3.199:58800
+18:09:58 [server.gps_receiver ] INFO  [2026-03-28 18:09:58] GPS RX: bus_id=  0 pos=(    7500.0,     2431.9) src=192.168.3.199:58800
+18:09:59 [server.gps_receiver ] INFO  [2026-03-28 18:09:59] GPS RX: bus_id=  0 pos=(    7500.0,     2443.0) src=192.168.3.199:58800
+18:10:00 [server.gps_receiver ] INFO  [2026-03-28 18:10:00] GPS RX: bus_id=  0 pos=(    7500.0,     2454.1) src=192.168.3.199:58800
+18:10:01 [server.cctv_receiver] INFO  CCTV throughput: 1.01 Mbps (452 pkts / 5s) | Total: 13983 pkts, 19576200 bytes
+18:10:01 [server.gps_receiver ] INFO  [2026-03-28 18:10:01] GPS RX: bus_id=  0 pos=(    7500.0,     2465.2) src=192.168.3.199:58800
+18:10:02 [server.gps_receiver ] INFO  [2026-03-28 18:10:02] GPS RX: bus_id=  0 pos=(    7500.0,     2476.3) src=192.168.3.199:58800
+18:10:03 [server.gps_receiver ] INFO  [2026-03-28 18:10:03] GPS RX: bus_id=  0 pos=(    7500.0,     2487.4) src=192.168.3.199:58800
+18:10:04 [server.gps_receiver ] INFO  [2026-03-28 18:10:04] GPS RX: bus_id=  0 pos=(    7500.0,     2498.5) src=192.168.3.199:58800
+18:10:05 [server.gps_receiver ] INFO  [2026-03-28 18:10:05] GPS RX: bus_id=  0 pos=(    7500.0,     2509.6) src=192.168.3.199:58800
+18:10:06 [server.cctv_receiver] INFO  CCTV throughput: 0.99 Mbps (444 pkts / 5s) | Total: 14427 pkts, 20197800 bytes
+18:10:06 [server.gps_receiver ] INFO  [2026-03-28 18:10:06] GPS RX: bus_id=  0 pos=(    7500.0,     2520.7) src=192.168.3.199:58800
+18:10:07 [server.gps_receiver ] INFO  [2026-03-28 18:10:07] GPS RX: bus_id=  0 pos=(    7500.0,     2531.8) src=192.168.3.199:58800
+18:10:08 [server.gps_receiver ] INFO  [2026-03-28 18:10:08] GPS RX: bus_id=  0 pos=(    7500.0,     2542.9) src=192.168.3.199:58800
+18:10:09 [server.gps_receiver ] INFO  [2026-03-28 18:10:09] GPS RX: bus_id=  0 pos=(    7500.0,     2554.0) src=192.168.3.199:58800
+18:10:10 [server.gps_receiver ] INFO  [2026-03-28 18:10:10] GPS RX: bus_id=  0 pos=(    7500.0,     2565.1) src=192.168.3.199:58800
+18:10:11 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (435 pkts / 5s) | Total: 14862 pkts, 20806800 bytes
+18:10:11 [server.gps_receiver ] INFO  [2026-03-28 18:10:11] GPS RX: bus_id=  0 pos=(    7500.0,     2576.2) src=192.168.3.199:58800
+18:10:12 [server.gps_receiver ] INFO  [2026-03-28 18:10:12] GPS RX: bus_id=  0 pos=(    7500.0,     2587.3) src=192.168.3.199:58800
+18:10:13 [server.gps_receiver ] INFO  [2026-03-28 18:10:13] GPS RX: bus_id=  0 pos=(    7500.0,     2598.4) src=192.168.3.199:58800
+18:10:14 [server.gps_receiver ] INFO  [2026-03-28 18:10:14] GPS RX: bus_id=  0 pos=(    7500.0,     2609.5) src=192.168.3.199:58800
+18:10:15 [server.gps_receiver ] INFO  [2026-03-28 18:10:15] GPS RX: bus_id=  0 pos=(    7500.0,     2620.6) src=192.168.3.199:58800
+18:10:16 [server.cctv_receiver] INFO  CCTV throughput: 1.02 Mbps (456 pkts / 5s) | Total: 15318 pkts, 21445200 bytes
+18:10:16 [server.gps_receiver ] INFO  [2026-03-28 18:10:16] GPS RX: bus_id=  0 pos=(    7500.0,     2631.7) src=192.168.3.199:58800
+18:10:17 [server.gps_receiver ] INFO  [2026-03-28 18:10:17] GPS RX: bus_id=  0 pos=(    7500.0,     2642.8) src=192.168.3.199:58800
+18:10:18 [server.gps_receiver ] INFO  [2026-03-28 18:10:18] GPS RX: bus_id=  0 pos=(    7500.0,     2653.9) src=192.168.3.199:58800
+18:10:19 [server.gps_receiver ] INFO  [2026-03-28 18:10:19] GPS RX: bus_id=  0 pos=(    7500.0,     2665.0) src=192.168.3.199:58800
+18:10:20 [server.gps_receiver ] INFO  [2026-03-28 18:10:20] GPS RX: bus_id=  0 pos=(    7500.0,     2676.1) src=192.168.3.199:58800
+18:10:21 [server.gps_receiver ] INFO  [2026-03-28 18:10:21] GPS RX: bus_id=  0 pos=(    7500.0,     2687.2) src=192.168.3.199:58800
+18:10:21 [server.cctv_receiver] INFO  CCTV throughput: 1.01 Mbps (453 pkts / 5s) | Total: 15771 pkts, 22079400 bytes
+18:10:22 [server.gps_receiver ] INFO  [2026-03-28 18:10:22] GPS RX: bus_id=  0 pos=(    7500.0,     2698.3) src=192.168.3.199:58800
+18:10:23 [server.gps_receiver ] INFO  [2026-03-28 18:10:23] GPS RX: bus_id=  0 pos=(    7500.0,     2709.4) src=192.168.3.199:58800
+18:10:24 [server.gps_receiver ] INFO  [2026-03-28 18:10:24] GPS RX: bus_id=  0 pos=(    7500.0,     2720.5) src=192.168.3.199:58800
+18:10:25 [server.gps_receiver ] INFO  [2026-03-28 18:10:25] GPS RX: bus_id=  0 pos=(    7500.0,     2731.6) src=192.168.3.199:58800
+18:10:26 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 178
+18:10:26 [server.gps_receiver ] INFO  [2026-03-28 18:10:26] GPS RX: bus_id=  0 pos=(    7500.0,     2742.7) src=192.168.3.199:58800
+18:10:26 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 16218 pkts, 22705200 bytes
+18:10:27 [server.gps_receiver ] INFO  [2026-03-28 18:10:27] GPS RX: bus_id=  0 pos=(    7500.0,     2753.8) src=192.168.3.199:58800
+18:10:28 [server.gps_receiver ] INFO  [2026-03-28 18:10:28] GPS RX: bus_id=  0 pos=(    7500.0,     2764.9) src=192.168.3.199:58800
+18:10:29 [server.gps_receiver ] INFO  [2026-03-28 18:10:29] GPS RX: bus_id=  0 pos=(    7500.0,     2776.0) src=192.168.3.199:58800
+18:10:30 [server.gps_receiver ] INFO  [2026-03-28 18:10:30] GPS RX: bus_id=  0 pos=(    7500.0,     2787.1) src=192.168.3.199:58800
+18:10:31 [server.gps_receiver ] INFO  [2026-03-28 18:10:31] GPS RX: bus_id=  0 pos=(    7500.0,     2798.2) src=192.168.3.199:58800
+18:10:31 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 16665 pkts, 23331000 bytes
+18:10:32 [server.gps_receiver ] INFO  [2026-03-28 18:10:32] GPS RX: bus_id=  0 pos=(    7500.0,     2809.3) src=192.168.3.199:58800
+18:10:33 [server.gps_receiver ] INFO  [2026-03-28 18:10:33] GPS RX: bus_id=  0 pos=(    7500.0,     2820.4) src=192.168.3.199:58800
+18:10:34 [server.gps_receiver ] INFO  [2026-03-28 18:10:34] GPS RX: bus_id=  0 pos=(    7500.0,     2831.5) src=192.168.3.199:58800
+18:10:35 [server.gps_receiver ] INFO  [2026-03-28 18:10:35] GPS RX: bus_id=  0 pos=(    7500.0,     2842.6) src=192.168.3.199:58800
+18:10:36 [server.gps_receiver ] INFO  [2026-03-28 18:10:36] GPS RX: bus_id=  0 pos=(    7500.0,     2853.7) src=192.168.3.199:58800
+18:10:36 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 17112 pkts, 23956800 bytes
+18:10:37 [server.gps_receiver ] INFO  [2026-03-28 18:10:37] GPS RX: bus_id=  0 pos=(    7500.0,     2864.8) src=192.168.3.199:58800
+18:10:38 [server.gps_receiver ] INFO  [2026-03-28 18:10:38] GPS RX: bus_id=  0 pos=(    7500.0,     2875.9) src=192.168.3.199:58800
+18:10:39 [server.gps_receiver ] INFO  [2026-03-28 18:10:39] GPS RX: bus_id=  0 pos=(    7500.0,     2887.0) src=192.168.3.199:58800
+18:10:40 [server.gps_receiver ] INFO  [2026-03-28 18:10:40] GPS RX: bus_id=  0 pos=(    7500.0,     2898.1) src=192.168.3.199:58800
+18:10:41 [server.gps_receiver ] INFO  [2026-03-28 18:10:41] GPS RX: bus_id=  0 pos=(    7500.0,     2909.2) src=192.168.3.199:58800
+[2026-03-28 18:08:13] GPS RX: bus_id=  0 pos=(    7500.0,     1266.4) src=192.168.3.199:58800
+[2026-03-28 18:08:14] GPS RX: bus_id=  0 pos=(    7500.0,     1277.5) src=192.168.3.199:58800
+[2026-03-28 18:08:15] GPS RX: bus_id=  0 pos=(    7500.0,     1288.6) src=192.168.3.199:58800
+CCTV throughput: 0.96 Mbps (429 pkts / 5s) | Total: 4801 pkts, 6721400 bytes
+[2026-03-28 18:08:16] GPS RX: bus_id=  0 pos=(    7500.0,     1299.7) src=192.168.3.199:58800
+[2026-03-28 18:08:17] GPS RX: bus_id=  0 pos=(    7500.0,     1310.8) src=192.168.3.199:58800
+[2026-03-28 18:08:18] GPS RX: bus_id=  0 pos=(    7500.0,     1321.9) src=192.168.3.199:58800
+[2026-03-28 18:08:19] GPS RX: bus_id=  0 pos=(    7500.0,     1333.0) src=192.168.3.199:58800
+[2026-03-28 18:08:20] GPS RX: bus_id=  0 pos=(    7500.0,     1344.1) src=192.168.3.199:58800
+CCTV throughput: 0.97 Mbps (431 pkts / 5s) | Total: 5232 pkts, 7324800 bytes
+[2026-03-28 18:08:21] GPS RX: bus_id=  0 pos=(    7500.0,     1355.2) src=192.168.3.199:58800
+[2026-03-28 18:08:22] GPS RX: bus_id=  0 pos=(    7500.0,     1366.3) src=192.168.3.199:58800
+[2026-03-28 18:08:23] GPS RX: bus_id=  0 pos=(    7500.0,     1377.4) src=192.168.3.199:58800
+[2026-03-28 18:08:25] GPS RX: bus_id=  0 pos=(    7500.0,     1399.6) src=192.168.3.199:58800
+Heartbeat: 28 probes in last 30s | Total: 63
+CCTV throughput: 0.97 Mbps (431 pkts / 5s) | Total: 5663 pkts, 7928200 bytes
+[2026-03-28 18:08:26] GPS RX: bus_id=  0 pos=(    7500.0,     1410.7) src=192.168.3.199:58800
+[2026-03-28 18:08:27] GPS RX: bus_id=  0 pos=(    7500.0,     1421.8) src=192.168.3.199:58800
+[2026-03-28 18:08:28] GPS RX: bus_id=  0 pos=(    7500.0,     1432.9) src=192.168.3.199:58800
+[2026-03-28 18:08:29] GPS RX: bus_id=  0 pos=(    7500.0,     1444.0) src=192.168.3.199:58800
+[2026-03-28 18:08:30] GPS RX: bus_id=  0 pos=(    7500.0,     1455.1) src=192.168.3.199:58800
+CCTV throughput: 0.97 Mbps (432 pkts / 5s) | Total: 6095 pkts, 8533000 bytes
+[2026-03-28 18:08:31] GPS RX: bus_id=  0 pos=(    7500.0,     1466.2) src=192.168.3.199:58800
+[2026-03-28 18:08:32] GPS RX: bus_id=  0 pos=(    7500.0,     1477.3) src=192.168.3.199:58800
+[2026-03-28 18:08:33] GPS RX: bus_id=  0 pos=(    7500.0,     1488.4) src=192.168.3.199:58800
+[2026-03-28 18:08:34] GPS RX: bus_id=  0 pos=(    7500.0,     1499.5) src=192.168.3.199:58800
+[2026-03-28 18:08:35] GPS RX: bus_id=  0 pos=(    7500.0,     1510.6) src=192.168.3.199:58800
+CCTV throughput: 0.96 Mbps (429 pkts / 5s) | Total: 6524 pkts, 9133600 bytes
+[2026-03-28 18:08:36] GPS RX: bus_id=  0 pos=(    7500.0,     1521.7) src=192.168.3.199:58800
+[2026-03-28 18:08:37] GPS RX: bus_id=  0 pos=(    7500.0,     1532.8) src=192.168.3.199:58800
+[2026-03-28 18:08:38] GPS RX: bus_id=  0 pos=(    7500.0,     1543.9) src=192.168.3.199:58800
+[2026-03-28 18:08:39] GPS RX: bus_id=  0 pos=(    7500.0,     1555.0) src=192.168.3.199:58800
+[2026-03-28 18:08:40] GPS RX: bus_id=  0 pos=(    7500.0,     1566.1) src=192.168.3.199:58800
+CCTV throughput: 0.97 Mbps (434 pkts / 5s) | Total: 6958 pkts, 9741200 bytes
+[2026-03-28 18:08:41] GPS RX: bus_id=  0 pos=(    7500.0,     1577.2) src=192.168.3.199:58800
+[2026-03-28 18:08:42] GPS RX: bus_id=  0 pos=(    7500.0,     1588.3) src=192.168.3.199:58800
+[2026-03-28 18:08:43] GPS RX: bus_id=  0 pos=(    7500.0,     1599.4) src=192.168.3.199:58800
+[2026-03-28 18:08:44] GPS RX: bus_id=  0 pos=(    7500.0,     1610.5) src=192.168.3.199:58800
+[2026-03-28 18:08:45] GPS RX: bus_id=  0 pos=(    7500.0,     1621.6) src=192.168.3.199:58800
+CCTV throughput: 0.97 Mbps (433 pkts / 5s) | Total: 7391 pkts, 10347400 bytes
+[2026-03-28 18:08:46] GPS RX: bus_id=  0 pos=(    7500.0,     1632.7) src=192.168.3.199:58800
+[2026-03-28 18:08:47] GPS RX: bus_id=  0 pos=(    7500.0,     1643.8) src=192.168.3.199:58800
+[2026-03-28 18:08:48] GPS RX: bus_id=  0 pos=(    7500.0,     1654.9) src=192.168.3.199:58800
+[2026-03-28 18:08:50] GPS RX: bus_id=  0 pos=(    7500.0,     1677.1) src=192.168.3.199:58800
+CCTV throughput: 0.98 Mbps (436 pkts / 5s) | Total: 7827 pkts, 10957800 bytes
+[2026-03-28 18:08:51] GPS RX: bus_id=  0 pos=(    7500.0,     1688.2) src=192.168.3.199:58800
+[2026-03-28 18:08:52] GPS RX: bus_id=  0 pos=(    7500.0,     1699.3) src=192.168.3.199:58800
+[2026-03-28 18:08:53] GPS RX: bus_id=  0 pos=(    7500.0,     1710.4) src=192.168.3.199:58800
+[2026-03-28 18:08:54] GPS RX: bus_id=  0 pos=(    7500.0,     1721.5) src=192.168.3.199:58800
+[2026-03-28 18:08:55] GPS RX: bus_id=  0 pos=(    7500.0,     1732.6) src=192.168.3.199:58800
+Heartbeat: 28 probes in last 30s | Total: 91
+CCTV throughput: 0.95 Mbps (424 pkts / 5s) | Total: 8251 pkts, 11551400 bytes
+[2026-03-28 18:08:56] GPS RX: bus_id=  0 pos=(    7500.0,     1743.7) src=192.168.3.199:58800
+[2026-03-28 18:08:57] GPS RX: bus_id=  0 pos=(    7500.0,     1754.8) src=192.168.3.199:58800
+[2026-03-28 18:08:58] GPS RX: bus_id=  0 pos=(    7500.0,     1765.9) src=192.168.3.199:58800
+[2026-03-28 18:08:59] GPS RX: bus_id=  0 pos=(    7500.0,     1777.0) src=192.168.3.199:58800
+[2026-03-28 18:09:00] GPS RX: bus_id=  0 pos=(    7500.0,     1788.1) src=192.168.3.199:58800
+CCTV throughput: 1.01 Mbps (451 pkts / 5s) | Total: 8702 pkts, 12182800 bytes
+[2026-03-28 18:09:01] GPS RX: bus_id=  0 pos=(    7500.0,     1799.2) src=192.168.3.199:58800
+[2026-03-28 18:09:02] GPS RX: bus_id=  0 pos=(    7500.0,     1810.3) src=192.168.3.199:58800
+[2026-03-28 18:09:03] GPS RX: bus_id=  0 pos=(    7500.0,     1821.4) src=192.168.3.199:58800
+[2026-03-28 18:09:04] GPS RX: bus_id=  0 pos=(    7500.0,     1832.5) src=192.168.3.199:58800
+[2026-03-28 18:09:05] GPS RX: bus_id=  0 pos=(    7500.0,     1843.6) src=192.168.3.199:58800
+CCTV throughput: 0.98 Mbps (437 pkts / 5s) | Total: 9139 pkts, 12794600 bytes
+[2026-03-28 18:09:06] GPS RX: bus_id=  0 pos=(    7500.0,     1854.7) src=192.168.3.199:58800
+[2026-03-28 18:09:08] GPS RX: bus_id=  0 pos=(    7500.0,     1876.9) src=192.168.3.199:58800
+[2026-03-28 18:09:09] GPS RX: bus_id=  0 pos=(    7500.0,     1888.0) src=192.168.3.199:58800
+[2026-03-28 18:09:10] GPS RX: bus_id=  0 pos=(    7500.0,     1899.1) src=192.168.3.199:58800
+CCTV throughput: 0.98 Mbps (437 pkts / 5s) | Total: 9576 pkts, 13406400 bytes
+[2026-03-28 18:09:11] GPS RX: bus_id=  0 pos=(    7500.0,     1910.2) src=192.168.3.199:58800
+[2026-03-28 18:09:12] GPS RX: bus_id=  0 pos=(    7500.0,     1921.3) src=192.168.3.199:58800
+[2026-03-28 18:09:13] GPS RX: bus_id=  0 pos=(    7500.0,     1932.4) src=192.168.3.199:58800
+[2026-03-28 18:09:14] GPS RX: bus_id=  0 pos=(    7500.0,     1943.5) src=192.168.3.199:58800
+[2026-03-28 18:09:15] GPS RX: bus_id=  0 pos=(    7500.0,     1954.6) src=192.168.3.199:58800
+CCTV throughput: 0.96 Mbps (430 pkts / 5s) | Total: 10006 pkts, 14008400 bytes
+[2026-03-28 18:09:16] GPS RX: bus_id=  0 pos=(    7500.0,     1965.7) src=192.168.3.199:58800
+[2026-03-28 18:09:17] GPS RX: bus_id=  0 pos=(    7500.0,     1976.8) src=192.168.3.199:58800
+[2026-03-28 18:09:18] GPS RX: bus_id=  0 pos=(    7500.0,     1987.9) src=192.168.3.199:58800
+[2026-03-28 18:09:19] GPS RX: bus_id=  0 pos=(    7500.0,     1999.0) src=192.168.3.199:58800
+[2026-03-28 18:09:20] GPS RX: bus_id=  0 pos=(    7500.0,     2010.1) src=192.168.3.199:58800
+CCTV throughput: 0.97 Mbps (433 pkts / 5s) | Total: 10439 pkts, 14614600 bytes
+[2026-03-28 18:09:21] GPS RX: bus_id=  0 pos=(    7500.0,     2021.2) src=192.168.3.199:58800
+[2026-03-28 18:09:22] GPS RX: bus_id=  0 pos=(    7500.0,     2032.3) src=192.168.3.199:58800
+[2026-03-28 18:09:23] GPS RX: bus_id=  0 pos=(    7500.0,     2043.4) src=192.168.3.199:58800
+[2026-03-28 18:09:24] GPS RX: bus_id=  0 pos=(    7500.0,     2054.5) src=192.168.3.199:58800
+[2026-03-28 18:09:25] GPS RX: bus_id=  0 pos=(    7500.0,     2065.6) src=192.168.3.199:58800
+Heartbeat: 28 probes in last 30s | Total: 119
+CCTV throughput: 0.98 Mbps (437 pkts / 5s) | Total: 10876 pkts, 15226400 bytes
+[2026-03-28 18:09:26] GPS RX: bus_id=  0 pos=(    7500.0,     2076.7) src=192.168.3.199:58800
+[2026-03-28 18:09:27] GPS RX: bus_id=  0 pos=(    7500.0,     2087.8) src=192.168.3.199:58800
+18:10:41 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 17560 pkts, 24584000 bytes
+18:10:42 [server.gps_receiver ] INFO  [2026-03-28 18:10:42] GPS RX: bus_id=  0 pos=(    7500.0,     2920.3) src=192.168.3.199:58800
+18:10:43 [server.gps_receiver ] INFO  [2026-03-28 18:10:43] GPS RX: bus_id=  0 pos=(    7500.0,     2931.4) src=192.168.3.199:58800
+18:10:44 [server.gps_receiver ] INFO  [2026-03-28 18:10:44] GPS RX: bus_id=  0 pos=(    7500.0,     2942.5) src=192.168.3.199:58800
+18:10:45 [server.gps_receiver ] INFO  [2026-03-28 18:10:45] GPS RX: bus_id=  0 pos=(    7500.0,     2953.6) src=192.168.3.199:58800
+18:10:46 [server.gps_receiver ] INFO  [2026-03-28 18:10:46] GPS RX: bus_id=  0 pos=(    7500.0,     2964.7) src=192.168.3.199:58800
+18:10:46 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 18007 pkts, 25209800 bytes
+18:10:47 [server.gps_receiver ] INFO  [2026-03-28 18:10:47] GPS RX: bus_id=  0 pos=(    7500.0,     2975.8) src=192.168.3.199:58800
+18:10:48 [server.gps_receiver ] INFO  [2026-03-28 18:10:48] GPS RX: bus_id=  0 pos=(    7500.0,     2986.9) src=192.168.3.199:58800
+18:10:49 [server.gps_receiver ] INFO  [2026-03-28 18:10:49] GPS RX: bus_id=  0 pos=(    7500.0,     2998.0) src=192.168.3.199:58800
+18:10:50 [server.gps_receiver ] INFO  [2026-03-28 18:10:50] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:10:51 [server.gps_receiver ] INFO  [2026-03-28 18:10:51] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:10:51 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 18454 pkts, 25835600 bytes
+18:10:52 [server.gps_receiver ] INFO  [2026-03-28 18:10:52] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:10:53 [server.gps_receiver ] INFO  [2026-03-28 18:10:53] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:10:54 [server.gps_receiver ] INFO  [2026-03-28 18:10:54] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:10:55 [server.gps_receiver ] INFO  [2026-03-28 18:10:55] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:10:56 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 208
+18:10:56 [server.gps_receiver ] INFO  [2026-03-28 18:10:56] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:10:56 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 18901 pkts, 26461400 bytes
+18:10:57 [server.gps_receiver ] INFO  [2026-03-28 18:10:57] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:10:58 [server.gps_receiver ] INFO  [2026-03-28 18:10:58] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:10:59 [server.gps_receiver ] INFO  [2026-03-28 18:10:59] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:00 [server.gps_receiver ] INFO  [2026-03-28 18:11:00] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:01 [server.gps_receiver ] INFO  [2026-03-28 18:11:01] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:01 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 19348 pkts, 27087200 bytes
+18:11:02 [server.gps_receiver ] INFO  [2026-03-28 18:11:02] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:03 [server.gps_receiver ] INFO  [2026-03-28 18:11:03] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:04 [server.gps_receiver ] INFO  [2026-03-28 18:11:04] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:05 [server.gps_receiver ] INFO  [2026-03-28 18:11:05] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:06 [server.gps_receiver ] INFO  [2026-03-28 18:11:06] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:06 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 19795 pkts, 27713000 bytes
+18:11:07 [server.gps_receiver ] INFO  [2026-03-28 18:11:07] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:08 [server.gps_receiver ] INFO  [2026-03-28 18:11:08] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:09 [server.gps_receiver ] INFO  [2026-03-28 18:11:09] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:10 [server.gps_receiver ] INFO  [2026-03-28 18:11:10] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:11 [server.gps_receiver ] INFO  [2026-03-28 18:11:11] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:11 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 20243 pkts, 28340200 bytes
+18:11:12 [server.gps_receiver ] INFO  [2026-03-28 18:11:12] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:13 [server.gps_receiver ] INFO  [2026-03-28 18:11:13] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:14 [server.gps_receiver ] INFO  [2026-03-28 18:11:14] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:15 [server.gps_receiver ] INFO  [2026-03-28 18:11:15] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:16 [server.gps_receiver ] INFO  [2026-03-28 18:11:16] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:16 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 20690 pkts, 28966000 bytes
+18:11:17 [server.gps_receiver ] INFO  [2026-03-28 18:11:17] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:18 [server.gps_receiver ] INFO  [2026-03-28 18:11:18] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:19 [server.gps_receiver ] INFO  [2026-03-28 18:11:19] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+18:11:20 [server.gps_receiver ] INFO  [2026-03-28 18:11:20] GPS RX: bus_id=  0 pos=(    7500.0,     3011.1) src=192.168.3.199:58800
+18:11:21 [server.gps_receiver ] INFO  [2026-03-28 18:11:21] GPS RX: bus_id=  0 pos=(    7500.0,     3022.2) src=192.168.3.199:58800
+18:11:21 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 21137 pkts, 29591800 bytes
+18:11:22 [server.gps_receiver ] INFO  [2026-03-28 18:11:22] GPS RX: bus_id=  0 pos=(    7500.0,     3033.3) src=192.168.3.199:58800
+18:11:23 [server.gps_receiver ] INFO  [2026-03-28 18:11:23] GPS RX: bus_id=  0 pos=(    7500.0,     3044.4) src=192.168.3.199:58800
+18:11:24 [server.gps_receiver ] INFO  [2026-03-28 18:11:24] GPS RX: bus_id=  0 pos=(    7500.0,     3055.5) src=192.168.3.199:58800
+18:11:25 [server.gps_receiver ] INFO  [2026-03-28 18:11:25] GPS RX: bus_id=  0 pos=(    7500.0,     3066.6) src=192.168.3.199:58800
+18:11:26 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 238
+18:11:26 [server.gps_receiver ] INFO  [2026-03-28 18:11:26] GPS RX: bus_id=  0 pos=(    7500.0,     3077.7) src=192.168.3.199:58800
+18:11:26 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 21584 pkts, 30217600 bytes
+18:11:27 [server.gps_receiver ] INFO  [2026-03-28 18:11:27] GPS RX: bus_id=  0 pos=(    7500.0,     3088.8) src=192.168.3.199:58800
+18:11:28 [server.gps_receiver ] INFO  [2026-03-28 18:11:28] GPS RX: bus_id=  0 pos=(    7500.0,     3099.9) src=192.168.3.199:58800
+18:11:29 [server.gps_receiver ] INFO  [2026-03-28 18:11:29] GPS RX: bus_id=  0 pos=(    7500.0,     3111.0) src=192.168.3.199:58800
+18:11:30 [server.gps_receiver ] INFO  [2026-03-28 18:11:30] GPS RX: bus_id=  0 pos=(    7500.0,     3122.1) src=192.168.3.199:58800
+18:11:31 [server.gps_receiver ] INFO  [2026-03-28 18:11:31] GPS RX: bus_id=  0 pos=(    7500.0,     3133.2) src=192.168.3.199:58800
+18:11:31 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 22031 pkts, 30843400 bytes
+18:11:32 [server.gps_receiver ] INFO  [2026-03-28 18:11:32] GPS RX: bus_id=  0 pos=(    7500.0,     3144.3) src=192.168.3.199:58800
+18:11:33 [server.gps_receiver ] INFO  [2026-03-28 18:11:33] GPS RX: bus_id=  0 pos=(    7500.0,     3155.4) src=192.168.3.199:58800
+18:11:34 [server.gps_receiver ] INFO  [2026-03-28 18:11:34] GPS RX: bus_id=  0 pos=(    7500.0,     3166.5) src=192.168.3.199:58800
+18:11:35 [server.gps_receiver ] INFO  [2026-03-28 18:11:35] GPS RX: bus_id=  0 pos=(    7500.0,     3177.6) src=192.168.3.199:58800
+18:11:36 [server.gps_receiver ] INFO  [2026-03-28 18:11:36] GPS RX: bus_id=  0 pos=(    7500.0,     3188.7) src=192.168.3.199:58800
+18:11:36 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 22478 pkts, 31469200 bytes
+18:11:37 [server.gps_receiver ] INFO  [2026-03-28 18:11:37] GPS RX: bus_id=  0 pos=(    7500.0,     3199.8) src=192.168.3.199:58800
+18:11:38 [server.gps_receiver ] INFO  [2026-03-28 18:11:38] GPS RX: bus_id=  0 pos=(    7500.0,     3210.9) src=192.168.3.199:58800
+18:11:39 [server.gps_receiver ] INFO  [2026-03-28 18:11:39] GPS RX: bus_id=  0 pos=(    7500.0,     3222.0) src=192.168.3.199:58800
+18:11:40 [server.gps_receiver ] INFO  [2026-03-28 18:11:40] GPS RX: bus_id=  0 pos=(    7500.0,     3233.1) src=192.168.3.199:58800
+18:11:41 [server.gps_receiver ] INFO  [2026-03-28 18:11:41] GPS RX: bus_id=  0 pos=(    7500.0,     3244.2) src=192.168.3.199:58800
+18:11:41 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (446 pkts / 5s) | Total: 22924 pkts, 32093600 bytes
+18:11:42 [server.gps_receiver ] INFO  [2026-03-28 18:11:42] GPS RX: bus_id=  0 pos=(    7500.0,     3255.3) src=192.168.3.199:58800
+18:11:43 [server.gps_receiver ] INFO  [2026-03-28 18:11:43] GPS RX: bus_id=  0 pos=(    7500.0,     3266.4) src=192.168.3.199:58800
+18:11:44 [server.gps_receiver ] INFO  [2026-03-28 18:11:44] GPS RX: bus_id=  0 pos=(    7500.0,     3277.5) src=192.168.3.199:58800
+18:11:45 [server.gps_receiver ] INFO  [2026-03-28 18:11:45] GPS RX: bus_id=  0 pos=(    7500.0,     3288.6) src=192.168.3.199:58800
+18:11:46 [server.gps_receiver ] INFO  [2026-03-28 18:11:46] GPS RX: bus_id=  0 pos=(    7500.0,     3299.7) src=192.168.3.199:58800
+18:11:46 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 23371 pkts, 32719400 bytes
+18:11:47 [server.gps_receiver ] INFO  [2026-03-28 18:11:47] GPS RX: bus_id=  0 pos=(    7500.0,     3310.8) src=192.168.3.199:58800
+18:11:48 [server.gps_receiver ] INFO  [2026-03-28 18:11:48] GPS RX: bus_id=  0 pos=(    7500.0,     3321.9) src=192.168.3.199:58800
+18:11:49 [server.gps_receiver ] INFO  [2026-03-28 18:11:49] GPS RX: bus_id=  0 pos=(    7500.0,     3333.0) src=192.168.3.199:58800
+18:11:50 [server.gps_receiver ] INFO  [2026-03-28 18:11:50] GPS RX: bus_id=  0 pos=(    7500.0,     3344.1) src=192.168.3.199:58800
+18:11:51 [server.gps_receiver ] INFO  [2026-03-28 18:11:51] GPS RX: bus_id=  0 pos=(    7500.0,     3355.2) src=192.168.3.199:58800
+18:11:51 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 23819 pkts, 33346600 bytes
+18:11:52 [server.gps_receiver ] INFO  [2026-03-28 18:11:52] GPS RX: bus_id=  0 pos=(    7500.0,     3366.3) src=192.168.3.199:58800
+18:11:53 [server.gps_receiver ] INFO  [2026-03-28 18:11:53] GPS RX: bus_id=  0 pos=(    7500.0,     3377.4) src=192.168.3.199:58800
+[2026-03-28 18:09:28] GPS RX: bus_id=  0 pos=(    7500.0,     2098.9) src=192.168.3.199:58800
+[2026-03-28 18:09:29] GPS RX: bus_id=  0 pos=(    7500.0,     2110.0) src=192.168.3.199:58800
+[2026-03-28 18:09:30] GPS RX: bus_id=  0 pos=(    7500.0,     2121.1) src=192.168.3.199:58800
+CCTV throughput: 0.97 Mbps (431 pkts / 5s) | Total: 11307 pkts, 15829800 bytes
+[2026-03-28 18:09:31] GPS RX: bus_id=  0 pos=(    7500.0,     2132.2) src=192.168.3.199:58800
+[2026-03-28 18:09:32] GPS RX: bus_id=  0 pos=(    7500.0,     2143.3) src=192.168.3.199:58800
+[2026-03-28 18:09:33] GPS RX: bus_id=  0 pos=(    7500.0,     2154.4) src=192.168.3.199:58800
+[2026-03-28 18:09:34] GPS RX: bus_id=  0 pos=(    7500.0,     2165.5) src=192.168.3.199:58800
+[2026-03-28 18:09:35] GPS RX: bus_id=  0 pos=(    7500.0,     2176.6) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (445 pkts / 5s) | Total: 11752 pkts, 16452800 bytes
+[2026-03-28 18:09:36] GPS RX: bus_id=  0 pos=(    7500.0,     2187.7) src=192.168.3.199:58800
+[2026-03-28 18:09:37] GPS RX: bus_id=  0 pos=(    7500.0,     2198.8) src=192.168.3.199:58800
+[2026-03-28 18:09:38] GPS RX: bus_id=  0 pos=(    7500.0,     2209.9) src=192.168.3.199:58800
+[2026-03-28 18:09:39] GPS RX: bus_id=  0 pos=(    7500.0,     2221.0) src=192.168.3.199:58800
+[2026-03-28 18:09:40] GPS RX: bus_id=  0 pos=(    7500.0,     2232.1) src=192.168.3.199:58800
+CCTV throughput: 0.99 Mbps (444 pkts / 5s) | Total: 12196 pkts, 17074400 bytes
+[2026-03-28 18:09:41] GPS RX: bus_id=  0 pos=(    7500.0,     2243.2) src=192.168.3.199:58800
+[2026-03-28 18:09:42] GPS RX: bus_id=  0 pos=(    7500.0,     2254.3) src=192.168.3.199:58800
+[2026-03-28 18:09:43] GPS RX: bus_id=  0 pos=(    7500.0,     2265.4) src=192.168.3.199:58800
+[2026-03-28 18:09:44] GPS RX: bus_id=  0 pos=(    7500.0,     2276.5) src=192.168.3.199:58800
+[2026-03-28 18:09:45] GPS RX: bus_id=  0 pos=(    7500.0,     2287.6) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (446 pkts / 5s) | Total: 12642 pkts, 17698800 bytes
+[2026-03-28 18:09:46] GPS RX: bus_id=  0 pos=(    7500.0,     2298.7) src=192.168.3.199:58800
+[2026-03-28 18:09:47] GPS RX: bus_id=  0 pos=(    7500.0,     2309.8) src=192.168.3.199:58800
+[2026-03-28 18:09:48] GPS RX: bus_id=  0 pos=(    7500.0,     2320.9) src=192.168.3.199:58800
+[2026-03-28 18:09:49] GPS RX: bus_id=  0 pos=(    7500.0,     2332.0) src=192.168.3.199:58800
+[2026-03-28 18:09:50] GPS RX: bus_id=  0 pos=(    7500.0,     2343.1) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 13089 pkts, 18324600 bytes
+[2026-03-28 18:09:51] GPS RX: bus_id=  0 pos=(    7500.0,     2354.2) src=192.168.3.199:58800
+[2026-03-28 18:09:52] GPS RX: bus_id=  0 pos=(    7500.0,     2365.3) src=192.168.3.199:58800
+[2026-03-28 18:09:53] GPS RX: bus_id=  0 pos=(    7500.0,     2376.4) src=192.168.3.199:58800
+[2026-03-28 18:09:54] GPS RX: bus_id=  0 pos=(    7500.0,     2387.5) src=192.168.3.199:58800
+[2026-03-28 18:09:55] GPS RX: bus_id=  0 pos=(    7500.0,     2398.6) src=192.168.3.199:58800
+Heartbeat: 29 probes in last 30s | Total: 148
+CCTV throughput: 0.99 Mbps (442 pkts / 5s) | Total: 13531 pkts, 18943400 bytes
+[2026-03-28 18:09:56] GPS RX: bus_id=  0 pos=(    7500.0,     2409.7) src=192.168.3.199:58800
+[2026-03-28 18:09:57] GPS RX: bus_id=  0 pos=(    7500.0,     2420.8) src=192.168.3.199:58800
+[2026-03-28 18:09:58] GPS RX: bus_id=  0 pos=(    7500.0,     2431.9) src=192.168.3.199:58800
+[2026-03-28 18:09:59] GPS RX: bus_id=  0 pos=(    7500.0,     2443.0) src=192.168.3.199:58800
+[2026-03-28 18:10:00] GPS RX: bus_id=  0 pos=(    7500.0,     2454.1) src=192.168.3.199:58800
+CCTV throughput: 1.01 Mbps (452 pkts / 5s) | Total: 13983 pkts, 19576200 bytes
+[2026-03-28 18:10:01] GPS RX: bus_id=  0 pos=(    7500.0,     2465.2) src=192.168.3.199:58800
+[2026-03-28 18:10:02] GPS RX: bus_id=  0 pos=(    7500.0,     2476.3) src=192.168.3.199:58800
+[2026-03-28 18:10:03] GPS RX: bus_id=  0 pos=(    7500.0,     2487.4) src=192.168.3.199:58800
+[2026-03-28 18:10:04] GPS RX: bus_id=  0 pos=(    7500.0,     2498.5) src=192.168.3.199:58800
+[2026-03-28 18:10:05] GPS RX: bus_id=  0 pos=(    7500.0,     2509.6) src=192.168.3.199:58800
+CCTV throughput: 0.99 Mbps (444 pkts / 5s) | Total: 14427 pkts, 20197800 bytes
+[2026-03-28 18:10:06] GPS RX: bus_id=  0 pos=(    7500.0,     2520.7) src=192.168.3.199:58800
+[2026-03-28 18:10:07] GPS RX: bus_id=  0 pos=(    7500.0,     2531.8) src=192.168.3.199:58800
+[2026-03-28 18:10:08] GPS RX: bus_id=  0 pos=(    7500.0,     2542.9) src=192.168.3.199:58800
+[2026-03-28 18:10:09] GPS RX: bus_id=  0 pos=(    7500.0,     2554.0) src=192.168.3.199:58800
+[2026-03-28 18:10:10] GPS RX: bus_id=  0 pos=(    7500.0,     2565.1) src=192.168.3.199:58800
+CCTV throughput: 0.97 Mbps (435 pkts / 5s) | Total: 14862 pkts, 20806800 bytes
+[2026-03-28 18:10:11] GPS RX: bus_id=  0 pos=(    7500.0,     2576.2) src=192.168.3.199:58800
+[2026-03-28 18:10:12] GPS RX: bus_id=  0 pos=(    7500.0,     2587.3) src=192.168.3.199:58800
+[2026-03-28 18:10:13] GPS RX: bus_id=  0 pos=(    7500.0,     2598.4) src=192.168.3.199:58800
+[2026-03-28 18:10:14] GPS RX: bus_id=  0 pos=(    7500.0,     2609.5) src=192.168.3.199:58800
+[2026-03-28 18:10:15] GPS RX: bus_id=  0 pos=(    7500.0,     2620.6) src=192.168.3.199:58800
+CCTV throughput: 1.02 Mbps (456 pkts / 5s) | Total: 15318 pkts, 21445200 bytes
+[2026-03-28 18:10:16] GPS RX: bus_id=  0 pos=(    7500.0,     2631.7) src=192.168.3.199:58800
+[2026-03-28 18:10:17] GPS RX: bus_id=  0 pos=(    7500.0,     2642.8) src=192.168.3.199:58800
+[2026-03-28 18:10:18] GPS RX: bus_id=  0 pos=(    7500.0,     2653.9) src=192.168.3.199:58800
+[2026-03-28 18:10:19] GPS RX: bus_id=  0 pos=(    7500.0,     2665.0) src=192.168.3.199:58800
+[2026-03-28 18:10:20] GPS RX: bus_id=  0 pos=(    7500.0,     2676.1) src=192.168.3.199:58800
+[2026-03-28 18:10:21] GPS RX: bus_id=  0 pos=(    7500.0,     2687.2) src=192.168.3.199:58800
+CCTV throughput: 1.01 Mbps (453 pkts / 5s) | Total: 15771 pkts, 22079400 bytes
+[2026-03-28 18:10:22] GPS RX: bus_id=  0 pos=(    7500.0,     2698.3) src=192.168.3.199:58800
+[2026-03-28 18:10:23] GPS RX: bus_id=  0 pos=(    7500.0,     2709.4) src=192.168.3.199:58800
+[2026-03-28 18:10:24] GPS RX: bus_id=  0 pos=(    7500.0,     2720.5) src=192.168.3.199:58800
+[2026-03-28 18:10:25] GPS RX: bus_id=  0 pos=(    7500.0,     2731.6) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 178
+[2026-03-28 18:10:26] GPS RX: bus_id=  0 pos=(    7500.0,     2742.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 16218 pkts, 22705200 bytes
+[2026-03-28 18:10:27] GPS RX: bus_id=  0 pos=(    7500.0,     2753.8) src=192.168.3.199:58800
+[2026-03-28 18:10:28] GPS RX: bus_id=  0 pos=(    7500.0,     2764.9) src=192.168.3.199:58800
+[2026-03-28 18:10:29] GPS RX: bus_id=  0 pos=(    7500.0,     2776.0) src=192.168.3.199:58800
+[2026-03-28 18:10:30] GPS RX: bus_id=  0 pos=(    7500.0,     2787.1) src=192.168.3.199:58800
+[2026-03-28 18:10:31] GPS RX: bus_id=  0 pos=(    7500.0,     2798.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 16665 pkts, 23331000 bytes
+[2026-03-28 18:10:32] GPS RX: bus_id=  0 pos=(    7500.0,     2809.3) src=192.168.3.199:58800
+[2026-03-28 18:10:33] GPS RX: bus_id=  0 pos=(    7500.0,     2820.4) src=192.168.3.199:58800
+[2026-03-28 18:10:34] GPS RX: bus_id=  0 pos=(    7500.0,     2831.5) src=192.168.3.199:58800
+[2026-03-28 18:10:35] GPS RX: bus_id=  0 pos=(    7500.0,     2842.6) src=192.168.3.199:58800
+[2026-03-28 18:10:36] GPS RX: bus_id=  0 pos=(    7500.0,     2853.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 17112 pkts, 23956800 bytes
+[2026-03-28 18:10:37] GPS RX: bus_id=  0 pos=(    7500.0,     2864.8) src=192.168.3.199:58800
+[2026-03-28 18:10:38] GPS RX: bus_id=  0 pos=(    7500.0,     2875.9) src=192.168.3.199:58800
+[2026-03-28 18:10:39] GPS RX: bus_id=  0 pos=(    7500.0,     2887.0) src=192.168.3.199:58800
+[2026-03-28 18:10:40] GPS RX: bus_id=  0 pos=(    7500.0,     2898.1) src=192.168.3.199:58800
+18:11:54 [server.gps_receiver ] INFO  [2026-03-28 18:11:54] GPS RX: bus_id=  0 pos=(    7500.0,     3388.5) src=192.168.3.199:58800
+18:11:55 [server.gps_receiver ] INFO  [2026-03-28 18:11:55] GPS RX: bus_id=  0 pos=(    7500.0,     3399.6) src=192.168.3.199:58800
+18:11:56 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 268
+18:11:56 [server.gps_receiver ] INFO  [2026-03-28 18:11:56] GPS RX: bus_id=  0 pos=(    7500.0,     3410.7) src=192.168.3.199:58800
+18:11:56 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 24266 pkts, 33972400 bytes
+18:11:57 [server.gps_receiver ] INFO  [2026-03-28 18:11:57] GPS RX: bus_id=  0 pos=(    7500.0,     3421.8) src=192.168.3.199:58800
+18:11:58 [server.gps_receiver ] INFO  [2026-03-28 18:11:58] GPS RX: bus_id=  0 pos=(    7500.0,     3432.9) src=192.168.3.199:58800
+18:11:59 [server.gps_receiver ] INFO  [2026-03-28 18:11:59] GPS RX: bus_id=  0 pos=(    7500.0,     3444.0) src=192.168.3.199:58800
+18:12:00 [server.gps_receiver ] INFO  [2026-03-28 18:12:00] GPS RX: bus_id=  0 pos=(    7500.0,     3455.1) src=192.168.3.199:58800
+18:12:01 [server.gps_receiver ] INFO  [2026-03-28 18:12:01] GPS RX: bus_id=  0 pos=(    7500.0,     3466.2) src=192.168.3.199:58800
+18:12:01 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 24714 pkts, 34599600 bytes
+18:12:02 [server.gps_receiver ] INFO  [2026-03-28 18:12:02] GPS RX: bus_id=  0 pos=(    7500.0,     3477.3) src=192.168.3.199:58800
+18:12:03 [server.gps_receiver ] INFO  [2026-03-28 18:12:03] GPS RX: bus_id=  0 pos=(    7500.0,     3488.4) src=192.168.3.199:58800
+18:12:04 [server.gps_receiver ] INFO  [2026-03-28 18:12:04] GPS RX: bus_id=  0 pos=(    7500.0,     3499.5) src=192.168.3.199:58800
+18:12:05 [server.gps_receiver ] INFO  [2026-03-28 18:12:05] GPS RX: bus_id=  0 pos=(    7500.0,     3510.6) src=192.168.3.199:58800
+18:12:06 [server.gps_receiver ] INFO  [2026-03-28 18:12:06] GPS RX: bus_id=  0 pos=(    7500.0,     3521.7) src=192.168.3.199:58800
+18:12:06 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (445 pkts / 5s) | Total: 25159 pkts, 35222600 bytes
+18:12:07 [server.gps_receiver ] INFO  [2026-03-28 18:12:07] GPS RX: bus_id=  0 pos=(    7500.0,     3532.8) src=192.168.3.199:58800
+18:12:08 [server.gps_receiver ] INFO  [2026-03-28 18:12:08] GPS RX: bus_id=  0 pos=(    7500.0,     3543.9) src=192.168.3.199:58800
+18:12:09 [server.gps_receiver ] INFO  [2026-03-28 18:12:09] GPS RX: bus_id=  0 pos=(    7500.0,     3555.0) src=192.168.3.199:58800
+18:12:10 [server.gps_receiver ] INFO  [2026-03-28 18:12:10] GPS RX: bus_id=  0 pos=(    7500.0,     3566.1) src=192.168.3.199:58800
+18:12:11 [server.gps_receiver ] INFO  [2026-03-28 18:12:11] GPS RX: bus_id=  0 pos=(    7500.0,     3577.2) src=192.168.3.199:58800
+18:12:11 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 25607 pkts, 35849800 bytes
+18:12:12 [server.gps_receiver ] INFO  [2026-03-28 18:12:12] GPS RX: bus_id=  0 pos=(    7500.0,     3588.3) src=192.168.3.199:58800
+18:12:13 [server.gps_receiver ] INFO  [2026-03-28 18:12:13] GPS RX: bus_id=  0 pos=(    7500.0,     3599.4) src=192.168.3.199:58800
+18:12:14 [server.gps_receiver ] INFO  [2026-03-28 18:12:14] GPS RX: bus_id=  0 pos=(    7500.0,     3610.5) src=192.168.3.199:58800
+18:12:15 [server.gps_receiver ] INFO  [2026-03-28 18:12:15] GPS RX: bus_id=  0 pos=(    7500.0,     3621.6) src=192.168.3.199:58800
+18:12:16 [server.gps_receiver ] INFO  [2026-03-28 18:12:16] GPS RX: bus_id=  0 pos=(    7500.0,     3632.7) src=192.168.3.199:58800
+18:12:16 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 26054 pkts, 36475600 bytes
+18:12:17 [server.gps_receiver ] INFO  [2026-03-28 18:12:17] GPS RX: bus_id=  0 pos=(    7500.0,     3643.8) src=192.168.3.199:58800
+18:12:18 [server.gps_receiver ] INFO  [2026-03-28 18:12:18] GPS RX: bus_id=  0 pos=(    7500.0,     3654.9) src=192.168.3.199:58800
+18:12:19 [server.gps_receiver ] INFO  [2026-03-28 18:12:19] GPS RX: bus_id=  0 pos=(    7500.0,     3666.0) src=192.168.3.199:58800
+18:12:20 [server.gps_receiver ] INFO  [2026-03-28 18:12:20] GPS RX: bus_id=  0 pos=(    7500.0,     3677.1) src=192.168.3.199:58800
+18:12:21 [server.gps_receiver ] INFO  [2026-03-28 18:12:21] GPS RX: bus_id=  0 pos=(    7500.0,     3688.2) src=192.168.3.199:58800
+18:12:21 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 26501 pkts, 37101400 bytes
+18:12:22 [server.gps_receiver ] INFO  [2026-03-28 18:12:22] GPS RX: bus_id=  0 pos=(    7500.0,     3699.3) src=192.168.3.199:58800
+18:12:23 [server.gps_receiver ] INFO  [2026-03-28 18:12:23] GPS RX: bus_id=  0 pos=(    7500.0,     3710.4) src=192.168.3.199:58800
+18:12:24 [server.gps_receiver ] INFO  [2026-03-28 18:12:24] GPS RX: bus_id=  0 pos=(    7500.0,     3721.5) src=192.168.3.199:58800
+18:12:25 [server.gps_receiver ] INFO  [2026-03-28 18:12:25] GPS RX: bus_id=  0 pos=(    7500.0,     3732.6) src=192.168.3.199:58800
+18:12:26 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 298
+18:12:26 [server.cctv_receiver] INFO  CCTV throughput: 0.95 Mbps (422 pkts / 5s) | Total: 26923 pkts, 37692200 bytes
+18:12:26 [server.gps_receiver ] INFO  [2026-03-28 18:12:26] GPS RX: bus_id=  0 pos=(    7500.0,     3743.7) src=192.168.3.199:58800
+18:12:27 [server.gps_receiver ] INFO  [2026-03-28 18:12:27] GPS RX: bus_id=  0 pos=(    7500.0,     3754.8) src=192.168.3.199:58800
+18:12:28 [server.gps_receiver ] INFO  [2026-03-28 18:12:28] GPS RX: bus_id=  0 pos=(    7500.0,     3765.9) src=192.168.3.199:58800
+18:12:29 [server.gps_receiver ] INFO  [2026-03-28 18:12:29] GPS RX: bus_id=  0 pos=(    7500.0,     3777.0) src=192.168.3.199:58800
+18:12:30 [server.gps_receiver ] INFO  [2026-03-28 18:12:30] GPS RX: bus_id=  0 pos=(    7500.0,     3788.1) src=192.168.3.199:58800
+18:12:31 [server.gps_receiver ] INFO  [2026-03-28 18:12:31] GPS RX: bus_id=  0 pos=(    7500.0,     3799.2) src=192.168.3.199:58800
+18:12:31 [server.cctv_receiver] INFO  CCTV throughput: 1.06 Mbps (472 pkts / 5s) | Total: 27395 pkts, 38353000 bytes
+18:12:32 [server.gps_receiver ] INFO  [2026-03-28 18:12:32] GPS RX: bus_id=  0 pos=(    7500.0,     3810.3) src=192.168.3.199:58800
+18:12:33 [server.gps_receiver ] INFO  [2026-03-28 18:12:33] GPS RX: bus_id=  0 pos=(    7500.0,     3821.4) src=192.168.3.199:58800
+18:12:34 [server.gps_receiver ] INFO  [2026-03-28 18:12:34] GPS RX: bus_id=  0 pos=(    7500.0,     3832.5) src=192.168.3.199:58800
+18:12:35 [server.gps_receiver ] INFO  [2026-03-28 18:12:35] GPS RX: bus_id=  0 pos=(    7500.0,     3843.6) src=192.168.3.199:58800
+18:12:36 [server.gps_receiver ] INFO  [2026-03-28 18:12:36] GPS RX: bus_id=  0 pos=(    7500.0,     3854.7) src=192.168.3.199:58800
+18:12:36 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 27842 pkts, 38978800 bytes
+18:12:37 [server.gps_receiver ] INFO  [2026-03-28 18:12:37] GPS RX: bus_id=  0 pos=(    7500.0,     3865.8) src=192.168.3.199:58800
+18:12:38 [server.gps_receiver ] INFO  [2026-03-28 18:12:38] GPS RX: bus_id=  0 pos=(    7500.0,     3876.9) src=192.168.3.199:58800
+18:12:39 [server.gps_receiver ] INFO  [2026-03-28 18:12:39] GPS RX: bus_id=  0 pos=(    7500.0,     3888.0) src=192.168.3.199:58800
+18:12:40 [server.gps_receiver ] INFO  [2026-03-28 18:12:40] GPS RX: bus_id=  0 pos=(    7500.0,     3899.1) src=192.168.3.199:58800
+18:12:41 [server.gps_receiver ] INFO  [2026-03-28 18:12:41] GPS RX: bus_id=  0 pos=(    7500.0,     3910.2) src=192.168.3.199:58800
+18:12:41 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 28289 pkts, 39604600 bytes
+18:12:42 [server.gps_receiver ] INFO  [2026-03-28 18:12:42] GPS RX: bus_id=  0 pos=(    7500.0,     3921.3) src=192.168.3.199:58800
+18:12:43 [server.gps_receiver ] INFO  [2026-03-28 18:12:43] GPS RX: bus_id=  0 pos=(    7500.0,     3932.4) src=192.168.3.199:58800
+18:12:44 [server.gps_receiver ] INFO  [2026-03-28 18:12:44] GPS RX: bus_id=  0 pos=(    7500.0,     3943.5) src=192.168.3.199:58800
+18:12:45 [server.gps_receiver ] INFO  [2026-03-28 18:12:45] GPS RX: bus_id=  0 pos=(    7500.0,     3954.6) src=192.168.3.199:58800
+18:12:46 [server.gps_receiver ] INFO  [2026-03-28 18:12:46] GPS RX: bus_id=  0 pos=(    7500.0,     3965.7) src=192.168.3.199:58800
+18:12:46 [server.cctv_receiver] INFO  CCTV throughput: 0.97 Mbps (435 pkts / 5s) | Total: 28724 pkts, 40213600 bytes
+18:12:47 [server.gps_receiver ] INFO  [2026-03-28 18:12:47] GPS RX: bus_id=  0 pos=(    7500.0,     3976.8) src=192.168.3.199:58800
+18:12:48 [server.gps_receiver ] INFO  [2026-03-28 18:12:48] GPS RX: bus_id=  0 pos=(    7500.0,     3987.9) src=192.168.3.199:58800
+18:12:49 [server.gps_receiver ] INFO  [2026-03-28 18:12:49] GPS RX: bus_id=  0 pos=(    7500.0,     3999.0) src=192.168.3.199:58800
+18:12:50 [server.gps_receiver ] INFO  [2026-03-28 18:12:50] GPS RX: bus_id=  0 pos=(    7500.0,     4010.1) src=192.168.3.199:58800
+18:12:51 [server.gps_receiver ] INFO  [2026-03-28 18:12:51] GPS RX: bus_id=  0 pos=(    7500.0,     4021.2) src=192.168.3.199:58800
+18:12:51 [server.cctv_receiver] INFO  CCTV throughput: 1.03 Mbps (460 pkts / 5s) | Total: 29184 pkts, 40857600 bytes
+18:12:52 [server.gps_receiver ] INFO  [2026-03-28 18:12:52] GPS RX: bus_id=  0 pos=(    7500.0,     4032.3) src=192.168.3.199:58800
+18:12:53 [server.gps_receiver ] INFO  [2026-03-28 18:12:53] GPS RX: bus_id=  0 pos=(    7500.0,     4043.4) src=192.168.3.199:58800
+18:12:54 [server.gps_receiver ] INFO  [2026-03-28 18:12:54] GPS RX: bus_id=  0 pos=(    7500.0,     4054.5) src=192.168.3.199:58800
+18:12:55 [server.gps_receiver ] INFO  [2026-03-28 18:12:55] GPS RX: bus_id=  0 pos=(    7500.0,     4065.6) src=192.168.3.199:58800
+18:12:56 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 328
+18:12:56 [server.gps_receiver ] INFO  [2026-03-28 18:12:56] GPS RX: bus_id=  0 pos=(    7500.0,     4076.7) src=192.168.3.199:58800
+18:12:56 [server.cctv_receiver] INFO  CCTV throughput: 0.98 Mbps (439 pkts / 5s) | Total: 29623 pkts, 41472200 bytes
+18:12:57 [server.gps_receiver ] INFO  [2026-03-28 18:12:57] GPS RX: bus_id=  0 pos=(    7500.0,     4087.8) src=192.168.3.199:58800
+18:12:58 [server.gps_receiver ] INFO  [2026-03-28 18:12:58] GPS RX: bus_id=  0 pos=(    7500.0,     4098.9) src=192.168.3.199:58800
+18:12:59 [server.gps_receiver ] INFO  [2026-03-28 18:12:59] GPS RX: bus_id=  0 pos=(    7500.0,     4110.0) src=192.168.3.199:58800
+18:13:00 [server.gps_receiver ] INFO  [2026-03-28 18:13:00] GPS RX: bus_id=  0 pos=(    7500.0,     4121.1) src=192.168.3.199:58800
+18:13:01 [server.gps_receiver ] INFO  [2026-03-28 18:13:01] GPS RX: bus_id=  0 pos=(    7500.0,     4132.2) src=192.168.3.199:58800
+18:13:01 [server.cctv_receiver] INFO  CCTV throughput: 1.02 Mbps (455 pkts / 5s) | Total: 30078 pkts, 42109200 bytes
+18:13:02 [server.gps_receiver ] INFO  [2026-03-28 18:13:02] GPS RX: bus_id=  0 pos=(    7500.0,     4143.3) src=192.168.3.199:58800
+18:13:03 [server.gps_receiver ] INFO  [2026-03-28 18:13:03] GPS RX: bus_id=  0 pos=(    7500.0,     4154.4) src=192.168.3.199:58800
+18:13:04 [server.gps_receiver ] INFO  [2026-03-28 18:13:04] GPS RX: bus_id=  0 pos=(    7500.0,     4165.5) src=192.168.3.199:58800
+18:13:05 [server.gps_receiver ] INFO  [2026-03-28 18:13:05] GPS RX: bus_id=  0 pos=(    7500.0,     4176.6) src=192.168.3.199:58800
+[2026-03-28 18:10:41] GPS RX: bus_id=  0 pos=(    7500.0,     2909.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 17560 pkts, 24584000 bytes
+[2026-03-28 18:10:42] GPS RX: bus_id=  0 pos=(    7500.0,     2920.3) src=192.168.3.199:58800
+[2026-03-28 18:10:43] GPS RX: bus_id=  0 pos=(    7500.0,     2931.4) src=192.168.3.199:58800
+[2026-03-28 18:10:44] GPS RX: bus_id=  0 pos=(    7500.0,     2942.5) src=192.168.3.199:58800
+[2026-03-28 18:10:45] GPS RX: bus_id=  0 pos=(    7500.0,     2953.6) src=192.168.3.199:58800
+[2026-03-28 18:10:46] GPS RX: bus_id=  0 pos=(    7500.0,     2964.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 18007 pkts, 25209800 bytes
+[2026-03-28 18:10:47] GPS RX: bus_id=  0 pos=(    7500.0,     2975.8) src=192.168.3.199:58800
+[2026-03-28 18:10:48] GPS RX: bus_id=  0 pos=(    7500.0,     2986.9) src=192.168.3.199:58800
+[2026-03-28 18:10:49] GPS RX: bus_id=  0 pos=(    7500.0,     2998.0) src=192.168.3.199:58800
+[2026-03-28 18:10:50] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:10:51] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 18454 pkts, 25835600 bytes
+[2026-03-28 18:10:52] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:10:53] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:10:54] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:10:55] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 208
+[2026-03-28 18:10:56] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 18901 pkts, 26461400 bytes
+[2026-03-28 18:10:57] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:10:58] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:10:59] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:00] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:01] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 19348 pkts, 27087200 bytes
+[2026-03-28 18:11:02] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:03] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:04] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:05] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:06] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 19795 pkts, 27713000 bytes
+[2026-03-28 18:11:07] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:08] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:09] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:10] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:11] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 20243 pkts, 28340200 bytes
+[2026-03-28 18:11:12] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:13] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:14] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:15] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:16] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 20690 pkts, 28966000 bytes
+[2026-03-28 18:11:17] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:18] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:19] GPS RX: bus_id=  0 pos=(    7500.0,     3000.0) src=192.168.3.199:58800
+[2026-03-28 18:11:20] GPS RX: bus_id=  0 pos=(    7500.0,     3011.1) src=192.168.3.199:58800
+[2026-03-28 18:11:21] GPS RX: bus_id=  0 pos=(    7500.0,     3022.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 21137 pkts, 29591800 bytes
+[2026-03-28 18:11:22] GPS RX: bus_id=  0 pos=(    7500.0,     3033.3) src=192.168.3.199:58800
+[2026-03-28 18:11:23] GPS RX: bus_id=  0 pos=(    7500.0,     3044.4) src=192.168.3.199:58800
+[2026-03-28 18:11:24] GPS RX: bus_id=  0 pos=(    7500.0,     3055.5) src=192.168.3.199:58800
+[2026-03-28 18:11:25] GPS RX: bus_id=  0 pos=(    7500.0,     3066.6) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 238
+[2026-03-28 18:11:26] GPS RX: bus_id=  0 pos=(    7500.0,     3077.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 21584 pkts, 30217600 bytes
+[2026-03-28 18:11:27] GPS RX: bus_id=  0 pos=(    7500.0,     3088.8) src=192.168.3.199:58800
+[2026-03-28 18:11:28] GPS RX: bus_id=  0 pos=(    7500.0,     3099.9) src=192.168.3.199:58800
+[2026-03-28 18:11:29] GPS RX: bus_id=  0 pos=(    7500.0,     3111.0) src=192.168.3.199:58800
+[2026-03-28 18:11:30] GPS RX: bus_id=  0 pos=(    7500.0,     3122.1) src=192.168.3.199:58800
+[2026-03-28 18:11:31] GPS RX: bus_id=  0 pos=(    7500.0,     3133.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 22031 pkts, 30843400 bytes
+[2026-03-28 18:11:32] GPS RX: bus_id=  0 pos=(    7500.0,     3144.3) src=192.168.3.199:58800
+[2026-03-28 18:11:33] GPS RX: bus_id=  0 pos=(    7500.0,     3155.4) src=192.168.3.199:58800
+[2026-03-28 18:11:34] GPS RX: bus_id=  0 pos=(    7500.0,     3166.5) src=192.168.3.199:58800
+[2026-03-28 18:11:35] GPS RX: bus_id=  0 pos=(    7500.0,     3177.6) src=192.168.3.199:58800
+[2026-03-28 18:11:36] GPS RX: bus_id=  0 pos=(    7500.0,     3188.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 22478 pkts, 31469200 bytes
+[2026-03-28 18:11:37] GPS RX: bus_id=  0 pos=(    7500.0,     3199.8) src=192.168.3.199:58800
+[2026-03-28 18:11:38] GPS RX: bus_id=  0 pos=(    7500.0,     3210.9) src=192.168.3.199:58800
+[2026-03-28 18:11:39] GPS RX: bus_id=  0 pos=(    7500.0,     3222.0) src=192.168.3.199:58800
+[2026-03-28 18:11:40] GPS RX: bus_id=  0 pos=(    7500.0,     3233.1) src=192.168.3.199:58800
+[2026-03-28 18:11:41] GPS RX: bus_id=  0 pos=(    7500.0,     3244.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (446 pkts / 5s) | Total: 22924 pkts, 32093600 bytes
+[2026-03-28 18:11:42] GPS RX: bus_id=  0 pos=(    7500.0,     3255.3) src=192.168.3.199:58800
+[2026-03-28 18:11:43] GPS RX: bus_id=  0 pos=(    7500.0,     3266.4) src=192.168.3.199:58800
+[2026-03-28 18:11:44] GPS RX: bus_id=  0 pos=(    7500.0,     3277.5) src=192.168.3.199:58800
+[2026-03-28 18:11:45] GPS RX: bus_id=  0 pos=(    7500.0,     3288.6) src=192.168.3.199:58800
+[2026-03-28 18:11:46] GPS RX: bus_id=  0 pos=(    7500.0,     3299.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 23371 pkts, 32719400 bytes
+[2026-03-28 18:11:47] GPS RX: bus_id=  0 pos=(    7500.0,     3310.8) src=192.168.3.199:58800
+[2026-03-28 18:11:48] GPS RX: bus_id=  0 pos=(    7500.0,     3321.9) src=192.168.3.199:58800
+[2026-03-28 18:11:49] GPS RX: bus_id=  0 pos=(    7500.0,     3333.0) src=192.168.3.199:58800
+[2026-03-28 18:11:50] GPS RX: bus_id=  0 pos=(    7500.0,     3344.1) src=192.168.3.199:58800
+[2026-03-28 18:11:51] GPS RX: bus_id=  0 pos=(    7500.0,     3355.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 23819 pkts, 33346600 bytes
+[2026-03-28 18:11:52] GPS RX: bus_id=  0 pos=(    7500.0,     3366.3) src=192.168.3.199:58800
+18:13:06 [server.gps_receiver ] INFO  [2026-03-28 18:13:06] GPS RX: bus_id=  0 pos=(    7500.0,     4187.7) src=192.168.3.199:58800
+18:13:06 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 30526 pkts, 42736400 bytes
+18:13:07 [server.gps_receiver ] INFO  [2026-03-28 18:13:07] GPS RX: bus_id=  0 pos=(    7500.0,     4198.8) src=192.168.3.199:58800
+18:13:08 [server.gps_receiver ] INFO  [2026-03-28 18:13:08] GPS RX: bus_id=  0 pos=(    7500.0,     4209.9) src=192.168.3.199:58800
+18:13:09 [server.gps_receiver ] INFO  [2026-03-28 18:13:09] GPS RX: bus_id=  0 pos=(    7500.0,     4221.0) src=192.168.3.199:58800
+18:13:10 [server.gps_receiver ] INFO  [2026-03-28 18:13:10] GPS RX: bus_id=  0 pos=(    7500.0,     4232.1) src=192.168.3.199:58800
+18:13:11 [server.gps_receiver ] INFO  [2026-03-28 18:13:11] GPS RX: bus_id=  0 pos=(    7500.0,     4243.2) src=192.168.3.199:58800
+18:13:11 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 30973 pkts, 43362200 bytes
+18:13:12 [server.gps_receiver ] INFO  [2026-03-28 18:13:12] GPS RX: bus_id=  0 pos=(    7500.0,     4254.3) src=192.168.3.199:58800
+18:13:13 [server.gps_receiver ] INFO  [2026-03-28 18:13:13] GPS RX: bus_id=  0 pos=(    7500.0,     4265.4) src=192.168.3.199:58800
+18:13:14 [server.gps_receiver ] INFO  [2026-03-28 18:13:14] GPS RX: bus_id=  0 pos=(    7500.0,     4276.5) src=192.168.3.199:58800
+18:13:15 [server.gps_receiver ] INFO  [2026-03-28 18:13:15] GPS RX: bus_id=  0 pos=(    7500.0,     4287.6) src=192.168.3.199:58800
+18:13:16 [server.gps_receiver ] INFO  [2026-03-28 18:13:16] GPS RX: bus_id=  0 pos=(    7500.0,     4298.7) src=192.168.3.199:58800
+18:13:16 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 31420 pkts, 43988000 bytes
+18:13:17 [server.gps_receiver ] INFO  [2026-03-28 18:13:17] GPS RX: bus_id=  0 pos=(    7500.0,     4309.8) src=192.168.3.199:58800
+18:13:18 [server.gps_receiver ] INFO  [2026-03-28 18:13:18] GPS RX: bus_id=  0 pos=(    7500.0,     4320.9) src=192.168.3.199:58800
+18:13:19 [server.gps_receiver ] INFO  [2026-03-28 18:13:19] GPS RX: bus_id=  0 pos=(    7500.0,     4332.0) src=192.168.3.199:58800
+18:13:20 [server.gps_receiver ] INFO  [2026-03-28 18:13:20] GPS RX: bus_id=  0 pos=(    7500.0,     4343.1) src=192.168.3.199:58800
+18:13:21 [server.gps_receiver ] INFO  [2026-03-28 18:13:21] GPS RX: bus_id=  0 pos=(    7500.0,     4354.2) src=192.168.3.199:58800
+18:13:21 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 31867 pkts, 44613800 bytes
+18:13:22 [server.gps_receiver ] INFO  [2026-03-28 18:13:22] GPS RX: bus_id=  0 pos=(    7500.0,     4365.3) src=192.168.3.199:58800
+18:13:23 [server.gps_receiver ] INFO  [2026-03-28 18:13:23] GPS RX: bus_id=  0 pos=(    7500.0,     4376.4) src=192.168.3.199:58800
+18:13:24 [server.gps_receiver ] INFO  [2026-03-28 18:13:24] GPS RX: bus_id=  0 pos=(    7500.0,     4387.5) src=192.168.3.199:58800
+18:13:25 [server.gps_receiver ] INFO  [2026-03-28 18:13:25] GPS RX: bus_id=  0 pos=(    7500.0,     4398.6) src=192.168.3.199:58800
+18:13:26 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 358
+18:13:26 [server.gps_receiver ] INFO  [2026-03-28 18:13:26] GPS RX: bus_id=  0 pos=(    7500.0,     4409.7) src=192.168.3.199:58800
+18:13:26 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 32315 pkts, 45241000 bytes
+18:13:27 [server.gps_receiver ] INFO  [2026-03-28 18:13:27] GPS RX: bus_id=  0 pos=(    7500.0,     4420.8) src=192.168.3.199:58800
+18:13:28 [server.gps_receiver ] INFO  [2026-03-28 18:13:28] GPS RX: bus_id=  0 pos=(    7500.0,     4431.9) src=192.168.3.199:58800
+18:13:29 [server.gps_receiver ] INFO  [2026-03-28 18:13:29] GPS RX: bus_id=  0 pos=(    7500.0,     4443.0) src=192.168.3.199:58800
+18:13:30 [server.gps_receiver ] INFO  [2026-03-28 18:13:30] GPS RX: bus_id=  0 pos=(    7500.0,     4454.1) src=192.168.3.199:58800
+18:13:31 [server.gps_receiver ] INFO  [2026-03-28 18:13:31] GPS RX: bus_id=  0 pos=(    7500.0,     4465.2) src=192.168.3.199:58800
+18:13:31 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 32762 pkts, 45866800 bytes
+18:13:32 [server.gps_receiver ] INFO  [2026-03-28 18:13:32] GPS RX: bus_id=  0 pos=(    7500.0,     4476.3) src=192.168.3.199:58800
+18:13:33 [server.gps_receiver ] INFO  [2026-03-28 18:13:33] GPS RX: bus_id=  0 pos=(    7500.0,     4487.4) src=192.168.3.199:58800
+18:13:34 [server.gps_receiver ] INFO  [2026-03-28 18:13:34] GPS RX: bus_id=  0 pos=(    7500.0,     4498.5) src=192.168.3.199:58800
+18:13:35 [server.gps_receiver ] INFO  [2026-03-28 18:13:35] GPS RX: bus_id=  0 pos=(    7500.0,     4509.6) src=192.168.3.199:58800
+18:13:36 [server.gps_receiver ] INFO  [2026-03-28 18:13:36] GPS RX: bus_id=  0 pos=(    7500.0,     4520.7) src=192.168.3.199:58800
+18:13:36 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 33209 pkts, 46492600 bytes
+18:13:37 [server.gps_receiver ] INFO  [2026-03-28 18:13:37] GPS RX: bus_id=  0 pos=(    7500.0,     4531.8) src=192.168.3.199:58800
+18:13:38 [server.gps_receiver ] INFO  [2026-03-28 18:13:38] GPS RX: bus_id=  0 pos=(    7500.0,     4542.9) src=192.168.3.199:58800
+18:13:39 [server.gps_receiver ] INFO  [2026-03-28 18:13:39] GPS RX: bus_id=  0 pos=(    7500.0,     4554.0) src=192.168.3.199:58800
+18:13:40 [server.gps_receiver ] INFO  [2026-03-28 18:13:40] GPS RX: bus_id=  0 pos=(    7500.0,     4565.1) src=192.168.3.199:58800
+18:13:41 [server.gps_receiver ] INFO  [2026-03-28 18:13:41] GPS RX: bus_id=  0 pos=(    7500.0,     4576.2) src=192.168.3.199:58800
+18:13:41 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 33656 pkts, 47118400 bytes
+18:13:42 [server.gps_receiver ] INFO  [2026-03-28 18:13:42] GPS RX: bus_id=  0 pos=(    7500.0,     4587.3) src=192.168.3.199:58800
+18:13:43 [server.gps_receiver ] INFO  [2026-03-28 18:13:43] GPS RX: bus_id=  0 pos=(    7500.0,     4598.4) src=192.168.3.199:58800
+18:13:44 [server.gps_receiver ] INFO  [2026-03-28 18:13:44] GPS RX: bus_id=  0 pos=(    7500.0,     4609.5) src=192.168.3.199:58800
+18:13:45 [server.gps_receiver ] INFO  [2026-03-28 18:13:45] GPS RX: bus_id=  0 pos=(    7500.0,     4620.6) src=192.168.3.199:58800
+18:13:46 [server.gps_receiver ] INFO  [2026-03-28 18:13:46] GPS RX: bus_id=  0 pos=(    7500.0,     4631.7) src=192.168.3.199:58800
+18:13:46 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (446 pkts / 5s) | Total: 34102 pkts, 47742800 bytes
+18:13:47 [server.gps_receiver ] INFO  [2026-03-28 18:13:47] GPS RX: bus_id=  0 pos=(    7500.0,     4642.8) src=192.168.3.199:58800
+18:13:48 [server.gps_receiver ] INFO  [2026-03-28 18:13:48] GPS RX: bus_id=  0 pos=(    7500.0,     4653.9) src=192.168.3.199:58800
+18:13:49 [server.gps_receiver ] INFO  [2026-03-28 18:13:49] GPS RX: bus_id=  0 pos=(    7500.0,     4665.0) src=192.168.3.199:58800
+18:13:50 [server.gps_receiver ] INFO  [2026-03-28 18:13:50] GPS RX: bus_id=  0 pos=(    7500.0,     4676.1) src=192.168.3.199:58800
+18:13:51 [server.gps_receiver ] INFO  [2026-03-28 18:13:51] GPS RX: bus_id=  0 pos=(    7500.0,     4687.2) src=192.168.3.199:58800
+18:13:51 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 34550 pkts, 48370000 bytes
+18:13:52 [server.gps_receiver ] INFO  [2026-03-28 18:13:52] GPS RX: bus_id=  0 pos=(    7500.0,     4698.3) src=192.168.3.199:58800
+18:13:53 [server.gps_receiver ] INFO  [2026-03-28 18:13:53] GPS RX: bus_id=  0 pos=(    7500.0,     4709.4) src=192.168.3.199:58800
+18:13:54 [server.gps_receiver ] INFO  [2026-03-28 18:13:54] GPS RX: bus_id=  0 pos=(    7500.0,     4720.5) src=192.168.3.199:58800
+18:13:55 [server.gps_receiver ] INFO  [2026-03-28 18:13:55] GPS RX: bus_id=  0 pos=(    7500.0,     4731.6) src=192.168.3.199:58800
+18:13:56 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 388
+18:13:56 [server.gps_receiver ] INFO  [2026-03-28 18:13:56] GPS RX: bus_id=  0 pos=(    7500.0,     4742.7) src=192.168.3.199:58800
+18:13:56 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 34998 pkts, 48997200 bytes
+18:13:57 [server.gps_receiver ] INFO  [2026-03-28 18:13:57] GPS RX: bus_id=  0 pos=(    7500.0,     4753.8) src=192.168.3.199:58800
+18:13:58 [server.gps_receiver ] INFO  [2026-03-28 18:13:58] GPS RX: bus_id=  0 pos=(    7500.0,     4764.9) src=192.168.3.199:58800
+18:13:59 [server.gps_receiver ] INFO  [2026-03-28 18:13:59] GPS RX: bus_id=  0 pos=(    7500.0,     4776.0) src=192.168.3.199:58800
+18:14:00 [server.gps_receiver ] INFO  [2026-03-28 18:14:00] GPS RX: bus_id=  0 pos=(    7500.0,     4787.1) src=192.168.3.199:58800
+18:14:01 [server.gps_receiver ] INFO  [2026-03-28 18:14:01] GPS RX: bus_id=  0 pos=(    7500.0,     4798.2) src=192.168.3.199:58800
+18:14:01 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 35445 pkts, 49623000 bytes
+18:14:02 [server.gps_receiver ] INFO  [2026-03-28 18:14:02] GPS RX: bus_id=  0 pos=(    7500.0,     4809.3) src=192.168.3.199:58800
+18:14:03 [server.gps_receiver ] INFO  [2026-03-28 18:14:03] GPS RX: bus_id=  0 pos=(    7500.0,     4820.4) src=192.168.3.199:58800
+18:14:04 [server.gps_receiver ] INFO  [2026-03-28 18:14:04] GPS RX: bus_id=  0 pos=(    7500.0,     4831.5) src=192.168.3.199:58800
+18:14:05 [server.gps_receiver ] INFO  [2026-03-28 18:14:05] GPS RX: bus_id=  0 pos=(    7500.0,     4842.6) src=192.168.3.199:58800
+18:14:06 [server.gps_receiver ] INFO  [2026-03-28 18:14:06] GPS RX: bus_id=  0 pos=(    7500.0,     4853.7) src=192.168.3.199:58800
+18:14:06 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 35892 pkts, 50248800 bytes
+18:14:07 [server.gps_receiver ] INFO  [2026-03-28 18:14:07] GPS RX: bus_id=  0 pos=(    7500.0,     4864.8) src=192.168.3.199:58800
+18:14:08 [server.gps_receiver ] INFO  [2026-03-28 18:14:08] GPS RX: bus_id=  0 pos=(    7500.0,     4875.9) src=192.168.3.199:58800
+18:14:09 [server.gps_receiver ] INFO  [2026-03-28 18:14:09] GPS RX: bus_id=  0 pos=(    7500.0,     4887.0) src=192.168.3.199:58800
+18:14:10 [server.gps_receiver ] INFO  [2026-03-28 18:14:10] GPS RX: bus_id=  0 pos=(    7500.0,     4898.1) src=192.168.3.199:58800
+18:14:11 [server.gps_receiver ] INFO  [2026-03-28 18:14:11] GPS RX: bus_id=  0 pos=(    7500.0,     4909.2) src=192.168.3.199:58800
+18:14:11 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 36339 pkts, 50874600 bytes
+18:14:12 [server.gps_receiver ] INFO  [2026-03-28 18:14:12] GPS RX: bus_id=  0 pos=(    7500.0,     4920.3) src=192.168.3.199:58800
+18:14:13 [server.gps_receiver ] INFO  [2026-03-28 18:14:13] GPS RX: bus_id=  0 pos=(    7500.0,     4931.4) src=192.168.3.199:58800
+18:14:14 [server.gps_receiver ] INFO  [2026-03-28 18:14:14] GPS RX: bus_id=  0 pos=(    7500.0,     4942.5) src=192.168.3.199:58800
+18:14:15 [server.gps_receiver ] INFO  [2026-03-28 18:14:15] GPS RX: bus_id=  0 pos=(    7500.0,     4953.6) src=192.168.3.199:58800
+18:14:16 [server.gps_receiver ] INFO  [2026-03-28 18:14:16] GPS RX: bus_id=  0 pos=(    7500.0,     4964.7) src=192.168.3.199:58800
+18:14:16 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 36786 pkts, 51500400 bytes
+18:14:17 [server.gps_receiver ] INFO  [2026-03-28 18:14:17] GPS RX: bus_id=  0 pos=(    7500.0,     4975.8) src=192.168.3.199:58800
+[2026-03-28 18:11:53] GPS RX: bus_id=  0 pos=(    7500.0,     3377.4) src=192.168.3.199:58800
+[2026-03-28 18:11:54] GPS RX: bus_id=  0 pos=(    7500.0,     3388.5) src=192.168.3.199:58800
+[2026-03-28 18:11:55] GPS RX: bus_id=  0 pos=(    7500.0,     3399.6) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 268
+[2026-03-28 18:11:56] GPS RX: bus_id=  0 pos=(    7500.0,     3410.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 24266 pkts, 33972400 bytes
+[2026-03-28 18:11:57] GPS RX: bus_id=  0 pos=(    7500.0,     3421.8) src=192.168.3.199:58800
+[2026-03-28 18:11:58] GPS RX: bus_id=  0 pos=(    7500.0,     3432.9) src=192.168.3.199:58800
+[2026-03-28 18:11:59] GPS RX: bus_id=  0 pos=(    7500.0,     3444.0) src=192.168.3.199:58800
+[2026-03-28 18:12:00] GPS RX: bus_id=  0 pos=(    7500.0,     3455.1) src=192.168.3.199:58800
+[2026-03-28 18:12:01] GPS RX: bus_id=  0 pos=(    7500.0,     3466.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 24714 pkts, 34599600 bytes
+[2026-03-28 18:12:02] GPS RX: bus_id=  0 pos=(    7500.0,     3477.3) src=192.168.3.199:58800
+[2026-03-28 18:12:03] GPS RX: bus_id=  0 pos=(    7500.0,     3488.4) src=192.168.3.199:58800
+[2026-03-28 18:12:04] GPS RX: bus_id=  0 pos=(    7500.0,     3499.5) src=192.168.3.199:58800
+[2026-03-28 18:12:05] GPS RX: bus_id=  0 pos=(    7500.0,     3510.6) src=192.168.3.199:58800
+[2026-03-28 18:12:06] GPS RX: bus_id=  0 pos=(    7500.0,     3521.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (445 pkts / 5s) | Total: 25159 pkts, 35222600 bytes
+[2026-03-28 18:12:07] GPS RX: bus_id=  0 pos=(    7500.0,     3532.8) src=192.168.3.199:58800
+[2026-03-28 18:12:08] GPS RX: bus_id=  0 pos=(    7500.0,     3543.9) src=192.168.3.199:58800
+[2026-03-28 18:12:09] GPS RX: bus_id=  0 pos=(    7500.0,     3555.0) src=192.168.3.199:58800
+[2026-03-28 18:12:10] GPS RX: bus_id=  0 pos=(    7500.0,     3566.1) src=192.168.3.199:58800
+[2026-03-28 18:12:11] GPS RX: bus_id=  0 pos=(    7500.0,     3577.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 25607 pkts, 35849800 bytes
+[2026-03-28 18:12:12] GPS RX: bus_id=  0 pos=(    7500.0,     3588.3) src=192.168.3.199:58800
+[2026-03-28 18:12:13] GPS RX: bus_id=  0 pos=(    7500.0,     3599.4) src=192.168.3.199:58800
+[2026-03-28 18:12:14] GPS RX: bus_id=  0 pos=(    7500.0,     3610.5) src=192.168.3.199:58800
+[2026-03-28 18:12:15] GPS RX: bus_id=  0 pos=(    7500.0,     3621.6) src=192.168.3.199:58800
+[2026-03-28 18:12:16] GPS RX: bus_id=  0 pos=(    7500.0,     3632.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 26054 pkts, 36475600 bytes
+[2026-03-28 18:12:17] GPS RX: bus_id=  0 pos=(    7500.0,     3643.8) src=192.168.3.199:58800
+[2026-03-28 18:12:18] GPS RX: bus_id=  0 pos=(    7500.0,     3654.9) src=192.168.3.199:58800
+[2026-03-28 18:12:19] GPS RX: bus_id=  0 pos=(    7500.0,     3666.0) src=192.168.3.199:58800
+[2026-03-28 18:12:20] GPS RX: bus_id=  0 pos=(    7500.0,     3677.1) src=192.168.3.199:58800
+[2026-03-28 18:12:21] GPS RX: bus_id=  0 pos=(    7500.0,     3688.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 26501 pkts, 37101400 bytes
+[2026-03-28 18:12:22] GPS RX: bus_id=  0 pos=(    7500.0,     3699.3) src=192.168.3.199:58800
+[2026-03-28 18:12:23] GPS RX: bus_id=  0 pos=(    7500.0,     3710.4) src=192.168.3.199:58800
+[2026-03-28 18:12:24] GPS RX: bus_id=  0 pos=(    7500.0,     3721.5) src=192.168.3.199:58800
+[2026-03-28 18:12:25] GPS RX: bus_id=  0 pos=(    7500.0,     3732.6) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 298
+CCTV throughput: 0.95 Mbps (422 pkts / 5s) | Total: 26923 pkts, 37692200 bytes
+[2026-03-28 18:12:26] GPS RX: bus_id=  0 pos=(    7500.0,     3743.7) src=192.168.3.199:58800
+[2026-03-28 18:12:27] GPS RX: bus_id=  0 pos=(    7500.0,     3754.8) src=192.168.3.199:58800
+[2026-03-28 18:12:28] GPS RX: bus_id=  0 pos=(    7500.0,     3765.9) src=192.168.3.199:58800
+[2026-03-28 18:12:29] GPS RX: bus_id=  0 pos=(    7500.0,     3777.0) src=192.168.3.199:58800
+[2026-03-28 18:12:30] GPS RX: bus_id=  0 pos=(    7500.0,     3788.1) src=192.168.3.199:58800
+[2026-03-28 18:12:31] GPS RX: bus_id=  0 pos=(    7500.0,     3799.2) src=192.168.3.199:58800
+CCTV throughput: 1.06 Mbps (472 pkts / 5s) | Total: 27395 pkts, 38353000 bytes
+[2026-03-28 18:12:32] GPS RX: bus_id=  0 pos=(    7500.0,     3810.3) src=192.168.3.199:58800
+[2026-03-28 18:12:33] GPS RX: bus_id=  0 pos=(    7500.0,     3821.4) src=192.168.3.199:58800
+[2026-03-28 18:12:34] GPS RX: bus_id=  0 pos=(    7500.0,     3832.5) src=192.168.3.199:58800
+[2026-03-28 18:12:35] GPS RX: bus_id=  0 pos=(    7500.0,     3843.6) src=192.168.3.199:58800
+[2026-03-28 18:12:36] GPS RX: bus_id=  0 pos=(    7500.0,     3854.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 27842 pkts, 38978800 bytes
+[2026-03-28 18:12:37] GPS RX: bus_id=  0 pos=(    7500.0,     3865.8) src=192.168.3.199:58800
+[2026-03-28 18:12:38] GPS RX: bus_id=  0 pos=(    7500.0,     3876.9) src=192.168.3.199:58800
+[2026-03-28 18:12:39] GPS RX: bus_id=  0 pos=(    7500.0,     3888.0) src=192.168.3.199:58800
+[2026-03-28 18:12:40] GPS RX: bus_id=  0 pos=(    7500.0,     3899.1) src=192.168.3.199:58800
+[2026-03-28 18:12:41] GPS RX: bus_id=  0 pos=(    7500.0,     3910.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 28289 pkts, 39604600 bytes
+[2026-03-28 18:12:42] GPS RX: bus_id=  0 pos=(    7500.0,     3921.3) src=192.168.3.199:58800
+[2026-03-28 18:12:43] GPS RX: bus_id=  0 pos=(    7500.0,     3932.4) src=192.168.3.199:58800
+[2026-03-28 18:12:44] GPS RX: bus_id=  0 pos=(    7500.0,     3943.5) src=192.168.3.199:58800
+[2026-03-28 18:12:45] GPS RX: bus_id=  0 pos=(    7500.0,     3954.6) src=192.168.3.199:58800
+[2026-03-28 18:12:46] GPS RX: bus_id=  0 pos=(    7500.0,     3965.7) src=192.168.3.199:58800
+CCTV throughput: 0.97 Mbps (435 pkts / 5s) | Total: 28724 pkts, 40213600 bytes
+[2026-03-28 18:12:47] GPS RX: bus_id=  0 pos=(    7500.0,     3976.8) src=192.168.3.199:58800
+[2026-03-28 18:12:48] GPS RX: bus_id=  0 pos=(    7500.0,     3987.9) src=192.168.3.199:58800
+[2026-03-28 18:12:49] GPS RX: bus_id=  0 pos=(    7500.0,     3999.0) src=192.168.3.199:58800
+[2026-03-28 18:12:50] GPS RX: bus_id=  0 pos=(    7500.0,     4010.1) src=192.168.3.199:58800
+[2026-03-28 18:12:51] GPS RX: bus_id=  0 pos=(    7500.0,     4021.2) src=192.168.3.199:58800
+CCTV throughput: 1.03 Mbps (460 pkts / 5s) | Total: 29184 pkts, 40857600 bytes
+[2026-03-28 18:12:52] GPS RX: bus_id=  0 pos=(    7500.0,     4032.3) src=192.168.3.199:58800
+[2026-03-28 18:12:53] GPS RX: bus_id=  0 pos=(    7500.0,     4043.4) src=192.168.3.199:58800
+[2026-03-28 18:12:54] GPS RX: bus_id=  0 pos=(    7500.0,     4054.5) src=192.168.3.199:58800
+[2026-03-28 18:12:55] GPS RX: bus_id=  0 pos=(    7500.0,     4065.6) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 328
+[2026-03-28 18:12:56] GPS RX: bus_id=  0 pos=(    7500.0,     4076.7) src=192.168.3.199:58800
+CCTV throughput: 0.98 Mbps (439 pkts / 5s) | Total: 29623 pkts, 41472200 bytes
+[2026-03-28 18:12:57] GPS RX: bus_id=  0 pos=(    7500.0,     4087.8) src=192.168.3.199:58800
+[2026-03-28 18:12:58] GPS RX: bus_id=  0 pos=(    7500.0,     4098.9) src=192.168.3.199:58800
+[2026-03-28 18:12:59] GPS RX: bus_id=  0 pos=(    7500.0,     4110.0) src=192.168.3.199:58800
+[2026-03-28 18:13:00] GPS RX: bus_id=  0 pos=(    7500.0,     4121.1) src=192.168.3.199:58800
+[2026-03-28 18:13:01] GPS RX: bus_id=  0 pos=(    7500.0,     4132.2) src=192.168.3.199:58800
+CCTV throughput: 1.02 Mbps (455 pkts / 5s) | Total: 30078 pkts, 42109200 bytes
+[2026-03-28 18:13:02] GPS RX: bus_id=  0 pos=(    7500.0,     4143.3) src=192.168.3.199:58800
+[2026-03-28 18:13:03] GPS RX: bus_id=  0 pos=(    7500.0,     4154.4) src=192.168.3.199:58800
+[2026-03-28 18:13:04] GPS RX: bus_id=  0 pos=(    7500.0,     4165.5) src=192.168.3.199:58800
+18:14:18 [server.gps_receiver ] INFO  [2026-03-28 18:14:18] GPS RX: bus_id=  0 pos=(    7500.0,     4986.9) src=192.168.3.199:58800
+18:14:19 [server.gps_receiver ] INFO  [2026-03-28 18:14:19] GPS RX: bus_id=  0 pos=(    7500.0,     4998.0) src=192.168.3.199:58800
+18:14:20 [server.gps_receiver ] INFO  [2026-03-28 18:14:20] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:21 [server.gps_receiver ] INFO  [2026-03-28 18:14:21] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:21 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 37233 pkts, 52126200 bytes
+18:14:22 [server.gps_receiver ] INFO  [2026-03-28 18:14:22] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:23 [server.gps_receiver ] INFO  [2026-03-28 18:14:23] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:24 [server.gps_receiver ] INFO  [2026-03-28 18:14:24] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:25 [server.gps_receiver ] INFO  [2026-03-28 18:14:25] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:26 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 418
+18:14:26 [server.gps_receiver ] INFO  [2026-03-28 18:14:26] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:26 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 37681 pkts, 52753400 bytes
+18:14:27 [server.gps_receiver ] INFO  [2026-03-28 18:14:27] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:28 [server.gps_receiver ] INFO  [2026-03-28 18:14:28] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:29 [server.gps_receiver ] INFO  [2026-03-28 18:14:29] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:30 [server.gps_receiver ] INFO  [2026-03-28 18:14:30] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:31 [server.gps_receiver ] INFO  [2026-03-28 18:14:31] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:31 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (446 pkts / 5s) | Total: 38127 pkts, 53377800 bytes
+18:14:32 [server.gps_receiver ] INFO  [2026-03-28 18:14:32] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:33 [server.gps_receiver ] INFO  [2026-03-28 18:14:33] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:34 [server.gps_receiver ] INFO  [2026-03-28 18:14:34] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:35 [server.gps_receiver ] INFO  [2026-03-28 18:14:35] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:36 [server.gps_receiver ] INFO  [2026-03-28 18:14:36] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:36 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 38575 pkts, 54005000 bytes
+18:14:37 [server.gps_receiver ] INFO  [2026-03-28 18:14:37] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:38 [server.gps_receiver ] INFO  [2026-03-28 18:14:38] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:39 [server.gps_receiver ] INFO  [2026-03-28 18:14:39] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:40 [server.gps_receiver ] INFO  [2026-03-28 18:14:40] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:41 [server.gps_receiver ] INFO  [2026-03-28 18:14:41] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:41 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 39022 pkts, 54630800 bytes
+18:14:42 [server.gps_receiver ] INFO  [2026-03-28 18:14:42] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:43 [server.gps_receiver ] INFO  [2026-03-28 18:14:43] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:44 [server.gps_receiver ] INFO  [2026-03-28 18:14:44] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:45 [server.gps_receiver ] INFO  [2026-03-28 18:14:45] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:46 [server.gps_receiver ] INFO  [2026-03-28 18:14:46] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:46 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 39470 pkts, 55258000 bytes
+18:14:47 [server.gps_receiver ] INFO  [2026-03-28 18:14:47] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:48 [server.gps_receiver ] INFO  [2026-03-28 18:14:48] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:49 [server.gps_receiver ] INFO  [2026-03-28 18:14:49] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+18:14:50 [server.gps_receiver ] INFO  [2026-03-28 18:14:50] GPS RX: bus_id=  0 pos=(    7500.0,     5011.1) src=192.168.3.199:58800
+18:14:51 [server.gps_receiver ] INFO  [2026-03-28 18:14:51] GPS RX: bus_id=  0 pos=(    7500.0,     5022.2) src=192.168.3.199:58800
+18:14:51 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 39917 pkts, 55883800 bytes
+18:14:52 [server.gps_receiver ] INFO  [2026-03-28 18:14:52] GPS RX: bus_id=  0 pos=(    7500.0,     5033.3) src=192.168.3.199:58800
+18:14:53 [server.gps_receiver ] INFO  [2026-03-28 18:14:53] GPS RX: bus_id=  0 pos=(    7500.0,     5044.4) src=192.168.3.199:58800
+18:14:54 [server.gps_receiver ] INFO  [2026-03-28 18:14:54] GPS RX: bus_id=  0 pos=(    7500.0,     5055.5) src=192.168.3.199:58800
+18:14:55 [server.gps_receiver ] INFO  [2026-03-28 18:14:55] GPS RX: bus_id=  0 pos=(    7500.0,     5066.6) src=192.168.3.199:58800
+18:14:56 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 448
+18:14:56 [server.gps_receiver ] INFO  [2026-03-28 18:14:56] GPS RX: bus_id=  0 pos=(    7500.0,     5077.7) src=192.168.3.199:58800
+18:14:56 [server.cctv_receiver] INFO  CCTV throughput: 0.99 Mbps (441 pkts / 5s) | Total: 40358 pkts, 56501200 bytes
+18:14:57 [server.gps_receiver ] INFO  [2026-03-28 18:14:57] GPS RX: bus_id=  0 pos=(    7500.0,     5088.8) src=192.168.3.199:58800
+18:14:58 [server.gps_receiver ] INFO  [2026-03-28 18:14:58] GPS RX: bus_id=  0 pos=(    7500.0,     5099.9) src=192.168.3.199:58800
+18:14:59 [server.gps_receiver ] INFO  [2026-03-28 18:14:59] GPS RX: bus_id=  0 pos=(    7500.0,     5111.0) src=192.168.3.199:58800
+18:15:00 [server.gps_receiver ] INFO  [2026-03-28 18:15:00] GPS RX: bus_id=  0 pos=(    7500.0,     5122.1) src=192.168.3.199:58800
+18:15:01 [server.gps_receiver ] INFO  [2026-03-28 18:15:01] GPS RX: bus_id=  0 pos=(    7500.0,     5133.2) src=192.168.3.199:58800
+18:15:01 [server.cctv_receiver] INFO  CCTV throughput: 1.01 Mbps (450 pkts / 5s) | Total: 40808 pkts, 57131200 bytes
+18:15:02 [server.gps_receiver ] INFO  [2026-03-28 18:15:02] GPS RX: bus_id=  0 pos=(    7500.0,     5144.3) src=192.168.3.199:58800
+18:15:03 [server.gps_receiver ] INFO  [2026-03-28 18:15:03] GPS RX: bus_id=  0 pos=(    7500.0,     5155.4) src=192.168.3.199:58800
+18:15:04 [server.gps_receiver ] INFO  [2026-03-28 18:15:04] GPS RX: bus_id=  0 pos=(    7500.0,     5166.5) src=192.168.3.199:58800
+18:15:05 [server.gps_receiver ] INFO  [2026-03-28 18:15:05] GPS RX: bus_id=  0 pos=(    7500.0,     5177.6) src=192.168.3.199:58800
+18:15:06 [server.gps_receiver ] INFO  [2026-03-28 18:15:06] GPS RX: bus_id=  0 pos=(    7500.0,     5188.7) src=192.168.3.199:58800
+18:15:06 [server.cctv_receiver] INFO  CCTV throughput: 1.01 Mbps (450 pkts / 5s) | Total: 41258 pkts, 57761200 bytes
+18:15:07 [server.gps_receiver ] INFO  [2026-03-28 18:15:07] GPS RX: bus_id=  0 pos=(    7500.0,     5199.8) src=192.168.3.199:58800
+18:15:08 [server.gps_receiver ] INFO  [2026-03-28 18:15:08] GPS RX: bus_id=  0 pos=(    7500.0,     5210.9) src=192.168.3.199:58800
+18:15:09 [server.gps_receiver ] INFO  [2026-03-28 18:15:09] GPS RX: bus_id=  0 pos=(    7500.0,     5222.0) src=192.168.3.199:58800
+18:15:10 [server.gps_receiver ] INFO  [2026-03-28 18:15:10] GPS RX: bus_id=  0 pos=(    7500.0,     5233.1) src=192.168.3.199:58800
+18:15:11 [server.gps_receiver ] INFO  [2026-03-28 18:15:11] GPS RX: bus_id=  0 pos=(    7500.0,     5244.2) src=192.168.3.199:58800
+18:15:11 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 41706 pkts, 58388400 bytes
+18:15:12 [server.gps_receiver ] INFO  [2026-03-28 18:15:12] GPS RX: bus_id=  0 pos=(    7500.0,     5255.3) src=192.168.3.199:58800
+18:15:13 [server.gps_receiver ] INFO  [2026-03-28 18:15:13] GPS RX: bus_id=  0 pos=(    7500.0,     5266.4) src=192.168.3.199:58800
+18:15:14 [server.gps_receiver ] INFO  [2026-03-28 18:15:14] GPS RX: bus_id=  0 pos=(    7500.0,     5277.5) src=192.168.3.199:58800
+18:15:15 [server.gps_receiver ] INFO  [2026-03-28 18:15:15] GPS RX: bus_id=  0 pos=(    7500.0,     5288.6) src=192.168.3.199:58800
+18:15:16 [server.gps_receiver ] INFO  [2026-03-28 18:15:16] GPS RX: bus_id=  0 pos=(    7500.0,     5299.7) src=192.168.3.199:58800
+18:15:16 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 42153 pkts, 59014200 bytes
+18:15:17 [server.gps_receiver ] INFO  [2026-03-28 18:15:17] GPS RX: bus_id=  0 pos=(    7500.0,     5310.8) src=192.168.3.199:58800
+18:15:18 [server.gps_receiver ] INFO  [2026-03-28 18:15:18] GPS RX: bus_id=  0 pos=(    7500.0,     5321.9) src=192.168.3.199:58800
+18:15:19 [server.gps_receiver ] INFO  [2026-03-28 18:15:19] GPS RX: bus_id=  0 pos=(    7500.0,     5333.0) src=192.168.3.199:58800
+18:15:20 [server.gps_receiver ] INFO  [2026-03-28 18:15:20] GPS RX: bus_id=  0 pos=(    7500.0,     5344.1) src=192.168.3.199:58800
+18:15:21 [server.gps_receiver ] INFO  [2026-03-28 18:15:21] GPS RX: bus_id=  0 pos=(    7500.0,     5355.2) src=192.168.3.199:58800
+18:15:22 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 42601 pkts, 59641400 bytes
+18:15:22 [server.gps_receiver ] INFO  [2026-03-28 18:15:22] GPS RX: bus_id=  0 pos=(    7500.0,     5366.3) src=192.168.3.199:58800
+18:15:23 [server.gps_receiver ] INFO  [2026-03-28 18:15:23] GPS RX: bus_id=  0 pos=(    7500.0,     5377.4) src=192.168.3.199:58800
+18:15:24 [server.gps_receiver ] INFO  [2026-03-28 18:15:24] GPS RX: bus_id=  0 pos=(    7500.0,     5388.5) src=192.168.3.199:58800
+18:15:25 [server.gps_receiver ] INFO  [2026-03-28 18:15:25] GPS RX: bus_id=  0 pos=(    7500.0,     5399.6) src=192.168.3.199:58800
+18:15:26 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 478
+18:15:26 [server.gps_receiver ] INFO  [2026-03-28 18:15:26] GPS RX: bus_id=  0 pos=(    7500.0,     5410.7) src=192.168.3.199:58800
+18:15:27 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 43048 pkts, 60267200 bytes
+18:15:27 [server.gps_receiver ] INFO  [2026-03-28 18:15:27] GPS RX: bus_id=  0 pos=(    7500.0,     5421.8) src=192.168.3.199:58800
+18:15:28 [server.gps_receiver ] INFO  [2026-03-28 18:15:28] GPS RX: bus_id=  0 pos=(    7500.0,     5432.9) src=192.168.3.199:58800
+18:15:29 [server.gps_receiver ] INFO  [2026-03-28 18:15:29] GPS RX: bus_id=  0 pos=(    7500.0,     5444.0) src=192.168.3.199:58800
+[2026-03-28 18:13:05] GPS RX: bus_id=  0 pos=(    7500.0,     4176.6) src=192.168.3.199:58800
+[2026-03-28 18:13:06] GPS RX: bus_id=  0 pos=(    7500.0,     4187.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 30526 pkts, 42736400 bytes
+[2026-03-28 18:13:07] GPS RX: bus_id=  0 pos=(    7500.0,     4198.8) src=192.168.3.199:58800
+[2026-03-28 18:13:08] GPS RX: bus_id=  0 pos=(    7500.0,     4209.9) src=192.168.3.199:58800
+[2026-03-28 18:13:09] GPS RX: bus_id=  0 pos=(    7500.0,     4221.0) src=192.168.3.199:58800
+[2026-03-28 18:13:10] GPS RX: bus_id=  0 pos=(    7500.0,     4232.1) src=192.168.3.199:58800
+[2026-03-28 18:13:11] GPS RX: bus_id=  0 pos=(    7500.0,     4243.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 30973 pkts, 43362200 bytes
+[2026-03-28 18:13:12] GPS RX: bus_id=  0 pos=(    7500.0,     4254.3) src=192.168.3.199:58800
+[2026-03-28 18:13:13] GPS RX: bus_id=  0 pos=(    7500.0,     4265.4) src=192.168.3.199:58800
+[2026-03-28 18:13:14] GPS RX: bus_id=  0 pos=(    7500.0,     4276.5) src=192.168.3.199:58800
+[2026-03-28 18:13:15] GPS RX: bus_id=  0 pos=(    7500.0,     4287.6) src=192.168.3.199:58800
+[2026-03-28 18:13:16] GPS RX: bus_id=  0 pos=(    7500.0,     4298.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 31420 pkts, 43988000 bytes
+[2026-03-28 18:13:17] GPS RX: bus_id=  0 pos=(    7500.0,     4309.8) src=192.168.3.199:58800
+[2026-03-28 18:13:18] GPS RX: bus_id=  0 pos=(    7500.0,     4320.9) src=192.168.3.199:58800
+[2026-03-28 18:13:19] GPS RX: bus_id=  0 pos=(    7500.0,     4332.0) src=192.168.3.199:58800
+[2026-03-28 18:13:20] GPS RX: bus_id=  0 pos=(    7500.0,     4343.1) src=192.168.3.199:58800
+[2026-03-28 18:13:21] GPS RX: bus_id=  0 pos=(    7500.0,     4354.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 31867 pkts, 44613800 bytes
+[2026-03-28 18:13:22] GPS RX: bus_id=  0 pos=(    7500.0,     4365.3) src=192.168.3.199:58800
+[2026-03-28 18:13:23] GPS RX: bus_id=  0 pos=(    7500.0,     4376.4) src=192.168.3.199:58800
+[2026-03-28 18:13:24] GPS RX: bus_id=  0 pos=(    7500.0,     4387.5) src=192.168.3.199:58800
+[2026-03-28 18:13:25] GPS RX: bus_id=  0 pos=(    7500.0,     4398.6) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 358
+[2026-03-28 18:13:26] GPS RX: bus_id=  0 pos=(    7500.0,     4409.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 32315 pkts, 45241000 bytes
+[2026-03-28 18:13:27] GPS RX: bus_id=  0 pos=(    7500.0,     4420.8) src=192.168.3.199:58800
+[2026-03-28 18:13:28] GPS RX: bus_id=  0 pos=(    7500.0,     4431.9) src=192.168.3.199:58800
+[2026-03-28 18:13:29] GPS RX: bus_id=  0 pos=(    7500.0,     4443.0) src=192.168.3.199:58800
+[2026-03-28 18:13:30] GPS RX: bus_id=  0 pos=(    7500.0,     4454.1) src=192.168.3.199:58800
+[2026-03-28 18:13:31] GPS RX: bus_id=  0 pos=(    7500.0,     4465.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 32762 pkts, 45866800 bytes
+[2026-03-28 18:13:32] GPS RX: bus_id=  0 pos=(    7500.0,     4476.3) src=192.168.3.199:58800
+[2026-03-28 18:13:33] GPS RX: bus_id=  0 pos=(    7500.0,     4487.4) src=192.168.3.199:58800
+[2026-03-28 18:13:34] GPS RX: bus_id=  0 pos=(    7500.0,     4498.5) src=192.168.3.199:58800
+[2026-03-28 18:13:35] GPS RX: bus_id=  0 pos=(    7500.0,     4509.6) src=192.168.3.199:58800
+[2026-03-28 18:13:36] GPS RX: bus_id=  0 pos=(    7500.0,     4520.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 33209 pkts, 46492600 bytes
+[2026-03-28 18:13:37] GPS RX: bus_id=  0 pos=(    7500.0,     4531.8) src=192.168.3.199:58800
+[2026-03-28 18:13:38] GPS RX: bus_id=  0 pos=(    7500.0,     4542.9) src=192.168.3.199:58800
+[2026-03-28 18:13:39] GPS RX: bus_id=  0 pos=(    7500.0,     4554.0) src=192.168.3.199:58800
+[2026-03-28 18:13:40] GPS RX: bus_id=  0 pos=(    7500.0,     4565.1) src=192.168.3.199:58800
+[2026-03-28 18:13:41] GPS RX: bus_id=  0 pos=(    7500.0,     4576.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 33656 pkts, 47118400 bytes
+[2026-03-28 18:13:42] GPS RX: bus_id=  0 pos=(    7500.0,     4587.3) src=192.168.3.199:58800
+[2026-03-28 18:13:43] GPS RX: bus_id=  0 pos=(    7500.0,     4598.4) src=192.168.3.199:58800
+[2026-03-28 18:13:44] GPS RX: bus_id=  0 pos=(    7500.0,     4609.5) src=192.168.3.199:58800
+[2026-03-28 18:13:45] GPS RX: bus_id=  0 pos=(    7500.0,     4620.6) src=192.168.3.199:58800
+[2026-03-28 18:13:46] GPS RX: bus_id=  0 pos=(    7500.0,     4631.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (446 pkts / 5s) | Total: 34102 pkts, 47742800 bytes
+[2026-03-28 18:13:47] GPS RX: bus_id=  0 pos=(    7500.0,     4642.8) src=192.168.3.199:58800
+[2026-03-28 18:13:48] GPS RX: bus_id=  0 pos=(    7500.0,     4653.9) src=192.168.3.199:58800
+[2026-03-28 18:13:49] GPS RX: bus_id=  0 pos=(    7500.0,     4665.0) src=192.168.3.199:58800
+[2026-03-28 18:13:50] GPS RX: bus_id=  0 pos=(    7500.0,     4676.1) src=192.168.3.199:58800
+[2026-03-28 18:13:51] GPS RX: bus_id=  0 pos=(    7500.0,     4687.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 34550 pkts, 48370000 bytes
+[2026-03-28 18:13:52] GPS RX: bus_id=  0 pos=(    7500.0,     4698.3) src=192.168.3.199:58800
+[2026-03-28 18:13:53] GPS RX: bus_id=  0 pos=(    7500.0,     4709.4) src=192.168.3.199:58800
+[2026-03-28 18:13:54] GPS RX: bus_id=  0 pos=(    7500.0,     4720.5) src=192.168.3.199:58800
+[2026-03-28 18:13:55] GPS RX: bus_id=  0 pos=(    7500.0,     4731.6) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 388
+[2026-03-28 18:13:56] GPS RX: bus_id=  0 pos=(    7500.0,     4742.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 34998 pkts, 48997200 bytes
+[2026-03-28 18:13:57] GPS RX: bus_id=  0 pos=(    7500.0,     4753.8) src=192.168.3.199:58800
+[2026-03-28 18:13:58] GPS RX: bus_id=  0 pos=(    7500.0,     4764.9) src=192.168.3.199:58800
+[2026-03-28 18:13:59] GPS RX: bus_id=  0 pos=(    7500.0,     4776.0) src=192.168.3.199:58800
+[2026-03-28 18:14:00] GPS RX: bus_id=  0 pos=(    7500.0,     4787.1) src=192.168.3.199:58800
+[2026-03-28 18:14:01] GPS RX: bus_id=  0 pos=(    7500.0,     4798.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 35445 pkts, 49623000 bytes
+[2026-03-28 18:14:02] GPS RX: bus_id=  0 pos=(    7500.0,     4809.3) src=192.168.3.199:58800
+[2026-03-28 18:14:03] GPS RX: bus_id=  0 pos=(    7500.0,     4820.4) src=192.168.3.199:58800
+[2026-03-28 18:14:04] GPS RX: bus_id=  0 pos=(    7500.0,     4831.5) src=192.168.3.199:58800
+[2026-03-28 18:14:05] GPS RX: bus_id=  0 pos=(    7500.0,     4842.6) src=192.168.3.199:58800
+[2026-03-28 18:14:06] GPS RX: bus_id=  0 pos=(    7500.0,     4853.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 35892 pkts, 50248800 bytes
+[2026-03-28 18:14:07] GPS RX: bus_id=  0 pos=(    7500.0,     4864.8) src=192.168.3.199:58800
+[2026-03-28 18:14:08] GPS RX: bus_id=  0 pos=(    7500.0,     4875.9) src=192.168.3.199:58800
+[2026-03-28 18:14:09] GPS RX: bus_id=  0 pos=(    7500.0,     4887.0) src=192.168.3.199:58800
+[2026-03-28 18:14:10] GPS RX: bus_id=  0 pos=(    7500.0,     4898.1) src=192.168.3.199:58800
+[2026-03-28 18:14:11] GPS RX: bus_id=  0 pos=(    7500.0,     4909.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 36339 pkts, 50874600 bytes
+[2026-03-28 18:14:12] GPS RX: bus_id=  0 pos=(    7500.0,     4920.3) src=192.168.3.199:58800
+[2026-03-28 18:14:13] GPS RX: bus_id=  0 pos=(    7500.0,     4931.4) src=192.168.3.199:58800
+[2026-03-28 18:14:14] GPS RX: bus_id=  0 pos=(    7500.0,     4942.5) src=192.168.3.199:58800
+[2026-03-28 18:14:15] GPS RX: bus_id=  0 pos=(    7500.0,     4953.6) src=192.168.3.199:58800
+[2026-03-28 18:14:16] GPS RX: bus_id=  0 pos=(    7500.0,     4964.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 36786 pkts, 51500400 bytes
+18:15:30 [server.gps_receiver ] INFO  [2026-03-28 18:15:30] GPS RX: bus_id=  0 pos=(    7500.0,     5455.1) src=192.168.3.199:58800
+18:15:31 [server.gps_receiver ] INFO  [2026-03-28 18:15:31] GPS RX: bus_id=  0 pos=(    7500.0,     5466.2) src=192.168.3.199:58800
+18:15:32 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 43495 pkts, 60893000 bytes
+18:15:32 [server.gps_receiver ] INFO  [2026-03-28 18:15:32] GPS RX: bus_id=  0 pos=(    7500.0,     5477.3) src=192.168.3.199:58800
+18:15:33 [server.gps_receiver ] INFO  [2026-03-28 18:15:33] GPS RX: bus_id=  0 pos=(    7500.0,     5488.4) src=192.168.3.199:58800
+18:15:34 [server.gps_receiver ] INFO  [2026-03-28 18:15:34] GPS RX: bus_id=  0 pos=(    7500.0,     5499.5) src=192.168.3.199:58800
+18:15:35 [server.gps_receiver ] INFO  [2026-03-28 18:15:35] GPS RX: bus_id=  0 pos=(    7500.0,     5510.6) src=192.168.3.199:58800
+18:15:36 [server.gps_receiver ] INFO  [2026-03-28 18:15:36] GPS RX: bus_id=  0 pos=(    7500.0,     5521.7) src=192.168.3.199:58800
+18:15:37 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 43942 pkts, 61518800 bytes
+18:15:37 [server.gps_receiver ] INFO  [2026-03-28 18:15:37] GPS RX: bus_id=  0 pos=(    7500.0,     5532.8) src=192.168.3.199:58800
+18:15:38 [server.gps_receiver ] INFO  [2026-03-28 18:15:38] GPS RX: bus_id=  0 pos=(    7500.0,     5543.9) src=192.168.3.199:58800
+18:15:39 [server.gps_receiver ] INFO  [2026-03-28 18:15:39] GPS RX: bus_id=  0 pos=(    7500.0,     5555.0) src=192.168.3.199:58800
+18:15:40 [server.gps_receiver ] INFO  [2026-03-28 18:15:40] GPS RX: bus_id=  0 pos=(    7500.0,     5566.1) src=192.168.3.199:58800
+18:15:41 [server.gps_receiver ] INFO  [2026-03-28 18:15:41] GPS RX: bus_id=  0 pos=(    7500.0,     5577.2) src=192.168.3.199:58800
+18:15:42 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 44389 pkts, 62144600 bytes
+18:15:42 [server.gps_receiver ] INFO  [2026-03-28 18:15:42] GPS RX: bus_id=  0 pos=(    7500.0,     5588.3) src=192.168.3.199:58800
+18:15:43 [server.gps_receiver ] INFO  [2026-03-28 18:15:43] GPS RX: bus_id=  0 pos=(    7500.0,     5599.4) src=192.168.3.199:58800
+18:15:44 [server.gps_receiver ] INFO  [2026-03-28 18:15:44] GPS RX: bus_id=  0 pos=(    7500.0,     5610.5) src=192.168.3.199:58800
+18:15:45 [server.gps_receiver ] INFO  [2026-03-28 18:15:45] GPS RX: bus_id=  0 pos=(    7500.0,     5621.6) src=192.168.3.199:58800
+18:15:46 [server.gps_receiver ] INFO  [2026-03-28 18:15:46] GPS RX: bus_id=  0 pos=(    7500.0,     5632.7) src=192.168.3.199:58800
+18:15:47 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 44836 pkts, 62770400 bytes
+18:15:47 [server.gps_receiver ] INFO  [2026-03-28 18:15:47] GPS RX: bus_id=  0 pos=(    7500.0,     5643.8) src=192.168.3.199:58800
+18:15:48 [server.gps_receiver ] INFO  [2026-03-28 18:15:48] GPS RX: bus_id=  0 pos=(    7500.0,     5654.9) src=192.168.3.199:58800
+18:15:49 [server.gps_receiver ] INFO  [2026-03-28 18:15:49] GPS RX: bus_id=  0 pos=(    7500.0,     5666.0) src=192.168.3.199:58800
+18:15:50 [server.gps_receiver ] INFO  [2026-03-28 18:15:50] GPS RX: bus_id=  0 pos=(    7500.0,     5677.1) src=192.168.3.199:58800
+18:15:51 [server.gps_receiver ] INFO  [2026-03-28 18:15:51] GPS RX: bus_id=  0 pos=(    7500.0,     5688.2) src=192.168.3.199:58800
+18:15:52 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 45283 pkts, 63396200 bytes
+18:15:52 [server.gps_receiver ] INFO  [2026-03-28 18:15:52] GPS RX: bus_id=  0 pos=(    7500.0,     5699.3) src=192.168.3.199:58800
+18:15:53 [server.gps_receiver ] INFO  [2026-03-28 18:15:53] GPS RX: bus_id=  0 pos=(    7500.0,     5710.4) src=192.168.3.199:58800
+18:15:54 [server.gps_receiver ] INFO  [2026-03-28 18:15:54] GPS RX: bus_id=  0 pos=(    7500.0,     5721.5) src=192.168.3.199:58800
+18:15:55 [server.gps_receiver ] INFO  [2026-03-28 18:15:55] GPS RX: bus_id=  0 pos=(    7500.0,     5732.6) src=192.168.3.199:58800
+18:15:56 [server.heartbeat_server] INFO  Heartbeat: 30 probes in last 30s | Total: 508
+18:15:56 [server.gps_receiver ] INFO  [2026-03-28 18:15:56] GPS RX: bus_id=  0 pos=(    7500.0,     5743.7) src=192.168.3.199:58800
+18:15:57 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 45730 pkts, 64022000 bytes
+18:15:57 [server.gps_receiver ] INFO  [2026-03-28 18:15:57] GPS RX: bus_id=  0 pos=(    7500.0,     5754.8) src=192.168.3.199:58800
+18:15:58 [server.gps_receiver ] INFO  [2026-03-28 18:15:58] GPS RX: bus_id=  0 pos=(    7500.0,     5765.9) src=192.168.3.199:58800
+18:15:59 [server.gps_receiver ] INFO  [2026-03-28 18:15:59] GPS RX: bus_id=  0 pos=(    7500.0,     5777.0) src=192.168.3.199:58800
+18:16:00 [server.gps_receiver ] INFO  [2026-03-28 18:16:00] GPS RX: bus_id=  0 pos=(    7500.0,     5788.1) src=192.168.3.199:58800
+18:16:01 [server.gps_receiver ] INFO  [2026-03-28 18:16:01] GPS RX: bus_id=  0 pos=(    7500.0,     5799.2) src=192.168.3.199:58800
+18:16:02 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 46177 pkts, 64647800 bytes
+18:16:02 [server.gps_receiver ] INFO  [2026-03-28 18:16:02] GPS RX: bus_id=  0 pos=(    7500.0,     5810.3) src=192.168.3.199:58800
+18:16:03 [server.gps_receiver ] INFO  [2026-03-28 18:16:03] GPS RX: bus_id=  0 pos=(    7500.0,     5821.4) src=192.168.3.199:58800
+18:16:04 [server.gps_receiver ] INFO  [2026-03-28 18:16:04] GPS RX: bus_id=  0 pos=(    7500.0,     5832.5) src=192.168.3.199:58800
+18:16:05 [server.gps_receiver ] INFO  [2026-03-28 18:16:05] GPS RX: bus_id=  0 pos=(    7500.0,     5843.6) src=192.168.3.199:58800
+18:16:06 [server.gps_receiver ] INFO  [2026-03-28 18:16:06] GPS RX: bus_id=  0 pos=(    7500.0,     5854.7) src=192.168.3.199:58800
+18:16:07 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 46625 pkts, 65275000 bytes
+18:16:07 [server.gps_receiver ] INFO  [2026-03-28 18:16:07] GPS RX: bus_id=  0 pos=(    7500.0,     5865.8) src=192.168.3.199:58800
+18:16:08 [server.gps_receiver ] INFO  [2026-03-28 18:16:08] GPS RX: bus_id=  0 pos=(    7500.0,     5876.9) src=192.168.3.199:58800
+18:16:09 [server.gps_receiver ] INFO  [2026-03-28 18:16:09] GPS RX: bus_id=  0 pos=(    7500.0,     5888.0) src=192.168.3.199:58800
+18:16:10 [server.gps_receiver ] INFO  [2026-03-28 18:16:10] GPS RX: bus_id=  0 pos=(    7500.0,     5899.1) src=192.168.3.199:58800
+18:16:11 [server.gps_receiver ] INFO  [2026-03-28 18:16:11] GPS RX: bus_id=  0 pos=(    7500.0,     5910.2) src=192.168.3.199:58800
+18:16:12 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 47072 pkts, 65900800 bytes
+18:16:12 [server.gps_receiver ] INFO  [2026-03-28 18:16:12] GPS RX: bus_id=  0 pos=(    7500.0,     5921.3) src=192.168.3.199:58800
+18:16:13 [server.gps_receiver ] INFO  [2026-03-28 18:16:13] GPS RX: bus_id=  0 pos=(    7500.0,     5932.4) src=192.168.3.199:58800
+18:16:14 [server.gps_receiver ] INFO  [2026-03-28 18:16:14] GPS RX: bus_id=  0 pos=(    7500.0,     5943.5) src=192.168.3.199:58800
+18:16:15 [server.gps_receiver ] INFO  [2026-03-28 18:16:15] GPS RX: bus_id=  0 pos=(    7500.0,     5954.6) src=192.168.3.199:58800
+18:16:16 [server.gps_receiver ] INFO  [2026-03-28 18:16:16] GPS RX: bus_id=  0 pos=(    7500.0,     5965.7) src=192.168.3.199:58800
+18:16:17 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 47520 pkts, 66528000 bytes
+18:16:17 [server.gps_receiver ] INFO  [2026-03-28 18:16:17] GPS RX: bus_id=  0 pos=(    7500.0,     5976.8) src=192.168.3.199:58800
+18:16:18 [server.gps_receiver ] INFO  [2026-03-28 18:16:18] GPS RX: bus_id=  0 pos=(    7500.0,     5987.9) src=192.168.3.199:58800
+18:16:19 [server.gps_receiver ] INFO  [2026-03-28 18:16:19] GPS RX: bus_id=  0 pos=(    7500.0,     5999.0) src=192.168.3.199:58800
+18:16:20 [server.gps_receiver ] INFO  [2026-03-28 18:16:20] GPS RX: bus_id=  0 pos=(    7500.0,     6010.1) src=192.168.3.199:58800
+18:16:21 [server.gps_receiver ] INFO  [2026-03-28 18:16:21] GPS RX: bus_id=  0 pos=(    7500.0,     6021.2) src=192.168.3.199:58800
+18:16:22 [server.cctv_receiver] INFO  CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 47967 pkts, 67153800 bytes
+18:16:22 [server.gps_receiver ] INFO  [2026-03-28 18:16:22] GPS RX: bus_id=  0 pos=(    7500.0,     6032.3) src=192.168.3.199:58800
+18:16:23 [server.gps_receiver ] INFO  [2026-03-28 18:16:23] GPS RX: bus_id=  0 pos=(    7500.0,     6043.4) src=192.168.3.199:58800
+18:16:26 [server.heartbeat_server] INFO  Heartbeat: 28 probes in last 30s | Total: 536
+18:16:27 [server.cctv_receiver] INFO  CCTV throughput: 0.39 Mbps (174 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:16:32 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:16:37 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:16:42 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:16:47 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:16:52 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:16:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:16:57 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:02 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:07 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:12 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:17 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:22 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:17:27 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:32 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:37 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:42 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:47 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:52 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:17:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:17:57 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:02 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:07 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:12 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:17 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:22 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+[2026-03-28 18:14:17] GPS RX: bus_id=  0 pos=(    7500.0,     4975.8) src=192.168.3.199:58800
+[2026-03-28 18:14:18] GPS RX: bus_id=  0 pos=(    7500.0,     4986.9) src=192.168.3.199:58800
+[2026-03-28 18:14:19] GPS RX: bus_id=  0 pos=(    7500.0,     4998.0) src=192.168.3.199:58800
+[2026-03-28 18:14:20] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:21] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 37233 pkts, 52126200 bytes
+[2026-03-28 18:14:22] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:23] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:24] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:25] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 418
+[2026-03-28 18:14:26] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 37681 pkts, 52753400 bytes
+[2026-03-28 18:14:27] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:28] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:29] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:30] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:31] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (446 pkts / 5s) | Total: 38127 pkts, 53377800 bytes
+[2026-03-28 18:14:32] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:33] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:34] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:35] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:36] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 38575 pkts, 54005000 bytes
+[2026-03-28 18:14:37] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:38] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:39] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:40] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:41] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 39022 pkts, 54630800 bytes
+[2026-03-28 18:14:42] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:43] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:44] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:45] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:46] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 39470 pkts, 55258000 bytes
+[2026-03-28 18:14:47] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:48] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:49] GPS RX: bus_id=  0 pos=(    7500.0,     5000.0) src=192.168.3.199:58800
+[2026-03-28 18:14:50] GPS RX: bus_id=  0 pos=(    7500.0,     5011.1) src=192.168.3.199:58800
+[2026-03-28 18:14:51] GPS RX: bus_id=  0 pos=(    7500.0,     5022.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 39917 pkts, 55883800 bytes
+[2026-03-28 18:14:52] GPS RX: bus_id=  0 pos=(    7500.0,     5033.3) src=192.168.3.199:58800
+[2026-03-28 18:14:53] GPS RX: bus_id=  0 pos=(    7500.0,     5044.4) src=192.168.3.199:58800
+[2026-03-28 18:14:54] GPS RX: bus_id=  0 pos=(    7500.0,     5055.5) src=192.168.3.199:58800
+[2026-03-28 18:14:55] GPS RX: bus_id=  0 pos=(    7500.0,     5066.6) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 448
+[2026-03-28 18:14:56] GPS RX: bus_id=  0 pos=(    7500.0,     5077.7) src=192.168.3.199:58800
+CCTV throughput: 0.99 Mbps (441 pkts / 5s) | Total: 40358 pkts, 56501200 bytes
+[2026-03-28 18:14:57] GPS RX: bus_id=  0 pos=(    7500.0,     5088.8) src=192.168.3.199:58800
+[2026-03-28 18:14:58] GPS RX: bus_id=  0 pos=(    7500.0,     5099.9) src=192.168.3.199:58800
+[2026-03-28 18:14:59] GPS RX: bus_id=  0 pos=(    7500.0,     5111.0) src=192.168.3.199:58800
+[2026-03-28 18:15:00] GPS RX: bus_id=  0 pos=(    7500.0,     5122.1) src=192.168.3.199:58800
+[2026-03-28 18:15:01] GPS RX: bus_id=  0 pos=(    7500.0,     5133.2) src=192.168.3.199:58800
+CCTV throughput: 1.01 Mbps (450 pkts / 5s) | Total: 40808 pkts, 57131200 bytes
+[2026-03-28 18:15:02] GPS RX: bus_id=  0 pos=(    7500.0,     5144.3) src=192.168.3.199:58800
+[2026-03-28 18:15:03] GPS RX: bus_id=  0 pos=(    7500.0,     5155.4) src=192.168.3.199:58800
+[2026-03-28 18:15:04] GPS RX: bus_id=  0 pos=(    7500.0,     5166.5) src=192.168.3.199:58800
+[2026-03-28 18:15:05] GPS RX: bus_id=  0 pos=(    7500.0,     5177.6) src=192.168.3.199:58800
+[2026-03-28 18:15:06] GPS RX: bus_id=  0 pos=(    7500.0,     5188.7) src=192.168.3.199:58800
+CCTV throughput: 1.01 Mbps (450 pkts / 5s) | Total: 41258 pkts, 57761200 bytes
+[2026-03-28 18:15:07] GPS RX: bus_id=  0 pos=(    7500.0,     5199.8) src=192.168.3.199:58800
+[2026-03-28 18:15:08] GPS RX: bus_id=  0 pos=(    7500.0,     5210.9) src=192.168.3.199:58800
+[2026-03-28 18:15:09] GPS RX: bus_id=  0 pos=(    7500.0,     5222.0) src=192.168.3.199:58800
+[2026-03-28 18:15:10] GPS RX: bus_id=  0 pos=(    7500.0,     5233.1) src=192.168.3.199:58800
+[2026-03-28 18:15:11] GPS RX: bus_id=  0 pos=(    7500.0,     5244.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 41706 pkts, 58388400 bytes
+[2026-03-28 18:15:12] GPS RX: bus_id=  0 pos=(    7500.0,     5255.3) src=192.168.3.199:58800
+[2026-03-28 18:15:13] GPS RX: bus_id=  0 pos=(    7500.0,     5266.4) src=192.168.3.199:58800
+[2026-03-28 18:15:14] GPS RX: bus_id=  0 pos=(    7500.0,     5277.5) src=192.168.3.199:58800
+[2026-03-28 18:15:15] GPS RX: bus_id=  0 pos=(    7500.0,     5288.6) src=192.168.3.199:58800
+[2026-03-28 18:15:16] GPS RX: bus_id=  0 pos=(    7500.0,     5299.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 42153 pkts, 59014200 bytes
+[2026-03-28 18:15:17] GPS RX: bus_id=  0 pos=(    7500.0,     5310.8) src=192.168.3.199:58800
+[2026-03-28 18:15:18] GPS RX: bus_id=  0 pos=(    7500.0,     5321.9) src=192.168.3.199:58800
+[2026-03-28 18:15:19] GPS RX: bus_id=  0 pos=(    7500.0,     5333.0) src=192.168.3.199:58800
+[2026-03-28 18:15:20] GPS RX: bus_id=  0 pos=(    7500.0,     5344.1) src=192.168.3.199:58800
+[2026-03-28 18:15:21] GPS RX: bus_id=  0 pos=(    7500.0,     5355.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 42601 pkts, 59641400 bytes
+[2026-03-28 18:15:22] GPS RX: bus_id=  0 pos=(    7500.0,     5366.3) src=192.168.3.199:58800
+[2026-03-28 18:15:23] GPS RX: bus_id=  0 pos=(    7500.0,     5377.4) src=192.168.3.199:58800
+[2026-03-28 18:15:24] GPS RX: bus_id=  0 pos=(    7500.0,     5388.5) src=192.168.3.199:58800
+[2026-03-28 18:15:25] GPS RX: bus_id=  0 pos=(    7500.0,     5399.6) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 478
+[2026-03-28 18:15:26] GPS RX: bus_id=  0 pos=(    7500.0,     5410.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 43048 pkts, 60267200 bytes
+[2026-03-28 18:15:27] GPS RX: bus_id=  0 pos=(    7500.0,     5421.8) src=192.168.3.199:58800
+[2026-03-28 18:15:28] GPS RX: bus_id=  0 pos=(    7500.0,     5432.9) src=192.168.3.199:58800
+18:18:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:18:27 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:32 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:37 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:42 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:47 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:52 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:18:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:18:57 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:02 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:07 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:12 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:17 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:22 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:19:27 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:32 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:37 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:42 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:47 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:52 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:19:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:19:57 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:02 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:07 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:12 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:17 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:22 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:20:27 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:32 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:37 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:42 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:47 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:52 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:20:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:20:57 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:02 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:07 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:12 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:17 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:22 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:21:27 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:32 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:37 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:42 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:47 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:52 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:21:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:21:57 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:02 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:07 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:12 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:17 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:22 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:22:27 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:32 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:37 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:42 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:47 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:52 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:22:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:22:57 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:02 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:07 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:12 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:17 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:22 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:23:27 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:32 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:37 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:42 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:47 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:52 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:23:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:23:57 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:02 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:07 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:12 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:17 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:22 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:24:27 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:32 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:37 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:42 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:47 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:52 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:24:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:24:57 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:02 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:07 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:12 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:17 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:22 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:25:27 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:33 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:38 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:43 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:48 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:53 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:25:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:25:58 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:03 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:08 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:13 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:18 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+[2026-03-28 18:15:29] GPS RX: bus_id=  0 pos=(    7500.0,     5444.0) src=192.168.3.199:58800
+[2026-03-28 18:15:30] GPS RX: bus_id=  0 pos=(    7500.0,     5455.1) src=192.168.3.199:58800
+[2026-03-28 18:15:31] GPS RX: bus_id=  0 pos=(    7500.0,     5466.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 43495 pkts, 60893000 bytes
+[2026-03-28 18:15:32] GPS RX: bus_id=  0 pos=(    7500.0,     5477.3) src=192.168.3.199:58800
+[2026-03-28 18:15:33] GPS RX: bus_id=  0 pos=(    7500.0,     5488.4) src=192.168.3.199:58800
+[2026-03-28 18:15:34] GPS RX: bus_id=  0 pos=(    7500.0,     5499.5) src=192.168.3.199:58800
+[2026-03-28 18:15:35] GPS RX: bus_id=  0 pos=(    7500.0,     5510.6) src=192.168.3.199:58800
+[2026-03-28 18:15:36] GPS RX: bus_id=  0 pos=(    7500.0,     5521.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 43942 pkts, 61518800 bytes
+[2026-03-28 18:15:37] GPS RX: bus_id=  0 pos=(    7500.0,     5532.8) src=192.168.3.199:58800
+[2026-03-28 18:15:38] GPS RX: bus_id=  0 pos=(    7500.0,     5543.9) src=192.168.3.199:58800
+[2026-03-28 18:15:39] GPS RX: bus_id=  0 pos=(    7500.0,     5555.0) src=192.168.3.199:58800
+[2026-03-28 18:15:40] GPS RX: bus_id=  0 pos=(    7500.0,     5566.1) src=192.168.3.199:58800
+[2026-03-28 18:15:41] GPS RX: bus_id=  0 pos=(    7500.0,     5577.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 44389 pkts, 62144600 bytes
+[2026-03-28 18:15:42] GPS RX: bus_id=  0 pos=(    7500.0,     5588.3) src=192.168.3.199:58800
+[2026-03-28 18:15:43] GPS RX: bus_id=  0 pos=(    7500.0,     5599.4) src=192.168.3.199:58800
+[2026-03-28 18:15:44] GPS RX: bus_id=  0 pos=(    7500.0,     5610.5) src=192.168.3.199:58800
+[2026-03-28 18:15:45] GPS RX: bus_id=  0 pos=(    7500.0,     5621.6) src=192.168.3.199:58800
+[2026-03-28 18:15:46] GPS RX: bus_id=  0 pos=(    7500.0,     5632.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 44836 pkts, 62770400 bytes
+[2026-03-28 18:15:47] GPS RX: bus_id=  0 pos=(    7500.0,     5643.8) src=192.168.3.199:58800
+[2026-03-28 18:15:48] GPS RX: bus_id=  0 pos=(    7500.0,     5654.9) src=192.168.3.199:58800
+[2026-03-28 18:15:49] GPS RX: bus_id=  0 pos=(    7500.0,     5666.0) src=192.168.3.199:58800
+[2026-03-28 18:15:50] GPS RX: bus_id=  0 pos=(    7500.0,     5677.1) src=192.168.3.199:58800
+[2026-03-28 18:15:51] GPS RX: bus_id=  0 pos=(    7500.0,     5688.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 45283 pkts, 63396200 bytes
+[2026-03-28 18:15:52] GPS RX: bus_id=  0 pos=(    7500.0,     5699.3) src=192.168.3.199:58800
+[2026-03-28 18:15:53] GPS RX: bus_id=  0 pos=(    7500.0,     5710.4) src=192.168.3.199:58800
+[2026-03-28 18:15:54] GPS RX: bus_id=  0 pos=(    7500.0,     5721.5) src=192.168.3.199:58800
+[2026-03-28 18:15:55] GPS RX: bus_id=  0 pos=(    7500.0,     5732.6) src=192.168.3.199:58800
+Heartbeat: 30 probes in last 30s | Total: 508
+[2026-03-28 18:15:56] GPS RX: bus_id=  0 pos=(    7500.0,     5743.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 45730 pkts, 64022000 bytes
+[2026-03-28 18:15:57] GPS RX: bus_id=  0 pos=(    7500.0,     5754.8) src=192.168.3.199:58800
+[2026-03-28 18:15:58] GPS RX: bus_id=  0 pos=(    7500.0,     5765.9) src=192.168.3.199:58800
+[2026-03-28 18:15:59] GPS RX: bus_id=  0 pos=(    7500.0,     5777.0) src=192.168.3.199:58800
+[2026-03-28 18:16:00] GPS RX: bus_id=  0 pos=(    7500.0,     5788.1) src=192.168.3.199:58800
+[2026-03-28 18:16:01] GPS RX: bus_id=  0 pos=(    7500.0,     5799.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 46177 pkts, 64647800 bytes
+[2026-03-28 18:16:02] GPS RX: bus_id=  0 pos=(    7500.0,     5810.3) src=192.168.3.199:58800
+[2026-03-28 18:16:03] GPS RX: bus_id=  0 pos=(    7500.0,     5821.4) src=192.168.3.199:58800
+[2026-03-28 18:16:04] GPS RX: bus_id=  0 pos=(    7500.0,     5832.5) src=192.168.3.199:58800
+[2026-03-28 18:16:05] GPS RX: bus_id=  0 pos=(    7500.0,     5843.6) src=192.168.3.199:58800
+[2026-03-28 18:16:06] GPS RX: bus_id=  0 pos=(    7500.0,     5854.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 46625 pkts, 65275000 bytes
+[2026-03-28 18:16:07] GPS RX: bus_id=  0 pos=(    7500.0,     5865.8) src=192.168.3.199:58800
+[2026-03-28 18:16:08] GPS RX: bus_id=  0 pos=(    7500.0,     5876.9) src=192.168.3.199:58800
+[2026-03-28 18:16:09] GPS RX: bus_id=  0 pos=(    7500.0,     5888.0) src=192.168.3.199:58800
+[2026-03-28 18:16:10] GPS RX: bus_id=  0 pos=(    7500.0,     5899.1) src=192.168.3.199:58800
+[2026-03-28 18:16:11] GPS RX: bus_id=  0 pos=(    7500.0,     5910.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 47072 pkts, 65900800 bytes
+[2026-03-28 18:16:12] GPS RX: bus_id=  0 pos=(    7500.0,     5921.3) src=192.168.3.199:58800
+[2026-03-28 18:16:13] GPS RX: bus_id=  0 pos=(    7500.0,     5932.4) src=192.168.3.199:58800
+[2026-03-28 18:16:14] GPS RX: bus_id=  0 pos=(    7500.0,     5943.5) src=192.168.3.199:58800
+[2026-03-28 18:16:15] GPS RX: bus_id=  0 pos=(    7500.0,     5954.6) src=192.168.3.199:58800
+[2026-03-28 18:16:16] GPS RX: bus_id=  0 pos=(    7500.0,     5965.7) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (448 pkts / 5s) | Total: 47520 pkts, 66528000 bytes
+[2026-03-28 18:16:17] GPS RX: bus_id=  0 pos=(    7500.0,     5976.8) src=192.168.3.199:58800
+[2026-03-28 18:16:18] GPS RX: bus_id=  0 pos=(    7500.0,     5987.9) src=192.168.3.199:58800
+[2026-03-28 18:16:19] GPS RX: bus_id=  0 pos=(    7500.0,     5999.0) src=192.168.3.199:58800
+[2026-03-28 18:16:20] GPS RX: bus_id=  0 pos=(    7500.0,     6010.1) src=192.168.3.199:58800
+[2026-03-28 18:16:21] GPS RX: bus_id=  0 pos=(    7500.0,     6021.2) src=192.168.3.199:58800
+CCTV throughput: 1.00 Mbps (447 pkts / 5s) | Total: 47967 pkts, 67153800 bytes
+[2026-03-28 18:16:22] GPS RX: bus_id=  0 pos=(    7500.0,     6032.3) src=192.168.3.199:58800
+[2026-03-28 18:16:23] GPS RX: bus_id=  0 pos=(    7500.0,     6043.4) src=192.168.3.199:58800
+Heartbeat: 28 probes in last 30s | Total: 536
+CCTV throughput: 0.39 Mbps (174 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+Heartbeat: 0 probes in last 30s | Total: 536
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+Heartbeat: 0 probes in last 30s | Total: 536
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+Heartbeat: 0 probes in last 30s | Total: 536
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:23 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:26 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:26:28 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:33 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:38 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:43 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:48 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:53 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:26:56 [server.heartbeat_server] INFO  Heartbeat: 0 probes in last 30s | Total: 536
+18:26:58 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:27:03 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:27:08 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes
+18:27:13 [server.cctv_receiver] INFO  CCTV throughput: 0.00 Mbps (0 pkts / 5s) | Total: 48141 pkts, 67397400 bytes

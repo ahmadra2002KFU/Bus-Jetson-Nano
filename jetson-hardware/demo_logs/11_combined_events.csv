@@ -1,0 +1,3 @@
+time,busId,eventType,value1,value2,detail
+1774712654.154,0,gps_spoof_detect,0.000000,6500.000000,src=192.168.3.198
+1774712681.134,0,ddos_detect,24.260375,0.000000,rtt=0.0ms

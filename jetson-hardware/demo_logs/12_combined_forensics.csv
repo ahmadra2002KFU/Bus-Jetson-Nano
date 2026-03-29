@@ -1,0 +1,2 @@
+triggerTime,busId,attackType,uploadStartTime,uploadFinishTime,uploadCompleted,bytesReceived
+1774712655.077,0,gps_spoof,1774712655.119,1774712656.609,1,10485760

@@ -1,0 +1,13 @@
+2026-03-29 04:23:45,153 [INFO] DDoS attack starting -> 192.168.3.199:5000  rate=30.0 Mbps  pps=2679  pkt=1400B
+2026-03-29 04:23:45,153 [INFO] Duration: 20.0 seconds
+[    2.0s]  sent=5318  throughput=29.78 Mbps  total=7.45 MB
+[    4.0s]  sent=10676  throughput=30.00 Mbps  total=14.95 MB
+[    6.0s]  sent=16033  throughput=30.00 Mbps  total=22.45 MB
+[    8.0s]  sent=21390  throughput=30.00 Mbps  total=29.95 MB
+[   10.0s]  sent=26747  throughput=30.00 Mbps  total=37.45 MB
+[   12.0s]  sent=32104  throughput=30.00 Mbps  total=44.95 MB
+[   14.0s]  sent=37461  throughput=30.00 Mbps  total=52.45 MB
+[   16.0s]  sent=42818  throughput=30.00 Mbps  total=59.95 MB
+[   18.0s]  sent=48176  throughput=30.00 Mbps  total=67.45 MB
+
+DDoS attack finished.  Sent 53532 packets (74.94 MB) in 20.0s  avg=29.98 Mbps
