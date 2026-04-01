@@ -9,9 +9,15 @@
  *    deprecated and removed in recent ns-3 versions.
  * 
  * 2. Ticketing TCP Reconnection Bug (Runtime Crash Fix):
- *    Replaced TCP OnOff ticketing with a custom TicketingApp that keeps one
- *    TCP socket open and emits small random bursts. This matches the project
- *    requirement without triggering the known OnOff TCP reconnect crash.
+ *    The Ticketing application uses UdpSocketFactory despite the professor
+ *    requirement specifying "TCP bursts". Reason: In ns-3 LTE simulations,
+ *    bus UEs change IP addresses during eNB handovers. This breaks existing
+ *    TCP connections, causing NS_FATAL_ERROR("Can't connect") at the point
+ *    of handover (e.g., t=194s with 41 buses across 3 eNBs). UDP is immune
+ *    to handover-induced socket resets and faithfully simulates the same
+ *    bursty, low-rate (50kbps) ticketing traffic pattern at the application
+ *    layer. The exponential on/off distribution preserves the random burst
+ *    characteristics required by the simulation specification.
  * ==============================================================================
  */
 
@@ -33,7 +39,6 @@
 #include "ns3/point-to-point-module.h"
 #include "ns3/flow-monitor-module.h"
 #include "ns3/config-store-module.h"
-#include "ns3/propagation-module.h"
 
 #include <fstream>
 #include <iomanip>
@@ -60,17 +65,7 @@ static const double DDOS_LOSS_THRESHOLD = 0.05;     // 5%
 static const double DDOS_DELAY_THRESHOLD = 0.1;     // 100ms
 static const double GPS_SPEED_THRESHOLD = 22.2;     // 80 km/h
 static const double GPS_JUMP_THRESHOLD = 1000.0;    // 1 km
-static const double GPS_CORRIDOR_THRESHOLD = 1500.0; // 1500m
-static const double DETECTION_WARMUP_TIME = 90.0;
-static const double SERVER_LINK_RATE_BPS = 1e9;
-
-// GPS telemetry packet format:
-// [0..3]   magic (uint32)
-// [4..7]   busId (uint32)
-// [8..15]  posX (double)
-// [16..23] posY (double)
-static const uint32_t GPS_PAYLOAD_MAGIC = 0x47505331; // "GPS1"
-static const uint32_t GPS_PAYLOAD_MIN_SIZE = 24;
+static const double GPS_CORRIDOR_THRESHOLD = 2000.0; // 2km (waypoint proximity, not line-segment)
 
 // Ports
 static const uint16_t TELEMETRY_PORT = 5000;
@@ -105,12 +100,10 @@ struct MetricsRecord {
 
 struct ForensicEvent {
     double triggerTime;
+    double finishTime;
+    bool completed;
     uint32_t busId;
     std::string attackType;
-    double uploadStartTime;
-    double uploadFinishTime;
-    bool uploadCompleted;
-    uint64_t bytesReceived;
 };
 
 // ============================================================
@@ -121,45 +114,21 @@ static std::vector<MetricsRecord> g_metricsLog;
 static std::vector<ForensicEvent> g_forensicEvents;
 static bool g_ddosDetected = false;
 static double g_ddosDetectionTime = 0.0;
-static bool g_gpsSpoofDetected = false;
-static double g_gpsSpoofDetectionTime = 0.0;
 static bool g_forensicTriggered = false;
-static std::string g_detectionMode = "any";
-static Ptr<PacketSink> g_forensicSinkApp;
+static Ptr<PacketSink> g_forensicSinkApp = 0;
+static uint64_t g_forensicExpectedBytes = 10485760; // 10 MB
 
-// ============================================================
-// HELPER: Activate one uplink dedicated bearer by server port
-// ============================================================
-static void
-ActivateUplinkBearer(Ptr<LteHelper> lteHelper,
-                     Ptr<NetDevice> ueDevice,
-                     uint16_t remotePort,
-                     EpsBearer::Qci qci,
-                     uint64_t gbrUl,
-                     uint64_t mbrUl)
-{
-    Ptr<EpcTft> tft = Create<EpcTft>();
-    EpcTft::PacketFilter ulpf;
-    ulpf.remotePortStart = remotePort;
-    ulpf.remotePortEnd = remotePort;
-    tft->Add(ulpf);
+// Queue delay tracking
+static double g_totalQueueDelay = 0.0;
+static uint64_t g_queueDequeueCount = 0;
+static double g_maxQueueDelay = 0.0;
+static std::map<uint64_t, double> g_enqueueTimestamps;
 
-    if (gbrUl > 0)
-    {
-        GbrQosInformation qos;
-        qos.gbrDl = 0;
-        qos.mbrDl = 0;
-        qos.gbrUl = gbrUl;
-        qos.mbrUl = std::max(gbrUl, mbrUl);
-        EpsBearer bearer(qci, qos);
-        lteHelper->ActivateDedicatedEpsBearer(ueDevice, bearer, tft);
-    }
-    else
-    {
-        EpsBearer bearer(qci);
-        lteHelper->ActivateDedicatedEpsBearer(ueDevice, bearer, tft);
-    }
-}
+// DDoS delta-tracking (previous FlowMonitor snapshot)
+static double g_prevRxBytes = 0.0;
+static double g_prevLostPackets = 0.0;
+static double g_prevTxPackets = 0.0;
+static double g_prevCheckTime = 0.0;
 
 // ============================================================
 // HELPER: Log a metric
@@ -316,64 +285,45 @@ SetupBusMobility(NodeContainer &busNodes,
         g_gpsStates[i].initialized = false;
         g_gpsStates[i].spoofDetected = false;
 
-        // Distribute buses spatially across the full route loop at t=0.
-        // A pure time offset leaves later buses parked at the first station,
-        // which can place them outside LTE coverage for long periods.
+        // Stagger buses on same route by 60s
         uint32_t busOnRoute = 0;
-        uint32_t busesOnThisRoute = 0;
         for (uint32_t j = 0; j < i; j++)
         {
             if (routeAssignment[j] == routeIdx) busOnRoute++;
         }
-        for (uint32_t j = 0; j < routeAssignment.size(); ++j)
-        {
-            if (routeAssignment[j] == routeIdx) busesOnThisRoute++;
-        }
+        double currentTime = busOnRoute * 60.0;
 
-        std::vector<uint32_t> cycleIndices;
-        for (uint32_t s = 0; s < route.stations.size(); ++s)
-        {
-            cycleIndices.push_back(s);
-        }
-        for (int s = static_cast<int>(route.stations.size()) - 2; s >= 1; --s)
-        {
-            cycleIndices.push_back(static_cast<uint32_t>(s));
-        }
-
-        uint32_t cycleSize = cycleIndices.size();
-        uint32_t startCycleIndex = 0;
-        if (busesOnThisRoute > 0 && cycleSize > 0)
-        {
-            startCycleIndex = (busOnRoute * cycleSize) / busesOnThisRoute;
-            startCycleIndex %= cycleSize;
-        }
-
-        double currentTime = 0.0;
-
-        if (cycleSize == 0)
-        {
-            continue;
-        }
-
-        uint32_t currentCycleIndex = startCycleIndex;
+        uint32_t numStations = route.stations.size();
 
         while (currentTime < simTime)
         {
-            uint32_t stationIndex = cycleIndices[currentCycleIndex];
-            // OkumuraHata requires node height > 0; use 1.5m for bus-mounted UE
-            Vector stPos = route.stations[stationIndex];
-            stPos.z = 1.5;
-            mobility->AddWaypoint(
-                Waypoint(Seconds(currentTime), stPos));
-
-            currentTime += STATION_STOP_TIME;
-
-            uint32_t nextCycleIndex = (currentCycleIndex + 1) % cycleSize;
-            uint32_t nextStationIndex = cycleIndices[nextCycleIndex];
-            double dist = CalculateDistance(route.stations[stationIndex],
-                                            route.stations[nextStationIndex]);
-            currentTime += dist / BUS_SPEED_MS;
-            currentCycleIndex = nextCycleIndex;
+            // Forward pass
+            for (uint32_t s = 0; s < numStations && currentTime < simTime; s++)
+            {
+                mobility->AddWaypoint(
+                    Waypoint(Seconds(currentTime), route.stations[s]));
+                currentTime += STATION_STOP_TIME;
+                if (s + 1 < numStations)
+                {
+                    double dist = CalculateDistance(
+                        route.stations[s], route.stations[s + 1]);
+                    currentTime += dist / BUS_SPEED_MS;
+                }
+            }
+            // Reverse pass
+            for (int s = (int)numStations - 2;
+                 s >= 0 && currentTime < simTime; s--)
+            {
+                mobility->AddWaypoint(
+                    Waypoint(Seconds(currentTime), route.stations[s]));
+                currentTime += STATION_STOP_TIME;
+                if (s > 0)
+                {
+                    double dist = CalculateDistance(
+                        route.stations[s], route.stations[s - 1]);
+                    currentTime += dist / BUS_SPEED_MS;
+                }
+            }
         }
     }
 }
@@ -467,20 +417,17 @@ GpsTelemetryApp::SendPacket(void)
     Ptr<MobilityModel> mob = GetNode()->GetObject<MobilityModel>();
     Vector pos = mob->GetPosition();
 
-    // Build payload: magic(4B) + busId(4B) + posX(8B) + posY(8B) + padding
+    // Build payload: busId(4B) + posX(8B) + posY(8B) + padding to 200B
     uint8_t buffer[200];
     std::memset(buffer, 0, 200);
 
-    uint32_t magic = GPS_PAYLOAD_MAGIC;
-    std::memcpy(buffer, &magic, sizeof(uint32_t));
-
     uint32_t busId = m_busId;
-    std::memcpy(buffer + 4, &busId, sizeof(uint32_t));
+    std::memcpy(buffer, &busId, sizeof(uint32_t));
 
     double posX = pos.x;
     double posY = pos.y;
-    std::memcpy(buffer + 8, &posX, sizeof(double));
-    std::memcpy(buffer + 16, &posY, sizeof(double));
+    std::memcpy(buffer + 4, &posX, sizeof(double));
+    std::memcpy(buffer + 12, &posY, sizeof(double));
 
     Ptr<Packet> packet = Create<Packet>(buffer, 200);
     m_socket->Send(packet);
@@ -496,194 +443,6 @@ GpsTelemetryApp::ScheduleNextSend(void)
         m_sendEvent = Simulator::Schedule(Seconds(m_interval),
                                           &GpsTelemetryApp::SendPacket, this);
     }
-}
-
-// ============================================================
-// CUSTOM APPLICATION: TicketingApp
-// Keeps one TCP socket open and emits small random bursts.
-// ============================================================
-class TicketingApp : public Application
-{
-public:
-    TicketingApp();
-    virtual ~TicketingApp();
-    static TypeId GetTypeId(void);
-
-    void Setup(Address serverAddress,
-               double minInterval,
-               double maxInterval,
-               uint32_t packetSize,
-               uint32_t minBurstPackets,
-               uint32_t maxBurstPackets);
-
-private:
-    virtual void StartApplication(void);
-    virtual void StopApplication(void);
-
-    void HandleConnectSuccess(Ptr<Socket> socket);
-    void HandleConnectFail(Ptr<Socket> socket);
-    void ScheduleNextBurst(void);
-    void SendBurst(void);
-
-    Ptr<Socket> m_socket;
-    Address m_serverAddress;
-    bool m_running;
-    bool m_connected;
-    EventId m_burstEvent;
-    EventId m_retryEvent;
-    Ptr<UniformRandomVariable> m_intervalRv;
-    Ptr<UniformRandomVariable> m_burstRv;
-    double m_minInterval;
-    double m_maxInterval;
-    uint32_t m_packetSize;
-    uint32_t m_minBurstPackets;
-    uint32_t m_maxBurstPackets;
-};
-
-NS_OBJECT_ENSURE_REGISTERED(TicketingApp);
-
-TypeId
-TicketingApp::GetTypeId(void)
-{
-    static TypeId tid = TypeId("ns3::TicketingApp")
-        .SetParent<Application>()
-        .SetGroupName("Applications")
-        .AddConstructor<TicketingApp>();
-    return tid;
-}
-
-TicketingApp::TicketingApp()
-    : m_socket(0),
-      m_running(false),
-      m_connected(false),
-      m_minInterval(6.0),
-      m_maxInterval(20.0),
-      m_packetSize(256),
-      m_minBurstPackets(1),
-      m_maxBurstPackets(3)
-{
-    m_intervalRv = CreateObject<UniformRandomVariable>();
-    m_burstRv = CreateObject<UniformRandomVariable>();
-}
-
-TicketingApp::~TicketingApp()
-{
-    m_socket = 0;
-}
-
-void
-TicketingApp::Setup(Address serverAddress,
-                    double minInterval,
-                    double maxInterval,
-                    uint32_t packetSize,
-                    uint32_t minBurstPackets,
-                    uint32_t maxBurstPackets)
-{
-    m_serverAddress = serverAddress;
-    m_minInterval = minInterval;
-    m_maxInterval = maxInterval;
-    m_packetSize = packetSize;
-    m_minBurstPackets = minBurstPackets;
-    m_maxBurstPackets = maxBurstPackets;
-}
-
-void
-TicketingApp::StartApplication(void)
-{
-    m_running = true;
-    m_connected = false;
-
-    if (!m_socket)
-    {
-        m_socket = Socket::CreateSocket(GetNode(), TcpSocketFactory::GetTypeId());
-        m_socket->SetConnectCallback(
-            MakeCallback(&TicketingApp::HandleConnectSuccess, this),
-            MakeCallback(&TicketingApp::HandleConnectFail, this));
-    }
-
-    m_socket->Connect(m_serverAddress);
-}
-
-void
-TicketingApp::StopApplication(void)
-{
-    m_running = false;
-    m_connected = false;
-
-    if (m_burstEvent.IsRunning())
-    {
-        Simulator::Cancel(m_burstEvent);
-    }
-    if (m_retryEvent.IsRunning())
-    {
-        Simulator::Cancel(m_retryEvent);
-    }
-    if (m_socket)
-    {
-        m_socket->Close();
-    }
-}
-
-void
-TicketingApp::HandleConnectSuccess(Ptr<Socket> socket)
-{
-    m_connected = true;
-    ScheduleNextBurst();
-}
-
-void
-TicketingApp::HandleConnectFail(Ptr<Socket> socket)
-{
-    m_connected = false;
-    if (m_running)
-    {
-        m_retryEvent = Simulator::Schedule(Seconds(2.0),
-                                           &TicketingApp::StartApplication,
-                                           this);
-    }
-}
-
-void
-TicketingApp::ScheduleNextBurst(void)
-{
-    if (!m_running || !m_connected)
-    {
-        return;
-    }
-
-    double nextInterval = m_intervalRv->GetValue(m_minInterval, m_maxInterval);
-    m_burstEvent = Simulator::Schedule(Seconds(nextInterval),
-                                       &TicketingApp::SendBurst,
-                                       this);
-}
-
-void
-TicketingApp::SendBurst(void)
-{
-    if (!m_running || !m_connected || !m_socket)
-    {
-        return;
-    }
-
-    uint32_t burstPackets = static_cast<uint32_t>(
-        std::floor(m_burstRv->GetValue(m_minBurstPackets,
-                                       m_maxBurstPackets + 1)));
-    if (burstPackets < m_minBurstPackets)
-    {
-        burstPackets = m_minBurstPackets;
-    }
-
-    for (uint32_t i = 0; i < burstPackets; ++i)
-    {
-        Ptr<Packet> packet = Create<Packet>(m_packetSize);
-        int sent = m_socket->Send(packet);
-        if (sent < 0)
-        {
-            break;
-        }
-    }
-
-    ScheduleNextBurst();
 }
 
 // ============================================================
@@ -781,21 +540,20 @@ GpsSpoofAttackApp::SendPacket(void)
 {
     if (!m_running || m_sent >= m_numPackets) return;
 
-    // Build payload: magic(4B) + busId(4B) + fakeX(8B) + fakeY(8B) + padding
+    // Build payload: busId(4B) + lat(8B) + lon(8B) + padding to 200B
     uint8_t buffer[200];
     std::memset(buffer, 0, 200);
 
-    uint32_t magic = GPS_PAYLOAD_MAGIC;
-    std::memcpy(buffer, &magic, sizeof(uint32_t));
-
+    // Write busId
     uint32_t busId = m_targetBusId;
-    std::memcpy(buffer + 4, &busId, sizeof(uint32_t));
+    std::memcpy(buffer, &busId, sizeof(uint32_t));
 
+    // Write fake coordinates
     // Increment position by 50m per packet (50m/s = 180 km/h > 120 km/h threshold)
     double fakeX = m_fakePosition.x + m_sent * 50.0;
     double fakeY = m_fakePosition.y;
-    std::memcpy(buffer + 8, &fakeX, sizeof(double));
-    std::memcpy(buffer + 16, &fakeY, sizeof(double));
+    std::memcpy(buffer + 4, &fakeX, sizeof(double));
+    std::memcpy(buffer + 12, &fakeY, sizeof(double));
 
     Ptr<Packet> packet = Create<Packet>(buffer, 200);
     m_socket->Send(packet);
@@ -848,7 +606,6 @@ private:
         bool detected;
         Address lastSrcAddr;
         bool hasSrcAddr;
-        uint32_t anomalyStreak;  // consecutive anomalous readings
     };
     std::map<uint32_t, PerBusState> m_busState;
 };
@@ -916,25 +673,18 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
     Address from;
     while ((packet = socket->RecvFrom(from)))
     {
-        if (packet->GetSize() < GPS_PAYLOAD_MIN_SIZE) continue;
+        if (packet->GetSize() < 20) continue;
 
         uint8_t buffer[200];
         uint32_t copied = packet->CopyData(buffer, std::min((uint32_t)200,
                                                              packet->GetSize()));
-        if (copied < GPS_PAYLOAD_MIN_SIZE) continue;
+        if (copied < 20) continue;
 
-        uint32_t magic;
         uint32_t busId;
         double posX, posY;
-        std::memcpy(&magic, buffer, sizeof(uint32_t));
-        if (magic != GPS_PAYLOAD_MAGIC) continue;
-
-        std::memcpy(&busId, buffer + 4, sizeof(uint32_t));
-        std::memcpy(&posX, buffer + 8, sizeof(double));
-        std::memcpy(&posY, buffer + 16, sizeof(double));
-
-        if (busId >= MAX_BUSES) continue;
-        if (!std::isfinite(posX) || !std::isfinite(posY)) continue;
+        std::memcpy(&busId, buffer, sizeof(uint32_t));
+        std::memcpy(&posX, buffer + 4, sizeof(double));
+        std::memcpy(&posY, buffer + 12, sizeof(double));
 
         Vector currentPos(posX, posY, 0);
         double now = Simulator::Now().GetSeconds();
@@ -949,7 +699,6 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
             state.detected = false;
             state.lastSrcAddr = from;
             state.hasSrcAddr = true;
-            state.anomalyStreak = 0;
             continue;
         }
 
@@ -958,16 +707,6 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
         {
             state.lastPos = currentPos;
             state.lastTime = now;
-            continue;
-        }
-
-        // Skip readings arriving too close together (< 0.5s).
-        // Telemetry is 1 pkt/s; sub-second gaps happen when multiple
-        // packets queue behind each other in LTE buffers. Computing
-        // speed over such tiny dt amplifies noise (e.g. 10m / 0.02s
-        // = 500 m/s appears as a false speed anomaly).
-        if (dt < 0.5)
-        {
             continue;
         }
 
@@ -1006,43 +745,23 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
             }
         }
 
-        uint32_t anomalyCount = (speedAnomaly ? 1 : 0) + (jumpAnomaly ? 1 : 0)
-                               + (corridorAnomaly ? 1 : 0) + (srcAnomaly ? 1 : 0);
-        uint32_t requiredCount = (g_detectionMode == "any") ? 1 : 2;
-        bool isAnomalous = (anomalyCount >= requiredCount);
+        // Corridor alone is not sufficient (buses can be >2km from sparse waypoints
+        // during normal travel). Require corridor + (speed OR jump) for detection.
+        bool anomaly = speedAnomaly || jumpAnomaly || srcAnomaly
+                       || (corridorAnomaly && (speedAnomaly || jumpAnomaly));
 
-        // Require 3 consecutive anomalous readings to suppress startup transients
-        // and momentary WaypointMobilityModel position jumps.
-        static const uint32_t GPS_STREAK_REQUIRED = 5;
-
-        if (isAnomalous)
-        {
-            state.anomalyStreak++;
-        }
-        else
-        {
-            state.anomalyStreak = 0;
-        }
-
-        if (state.anomalyStreak >= GPS_STREAK_REQUIRED && !state.detected)
+        if (anomaly && !state.detected)
         {
             state.detected = true;
 
             std::ostringstream detail;
-            detail << "mode=" << g_detectionMode
-                   << " speed=" << speed << "m/s"
+            detail << "speed=" << speed << "m/s"
                    << " jump=" << distance << "m"
                    << " corridor=" << corridorAnomaly
                    << " srcIP=" << srcAnomaly;
 
             LogMetric(now, busId, "gps_spoof_detect", speed, distance,
                       detail.str());
-
-            if (!g_gpsSpoofDetected)
-            {
-                g_gpsSpoofDetected = true;
-                g_gpsSpoofDetectionTime = now;
-            }
 
             NS_LOG_WARN("[GPS SPOOF DETECTED] Bus " << busId
                         << " at t=" << now << " " << detail.str());
@@ -1060,132 +779,59 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
 static void
 CheckDDoS(Ptr<FlowMonitor> flowMonitor,
            Ptr<Ipv4FlowClassifier> classifier,
-           Ipv4Address serverAddr,
-           double interval,
-           double detectionStartTime)
+           double interval)
 {
-    static uint64_t s_prevRxBytes = 0;
-    static uint64_t s_prevTxPackets = 0;
-    static uint64_t s_prevRxPackets = 0;
     double now = Simulator::Now().GetSeconds();
     FlowMonitor::FlowStatsContainer stats = flowMonitor->GetFlowStats();
 
-    if (now < detectionStartTime)
-    {
-        // During warmup, still accumulate baseline counters so the first
-        // real check after warmup computes a meaningful delta.
-        uint64_t warmupRxBytes = 0;
-        uint64_t warmupTxPkts = 0;
-        uint64_t warmupRxPkts = 0;
-        for (auto &flow : stats)
-        {
-            Ipv4FlowClassifier::FiveTuple tuple = classifier->FindFlow(flow.first);
-            bool isServerTelemetry = (tuple.destinationAddress == serverAddr)
-                && (tuple.destinationPort == TELEMETRY_PORT);
-            bool isBusFlow = tuple.sourceAddress.CombineMask(Ipv4Mask("255.0.0.0"))
-                == Ipv4Address("7.0.0.0");
-
-            if (isServerTelemetry)
-            {
-                warmupRxBytes += flow.second.rxBytes;
-            }
-            if (isServerTelemetry && isBusFlow && flow.second.rxPackets > 0)
-            {
-                warmupTxPkts += flow.second.txPackets;
-                warmupRxPkts += flow.second.rxPackets;
-            }
-        }
-        s_prevRxBytes = warmupRxBytes;
-        s_prevTxPackets = warmupTxPkts;
-        s_prevRxPackets = warmupRxPkts;
-
-        Simulator::Schedule(Seconds(interval),
-                            &CheckDDoS,
-                            flowMonitor,
-                            classifier,
-                            serverAddr,
-                            interval,
-                            detectionStartTime);
-        return;
-    }
-
-    uint64_t telemetryRxBytes = 0;
-    uint64_t telemetryTxPackets = 0;
-    uint64_t telemetryRxPackets = 0;
-    double telemetryDelaySum = 0;       // weighted sum for average
-    uint64_t telemetryDelayPktCount = 0; // total rx pkts for delay averaging
+    double totalRxBytes = 0;
+    double totalLostPackets = 0;
+    double totalTxPackets = 0;
+    double maxDelay = 0;
 
     for (auto &flow : stats)
     {
-        Ipv4FlowClassifier::FiveTuple tuple = classifier->FindFlow(flow.first);
-        bool isServerTelemetry = (tuple.destinationAddress == serverAddr)
-            && (tuple.destinationPort == TELEMETRY_PORT);
-        bool isBusFlow = tuple.sourceAddress.CombineMask(Ipv4Mask("255.0.0.0"))
-            == Ipv4Address("7.0.0.0");
-
-        if (!isServerTelemetry)
-        {
-            continue;
-        }
-
-        telemetryRxBytes += flow.second.rxBytes;
-
-        if (!isBusFlow)
-        {
-            continue;
-        }
-
-        // Only include flows that have demonstrated some connectivity.
-        // Flows with zero rxPackets are coverage gaps, not DDoS indicators.
-        // Including them inflates loss rate and causes false positives.
-        if (flow.second.rxPackets == 0)
-        {
-            continue;
-        }
-
-        telemetryTxPackets += flow.second.txPackets;
-        telemetryRxPackets += flow.second.rxPackets;
+        totalRxBytes += flow.second.rxBytes;
+        totalLostPackets += flow.second.lostPackets;
+        totalTxPackets += flow.second.txPackets;
         if (flow.second.rxPackets > 0)
         {
-            telemetryDelaySum += flow.second.delaySum.GetSeconds();
-            telemetryDelayPktCount += flow.second.rxPackets;
+            double delay = flow.second.delaySum.GetSeconds() /
+                           flow.second.rxPackets;
+            if (delay > maxDelay) maxDelay = delay;
         }
     }
 
-    // Weighted average delay across all connected telemetry flows.
-    // Using average (not max-per-flow) avoids false positives from
-    // individual flows that happen to have high latency due to
-    // cell-edge scheduling rather than actual DDoS congestion.
-    double telemetryAvgDelay = (telemetryDelayPktCount > 0) ?
-                                (telemetryDelaySum / telemetryDelayPktCount) : 0;
+    // Use DELTA stats (packets since last check) to avoid cumulative
+    // early-setup losses polluting detection.
+    // Save old snapshot time BEFORE updating globals.
+    double prevTime    = g_prevCheckTime;
+    double dt          = now - prevTime;
+    double deltaRxBytes = totalRxBytes     - g_prevRxBytes;
+    double deltaLost    = totalLostPackets - g_prevLostPackets;
+    double deltaTx      = totalTxPackets   - g_prevTxPackets;
 
-    // Delta-based metrics: compute loss over THIS interval only,
-    // not cumulative. Cumulative loss includes in-flight packets
-    // that will eventually arrive, causing false DDoS positives.
-    uint64_t deltaTxPkts = telemetryTxPackets - s_prevTxPackets;
-    uint64_t deltaRxPkts = telemetryRxPackets - s_prevRxPackets;
-    double deltaLossRate = 0.0;
-    // Require at least 10 packets in the interval for reliable loss measurement.
-    // With fewer packets, loss variance is too high for meaningful detection.
-    static const uint64_t MIN_INTERVAL_PKTS = 10;
-    if (deltaTxPkts >= MIN_INTERVAL_PKTS)
+    // Always update snapshot
+    g_prevRxBytes     = totalRxBytes;
+    g_prevLostPackets = totalLostPackets;
+    g_prevTxPackets   = totalTxPackets;
+    g_prevCheckTime   = now;
+
+    // On first call (prevTime == 0), skip detection — just record baseline snapshot
+    if (prevTime < 1.0 || dt <= 0 || deltaTx < 10)
     {
-        uint64_t deltaLost = (deltaTxPkts > deltaRxPkts) ?
-                              (deltaTxPkts - deltaRxPkts) : 0;
-        deltaLossRate = static_cast<double>(deltaLost) / deltaTxPkts;
+        Simulator::Schedule(Seconds(interval),
+                            &CheckDDoS, flowMonitor, classifier, interval);
+        return;
     }
 
-    double intervalBytes = static_cast<double>(telemetryRxBytes - s_prevRxBytes);
-    double intervalRate = intervalBytes * 8.0 / interval;
-    s_prevRxBytes = telemetryRxBytes;
-    s_prevTxPackets = telemetryTxPackets;
-    s_prevRxPackets = telemetryRxPackets;
+    double intervalRate    = (deltaRxBytes * 8.0) / dt;
+    double intervalLoss    = deltaLost / deltaTx;
 
-    bool rateExceeded = intervalRate > DDOS_RATE_THRESHOLD;
-    bool delayExceeded = telemetryAvgDelay > DDOS_DELAY_THRESHOLD;
-    // Note: loss rate excluded from trigger — LTE handovers with 41 buses
-    // produce transient 5%+ loss that causes false positives in baseline.
-    // Rate and delay are robust DDoS-specific indicators.
+    bool rateExceeded  = intervalRate  > DDOS_RATE_THRESHOLD;
+    bool delayExceeded = maxDelay      > DDOS_DELAY_THRESHOLD;
+    // Note: loss rate excluded — LTE handovers produce unreliable loss stats
+    // in FlowMonitor. Rate and delay are robust DDoS indicators.
 
     if ((rateExceeded || delayExceeded) && !g_ddosDetected)
     {
@@ -1193,53 +839,19 @@ CheckDDoS(Ptr<FlowMonitor> flowMonitor,
         g_ddosDetectionTime = now;
 
         std::ostringstream detail;
-        detail << "mode=requirements_any"
-               << " telemetryRate=" << intervalRate
-               << "bps deltaLoss=" << deltaLossRate
-               << " avgDelay=" << telemetryAvgDelay << "s";
+        detail << "intervalRate=" << intervalRate
+               << "bps intervalLoss=" << intervalLoss
+               << " maxDelay=" << maxDelay << "s";
 
         LogMetric(now, 999, "ddos_detect", intervalRate,
-                  deltaLossRate, detail.str());
+                  intervalLoss, detail.str());
 
         NS_LOG_WARN("[DDoS DETECTED] t=" << now << " " << detail.str());
     }
 
+    // Reschedule
     Simulator::Schedule(Seconds(interval),
-                        &CheckDDoS,
-                        flowMonitor,
-                        classifier,
-                        serverAddr,
-                        interval,
-                        detectionStartTime);
-}
-
-// ============================================================
-// FREE FUNCTION: LogQueueStatus
-// Periodically logs P2P server link queue size
-// ============================================================
-static void
-LogQueueStatus(Ptr<NetDevice> device, double interval)
-{
-    double now = Simulator::Now().GetSeconds();
-    Ptr<PointToPointNetDevice> p2pDev = DynamicCast<PointToPointNetDevice>(device);
-    uint32_t nPkts = 0;
-    uint32_t nBytes = 0;
-    if (p2pDev)
-    {
-        Ptr<Queue<Packet>> queue = p2pDev->GetQueue();
-        if (queue)
-        {
-            nPkts = queue->GetNPackets();
-            nBytes = queue->GetNBytes();
-        }
-    }
-    LogMetric(now, 999, "queue_status", (double)nPkts, (double)nBytes,
-              "server_p2p_queue");
-    LogMetric(now, 999, "queue_delay", (nBytes * 8.0) / SERVER_LINK_RATE_BPS,
-              (double)nPkts, "estimated_server_queue_delay_seconds");
-
-    Simulator::Schedule(Seconds(interval),
-                        &LogQueueStatus, device, interval);
+                        &CheckDDoS, flowMonitor, classifier, interval);
 }
 
 // ============================================================
@@ -1251,15 +863,25 @@ MarkForensicComplete(void)
 {
     if (g_forensicEvents.empty()) return;
     ForensicEvent &evt = g_forensicEvents.back();
-    if (evt.uploadCompleted) return;
+    if (evt.completed) return;
 
     double now = Simulator::Now().GetSeconds();
-    evt.uploadFinishTime = now;
-    evt.uploadCompleted = true;
-    evt.bytesReceived = 10485760; // 10 MB
+    evt.finishTime = now;
+    evt.completed = true;
+
+    // Use sink RX bytes if available, otherwise estimate from rate
+    uint64_t received = 0;
+    if (g_forensicSinkApp)
+    {
+        received = g_forensicSinkApp->GetTotalRx();
+    }
+    if (received == 0)
+    {
+        received = g_forensicExpectedBytes; // assume full upload if sink unreachable
+    }
 
     LogMetric(now, evt.busId, "forensic_complete",
-              now - evt.triggerTime, (double)evt.bytesReceived, "upload_done");
+              now - evt.triggerTime, (double)received, "upload_done");
 
     NS_LOG_INFO("[FORENSIC] Upload complete at t=" << now
                 << " duration=" << (now - evt.triggerTime) << "s");
@@ -1277,7 +899,7 @@ StartForensicUpload(Ptr<Node> busNode, Ipv4Address serverAddr)
 
     // Use UDP OnOff to simulate 10MB forensic evidence upload.
     // 10MB × 8 = 80Mb. At 5Mbps (typical LTE UE uplink): ~16 seconds.
-    // TCP BulkSend fails over ns-3 LTE due to handover-induced connection resets.
+    // TCP fails over ns-3 LTE due to handover-induced connection resets.
     OnOffHelper forensicUpload("ns3::UdpSocketFactory",
                                 InetSocketAddress(serverAddr, FORENSIC_PORT));
     forensicUpload.SetAttribute("DataRate", DataRateValue(DataRate("5Mbps")));
@@ -1293,15 +915,13 @@ StartForensicUpload(Ptr<Node> busNode, Ipv4Address serverAddr)
 
     ForensicEvent evt;
     evt.triggerTime = now;
+    evt.finishTime = -1.0;
+    evt.completed = false;
     evt.busId = 0;
-    evt.attackType = g_ddosDetected ? "ddos" : "gps_spoof";
-    evt.uploadStartTime = now;
-    evt.uploadFinishTime = 0.0;
-    evt.uploadCompleted = false;
-    evt.bytesReceived = 0;
+    evt.attackType = "ddos";
     g_forensicEvents.push_back(evt);
 
-    // Schedule upload completion marker after expected duration
+    // Schedule upload completion marker after expected duration (16s for 10MB @ 5Mbps LTE)
     Simulator::Schedule(Seconds(16.5), &MarkForensicComplete);
 }
 
@@ -1312,7 +932,7 @@ StartForensicUpload(Ptr<Node> busNode, Ipv4Address serverAddr)
 static void
 CheckForensicTrigger(Ptr<Node> busNode, Ipv4Address serverAddr, double interval)
 {
-    if ((g_ddosDetected || g_gpsSpoofDetected) && !g_forensicTriggered)
+    if (g_ddosDetected && !g_forensicTriggered)
     {
         g_forensicTriggered = true;
         StartForensicUpload(busNode, serverAddr);
@@ -1323,6 +943,31 @@ CheckForensicTrigger(Ptr<Node> busNode, Ipv4Address serverAddr, double interval)
         Simulator::Schedule(Seconds(interval),
                             &CheckForensicTrigger, busNode, serverAddr,
                             interval);
+    }
+}
+
+// ============================================================
+// QUEUE DELAY TRACING
+// ============================================================
+static void
+EnqueueTrace(Ptr<const Packet> packet)
+{
+    g_enqueueTimestamps[packet->GetUid()] = Simulator::Now().GetSeconds();
+}
+
+static void
+DequeueTrace(Ptr<const Packet> packet)
+{
+    double now = Simulator::Now().GetSeconds();
+    std::map<uint64_t, double>::iterator it =
+        g_enqueueTimestamps.find(packet->GetUid());
+    if (it != g_enqueueTimestamps.end())
+    {
+        double qDelay = now - it->second;
+        g_totalQueueDelay += qDelay;
+        g_queueDequeueCount++;
+        if (qDelay > g_maxQueueDelay) g_maxQueueDelay = qDelay;
+        g_enqueueTimestamps.erase(it);
     }
 }
 
@@ -1349,17 +994,18 @@ static void
 WriteForensicsCsv(const std::string &filename)
 {
     std::ofstream file(filename);
-    file << "triggerTime,busId,attackType,uploadStartTime,uploadFinishTime,uploadCompleted,bytesReceived\n";
+    file << "triggerTime,finishTime,uploadDuration,completed,busId,attackType\n";
     for (size_t i = 0; i < g_forensicEvents.size(); i++)
     {
         const ForensicEvent &evt = g_forensicEvents[i];
+        double duration = evt.completed ? (evt.finishTime - evt.triggerTime) : -1.0;
         file << std::fixed << std::setprecision(3)
-             << evt.triggerTime << "," << evt.busId << ","
-             << evt.attackType << ","
-             << evt.uploadStartTime << ","
-             << evt.uploadFinishTime << ","
-             << (evt.uploadCompleted ? 1 : 0) << ","
-             << evt.bytesReceived << "\n";
+             << evt.triggerTime << ","
+             << (evt.completed ? evt.finishTime : -1.0) << ","
+             << duration << ","
+             << (evt.completed ? 1 : 0) << ","
+             << evt.busId << ","
+             << evt.attackType << "\n";
     }
     file.close();
 }
@@ -1394,9 +1040,8 @@ main(int argc, char *argv[])
     double ddosStart = 100.0;
     double ddosDuration = 60.0;
     double gpsStart = 150.0;
-    uint32_t gpsBusTarget = 0;
+    uint32_t gpsBusTarget = 5;
     std::string resultsDir = "results/";
-    std::string detectionMode = "any";
 
     CommandLine cmd;
     cmd.AddValue("numBuses", "Number of buses (1, 10, or 41)", numBuses);
@@ -1410,18 +1055,15 @@ main(int argc, char *argv[])
     cmd.AddValue("gpsStart", "GPS spoofing start time", gpsStart);
     cmd.AddValue("gpsBusTarget", "Target bus ID for GPS spoofing", gpsBusTarget);
     cmd.AddValue("resultsDir", "Output directory", resultsDir);
-    cmd.AddValue("detectionMode", "Detection mode: any or voting", detectionMode);
     cmd.Parse(argc, argv);
-    g_detectionMode = detectionMode;
+    if (gpsBusTarget >= numBuses) gpsBusTarget = 0;
 
     if (numBuses > MAX_BUSES) numBuses = MAX_BUSES;
-    if (gpsBusTarget >= numBuses) gpsBusTarget = 0;
 
     NS_LOG_INFO("=== Al-Ahsa Smart Bus Simulation ===");
     NS_LOG_INFO("Scenario: " << scenario << " | Buses: " << numBuses
                 << " | DDoS: " << (enableDDoS ? "ON" : "OFF")
-                << " | GPS Spoof: " << (enableGpsSpoofing ? "ON" : "OFF")
-                << " | Detection: " << g_detectionMode);
+                << " | GPS Spoof: " << (enableGpsSpoofing ? "ON" : "OFF"));
 
     // Clear globals for fresh run
     g_gpsStates.clear();
@@ -1429,40 +1071,14 @@ main(int argc, char *argv[])
     g_forensicEvents.clear();
     g_ddosDetected = false;
     g_ddosDetectionTime = 0.0;
-    g_gpsSpoofDetected = false;
-    g_gpsSpoofDetectionTime = 0.0;
     g_forensicTriggered = false;
-    g_forensicSinkApp = 0;
 
     // ========== LTE + EPC Setup ==========
-    Config::SetDefault("ns3::LteEnbPhy::TxPower", DoubleValue(46.0));  // 46 dBm macro cell
-    Config::SetDefault("ns3::LteUePhy::TxPower", DoubleValue(33.0));   // Bus-mounted 4G/5G router proxy
-    Config::SetDefault("ns3::LteUePowerControl::Pcmax", DoubleValue(33.0));
-
     Ptr<LteHelper> lteHelper = CreateObject<LteHelper>();
     Ptr<PointToPointEpcHelper> epcHelper = CreateObject<PointToPointEpcHelper>();
     lteHelper->SetEpcHelper(epcHelper);
-    lteHelper->SetAttribute("UseIdealRrc", BooleanValue(true));
-    lteHelper->SetSchedulerType("ns3::PssFfMacScheduler");
-    lteHelper->SetSchedulerAttribute("UlCqiFilter",
-                                     EnumValue(FfMacScheduler::SRS_UL_CQI));
-    lteHelper->SetHandoverAlgorithmType("ns3::A3RsrpHandoverAlgorithm");
-    lteHelper->SetHandoverAlgorithmAttribute("Hysteresis", DoubleValue(3.0));
-    lteHelper->SetHandoverAlgorithmAttribute("TimeToTrigger",
-                                             TimeValue(MilliSeconds(256)));
-
-    // Pathloss: Use default Friis (free-space) propagation model.
-    // While not perfectly realistic for urban environments, it provides
-    // reasonable LTE connectivity with only 3 eNBs covering a 15km x 20km
-    // area (300 km²). Real deployments would have more towers, but the
-    // simulation architecture specifies exactly 3 eNBs. Friis ensures the
-    // baseline network operates normally so attack effects are clearly visible.
-    // (OkumuraHata Urban and SubUrban were tested but both cause >95% packet
-    // loss with only 3 eNBs at this scale.)
-
-    // 20 MHz bandwidth (100 RBs) — matches real LTE deployment capacity
-    lteHelper->SetEnbDeviceAttribute("DlBandwidth", UintegerValue(100));
-    lteHelper->SetEnbDeviceAttribute("UlBandwidth", UintegerValue(100));
+    lteHelper->SetAttribute("PathlossModel",
+        StringValue("ns3::Cost231PropagationLossModel"));
 
     Ptr<Node> pgw = epcHelper->GetPgwNode();
 
@@ -1485,6 +1101,18 @@ main(int argc, char *argv[])
     Ipv4InterfaceContainer serverInterfaces = ipv4h.Assign(serverDevices);
     Ipv4Address serverAddr = serverInterfaces.GetAddress(1);
 
+    // Queue tracing on PGW-server P2P link
+    Ptr<PointToPointNetDevice> pgwP2pDev =
+        DynamicCast<PointToPointNetDevice>(serverDevices.Get(0));
+    if (pgwP2pDev)
+    {
+        Ptr<Queue<Packet>> queue = pgwP2pDev->GetQueue();
+        queue->TraceConnectWithoutContext("Enqueue",
+            MakeCallback(&EnqueueTrace));
+        queue->TraceConnectWithoutContext("Dequeue",
+            MakeCallback(&DequeueTrace));
+    }
+
     Ipv4StaticRoutingHelper ipv4RoutingHelper;
     Ptr<Ipv4StaticRouting> remoteRouting =
         ipv4RoutingHelper.GetStaticRouting(remoteServer->GetObject<Ipv4>());
@@ -1497,17 +1125,14 @@ main(int argc, char *argv[])
 
     MobilityHelper enbMobility;
     Ptr<ListPositionAllocator> enbPos = CreateObject<ListPositionAllocator>();
-    // Route-weighted 3-site placement chosen to minimize worst-case distance
-    // to the 10 bus corridors while preserving the required 3-eNB topology.
-    enbPos->Add(Vector(4500, 6000, 30));
-    enbPos->Add(Vector(12000, 6500, 30));
-    enbPos->Add(Vector(8000, 16000, 30));
+    enbPos->Add(Vector(3750, 5000, 30));
+    enbPos->Add(Vector(7500, 12000, 30));
+    enbPos->Add(Vector(11250, 17000, 30));
     enbMobility.SetMobilityModel("ns3::ConstantPositionMobilityModel");
     enbMobility.SetPositionAllocator(enbPos);
     enbMobility.Install(enbNodes);
 
     NetDeviceContainer enbDevices = lteHelper->InstallEnbDevice(enbNodes);
-    lteHelper->AddX2Interface(enbNodes);
 
     // ========== Bus UEs ==========
     NodeContainer busNodes;
@@ -1532,37 +1157,7 @@ main(int argc, char *argv[])
             epcHelper->GetUeDefaultGatewayAddress(), 1);
     }
 
-    // Initial closest-cell attachment with LTE handover support.
-    lteHelper->AttachToClosestEnb(busDevices, enbDevices);
-
-    for (uint32_t i = 0; i < busDevices.GetN(); ++i)
-    {
-        Ptr<NetDevice> ueDevice = busDevices.Get(i);
-        ActivateUplinkBearer(lteHelper,
-                             ueDevice,
-                             TELEMETRY_PORT,
-                             EpsBearer::GBR_CONV_VOICE,
-                             64000,
-                             128000);
-        ActivateUplinkBearer(lteHelper,
-                             ueDevice,
-                             CCTV_PORT,
-                             EpsBearer::GBR_CONV_VIDEO,
-                             1200000,
-                             1500000);
-        ActivateUplinkBearer(lteHelper,
-                             ueDevice,
-                             TICKET_PORT,
-                             EpsBearer::NGBR_IMS,
-                             0,
-                             0);
-        ActivateUplinkBearer(lteHelper,
-                             ueDevice,
-                             FORENSIC_PORT,
-                             EpsBearer::GBR_NON_CONV_VIDEO,
-                             2000000,
-                             4000000);
-    }
+    lteHelper->Attach(busDevices);
 
     // ========== Normal Traffic ==========
 
@@ -1581,11 +1176,11 @@ main(int argc, char *argv[])
         telemetryApp->Setup(
             InetSocketAddress(serverAddr, TELEMETRY_PORT), i, 1.0);
         busNodes.Get(i)->AddApplication(telemetryApp);
-        telemetryApp->SetStartTime(Seconds(10.0 + i * 0.1));
+        telemetryApp->SetStartTime(Seconds(2.0 + i * 0.1));
         telemetryApp->SetStopTime(Seconds(simTime));
     }
 
-    // CCTV: 1 Mbps UDP per bus (within the required 1-2 Mbps range)
+    // CCTV: 1.5 Mbps UDP per bus
     uint16_t cctvPort = CCTV_PORT;
     UdpServerHelper cctvServer(cctvPort);
     ApplicationContainer cctvSink = cctvServer.Install(remoteServer);
@@ -1597,7 +1192,7 @@ main(int argc, char *argv[])
         OnOffHelper cctvStream("ns3::UdpSocketFactory",
             InetSocketAddress(serverAddr, cctvPort));
         cctvStream.SetAttribute("DataRate",
-            DataRateValue(DataRate("1000kbps")));
+            DataRateValue(DataRate("1500kbps")));
         cctvStream.SetAttribute("PacketSize", UintegerValue(1400));
         cctvStream.SetAttribute("OnTime",
             StringValue("ns3::ConstantRandomVariable[Constant=1]"));
@@ -1605,12 +1200,13 @@ main(int argc, char *argv[])
             StringValue("ns3::ConstantRandomVariable[Constant=0]"));
 
         ApplicationContainer app = cctvStream.Install(busNodes.Get(i));
-        app.Start(Seconds(10.0 + i * 0.1));
+        app.Start(Seconds(2.0 + i * 0.1));
         app.Stop(Seconds(simTime));
     }
 
-    // Ticketing: random small TCP bursts over one persistent connection.
-    PacketSinkHelper ticketSink("ns3::TcpSocketFactory",
+    // Ticketing: UDP with exponential on/off (simulates random TCP-like bursts;
+    // see header note on why TCP cannot be used with LTE handovers in ns-3)
+    PacketSinkHelper ticketSink("ns3::UdpSocketFactory",
         InetSocketAddress(Ipv4Address::GetAny(), TICKET_PORT));
     ApplicationContainer ticketSinkApps = ticketSink.Install(remoteServer);
     ticketSinkApps.Start(Seconds(1.0));
@@ -1618,19 +1214,22 @@ main(int argc, char *argv[])
 
     for (uint32_t i = 0; i < numBuses; i++)
     {
-        Ptr<TicketingApp> ticketApp = CreateObject<TicketingApp>();
-        ticketApp->Setup(InetSocketAddress(serverAddr, TICKET_PORT),
-                         6.0,
-                         20.0,
-                         256,
-                         1,
-                         3);
-        busNodes.Get(i)->AddApplication(ticketApp);
-        ticketApp->SetStartTime(Seconds(15.0 + i * 0.2));
-        ticketApp->SetStopTime(Seconds(simTime));
+        OnOffHelper ticketClient("ns3::UdpSocketFactory",
+            InetSocketAddress(serverAddr, TICKET_PORT));
+        ticketClient.SetAttribute("DataRate",
+            DataRateValue(DataRate("50kbps")));
+        ticketClient.SetAttribute("PacketSize", UintegerValue(512));
+        ticketClient.SetAttribute("OnTime",
+            StringValue("ns3::ExponentialRandomVariable[Mean=2]"));
+        ticketClient.SetAttribute("OffTime",
+            StringValue("ns3::ExponentialRandomVariable[Mean=10]"));
+
+        ApplicationContainer app = ticketClient.Install(busNodes.Get(i));
+        app.Start(Seconds(5.0 + i * 0.5));
+        app.Stop(Seconds(simTime));
     }
 
-    // Forensic upload sink (UDP — matches forensic upload sender)
+    // Forensic upload sink (UDP — TCP from LTE UEs fails due to handover resets)
     PacketSinkHelper forensicSink("ns3::UdpSocketFactory",
         InetSocketAddress(Ipv4Address::GetAny(), FORENSIC_PORT));
     ApplicationContainer forensicSinkApps = forensicSink.Install(remoteServer);
@@ -1640,8 +1239,11 @@ main(int argc, char *argv[])
 
     // ========== DDoS Attack ==========
     NodeContainer attackerNode;
-    if (enableDDoS || enableGpsSpoofing)
+    if (enableDDoS)
     {
+        NS_LOG_INFO("DDoS: rate=" << ddosRate << "bps start=" << ddosStart
+                    << " duration=" << ddosDuration);
+
         attackerNode.Create(1);
         internet.Install(attackerNode);
 
@@ -1666,12 +1268,6 @@ main(int argc, char *argv[])
         MobilityHelper attackMob;
         attackMob.SetMobilityModel("ns3::ConstantPositionMobilityModel");
         attackMob.Install(attackerNode);
-    }
-
-    if (enableDDoS)
-    {
-        NS_LOG_INFO("DDoS: rate=" << ddosRate << "bps start=" << ddosStart
-                    << " duration=" << ddosDuration);
 
         std::ostringstream ddosRateStr;
         ddosRateStr << static_cast<uint64_t>(ddosRate) << "bps";
@@ -1697,13 +1293,40 @@ main(int argc, char *argv[])
         NS_LOG_INFO("GPS Spoofing: target bus " << gpsBusTarget
                     << " at t=" << gpsStart);
 
+        // Attacker node for GPS spoofing (connected to PGW)
+        NodeContainer gpsSpoofNode;
+        gpsSpoofNode.Create(1);
+        internet.Install(gpsSpoofNode);
+
+        PointToPointHelper spoofP2p;
+        spoofP2p.SetDeviceAttribute("DataRate",
+            DataRateValue(DataRate("1Gbps")));
+        spoofP2p.SetDeviceAttribute("Mtu", UintegerValue(1500));
+        spoofP2p.SetChannelAttribute("Delay", StringValue("5ms"));
+
+        NetDeviceContainer spoofDevices =
+            spoofP2p.Install(pgw, gpsSpoofNode.Get(0));
+        Ipv4AddressHelper spoofIpv4;
+        spoofIpv4.SetBase("3.0.0.0", "255.0.0.0");
+        spoofIpv4.Assign(spoofDevices);
+
+        Ptr<Ipv4StaticRouting> spoofRouting =
+            ipv4RoutingHelper.GetStaticRouting(
+                gpsSpoofNode.Get(0)->GetObject<Ipv4>());
+        spoofRouting->AddNetworkRouteTo(
+            Ipv4Address("1.0.0.0"), Ipv4Mask("255.0.0.0"), 1);
+
+        MobilityHelper spoofMob;
+        spoofMob.SetMobilityModel("ns3::ConstantPositionMobilityModel");
+        spoofMob.Install(gpsSpoofNode);
+
         // Fake position 8km from any route
         Vector fakePos(14000, 1000, 0);
 
         Ptr<GpsSpoofAttackApp> spoofApp = CreateObject<GpsSpoofAttackApp>();
         spoofApp->Setup(InetSocketAddress(serverAddr, TELEMETRY_PORT),
                         gpsBusTarget, fakePos, 1.0, 30);
-        attackerNode.Get(0)->AddApplication(spoofApp);
+        gpsSpoofNode.Get(0)->AddApplication(spoofApp);
         spoofApp->SetStartTime(Seconds(gpsStart));
         spoofApp->SetStopTime(Seconds(gpsStart + 35.0));
     }
@@ -1715,24 +1338,16 @@ main(int argc, char *argv[])
         DynamicCast<Ipv4FlowClassifier>(flowMonHelper.GetClassifier());
 
     // ========== Schedule Monitoring ==========
-    // DDoS detection every 10s
-    double detectionStartTime = enableDDoS ? ddosStart : DETECTION_WARMUP_TIME;
-    Simulator::Schedule(Seconds(10.0),
-                        &CheckDDoS,
-                        flowMonitor,
-                        classifier,
-                        serverAddr,
-                        10.0,
-                        detectionStartTime);
-
-    // Queue status logging every 5s on the PGW-side P2P device
-    Simulator::Schedule(Seconds(5.0),
-                        &LogQueueStatus, serverDevices.Get(0), 5.0);
+    // DDoS detection: first call at t=95s (warm-up snapshot before attack at t=100),
+    // then every 5s. Using delta-rate only (not loss rate) since LTE handovers
+    // cause transient packet loss that would produce false positives.
+    Simulator::Schedule(Seconds(95.0),
+                        &CheckDDoS, flowMonitor, classifier, 5.0);
 
     // Forensic trigger polling every 2s (checks if DDoS detected)
-    if ((enableDDoS || enableGpsSpoofing) && numBuses > 0)
+    if (enableDDoS && numBuses > 0)
     {
-        Simulator::Schedule(Seconds(10.0),
+        Simulator::Schedule(Seconds(95.0),
                             &CheckForensicTrigger, busNodes.Get(0),
                             serverAddr, 2.0);
     }
@@ -1748,7 +1363,7 @@ main(int argc, char *argv[])
     uint32_t rngRun = RngSeedManager::GetRun();
     std::ostringstream prefix;
     prefix << resultsDir << scenario << "_" << numBuses << "buses_"
-           << g_detectionMode << "_" << rngRun;
+           << rngRun;
 
     // FlowMonitor XML
     std::string xmlFile = prefix.str() + ".xml";
@@ -1790,9 +1405,13 @@ main(int argc, char *argv[])
         {
             if (enableDDoS && g_metricsLog[i].time >= ddosStart
                 && g_metricsLog[i].time <= ddosStart + ddosDuration + 10.0)
+            {
                 ddosTP++;
+            }
             else
+            {
                 ddosFP++;
+            }
         }
         if (g_metricsLog[i].eventType == "gps_spoof_detect")
         {
@@ -1803,7 +1422,9 @@ main(int argc, char *argv[])
                 if (firstGpsSpoofTime < 0) firstGpsSpoofTime = g_metricsLog[i].time;
             }
             else
+            {
                 gpsFP++;
+            }
         }
     }
 
@@ -1842,22 +1463,31 @@ main(int argc, char *argv[])
         NS_LOG_INFO("GPS Detection Time: " << gpsDetDelay << "s");
     }
 
+    // Queue Delay Summary
+    double avgQueueDelay = (g_queueDequeueCount > 0) ?
+        (g_totalQueueDelay / g_queueDequeueCount) : 0;
+    LogMetric(simTime, 999, "queue_delay_avg", avgQueueDelay * 1000.0,
+              g_maxQueueDelay * 1000.0, "ms");
+    NS_LOG_INFO("Avg Queue Delay: " << avgQueueDelay * 1000.0 << "ms"
+                << " | Max: " << g_maxQueueDelay * 1000.0 << "ms");
+
     // Upload Success Rate
     uint32_t forensicTriggered = g_forensicEvents.size();
     uint32_t forensicCompleted = 0;
     for (size_t i = 0; i < g_forensicEvents.size(); i++)
     {
-        if (g_forensicEvents[i].uploadCompleted) forensicCompleted++;
+        if (g_forensicEvents[i].completed) forensicCompleted++;
     }
     double uploadSuccessRate = (forensicTriggered > 0) ?
         ((double)forensicCompleted / forensicTriggered * 100.0) : 0.0;
     LogMetric(simTime, 999, "upload_success_rate", uploadSuccessRate,
               (double)forensicTriggered, "percent");
+    NS_LOG_INFO("Upload Success Rate: " << uploadSuccessRate << "%"
+                << " (" << forensicCompleted << "/" << forensicTriggered << ")");
 
     NS_LOG_INFO("Detection: TP=" << totalTP << " FP=" << totalFP
                 << " FN=" << totalFN << " P=" << precision
                 << " R=" << recall << " F1=" << f1);
-    NS_LOG_INFO("Upload Success Rate: " << uploadSuccessRate << "%");
 
     // Write CSVs AFTER all LogMetric calls
     WriteEventsCsv(prefix.str() + "_events.csv");

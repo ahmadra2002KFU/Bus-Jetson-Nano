@@ -1,2 +1,5 @@
 time,busId,eventType,value1,value2,detail
-20.000,999,ddos_detect,7248460.800,0.166,"intervalRate=7.24846e+06bps loss=0.166043 maxDelay=1.57482s"
+300.000,999,detection_accuracy,0.000,0.000,"precision_recall"
+300.000,999,detection_f1,0.000,0.000,"f1_score"
+300.000,999,queue_delay_avg,0.000,0.000,"ms"
+300.000,999,upload_success_rate,0.000,0.000,"percent"

@@ -1,2 +1,2 @@
-triggerTime,busId,attackType
-106.000,0,ddos
+triggerTime,finishTime,uploadDuration,completed,busId,attackType
+105.000,121.500,16.500,1,0,ddos

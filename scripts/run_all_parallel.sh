@@ -1,7 +1,9 @@
 #!/bin/bash
 # run_all_parallel.sh - Runs the simulations much faster by using background processes
 
-mkdir -p ../../../results
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+RESULTS_DIR="$SCRIPT_DIR/../results"
+mkdir -p "$RESULTS_DIR"
 cd ../../../
 echo "Starting Parallel Runs..."
 
@@ -15,7 +17,7 @@ for buses in 1 10 41; do
       [[ "$scenario" == "ddos_gps" ]] && flags="$flags --enableGpsSpoofing=true"
       
       echo "Starting: $scenario | Buses: $buses | Seed: $seed"
-      ./ns3 run "smart-bus --numBuses=$buses --scenario=$scenario $flags --RngRun=$seed --resultsDir=results/" > /dev/null 2>&1 &
+      ./ns3 run "smart-bus --numBuses=$buses --scenario=$scenario $flags --RngRun=$seed --resultsDir=$RESULTS_DIR/" > /dev/null 2>&1 &
       pids+=($!)
       
       # Limit concurrency to 8 jobs so we don't crash the server
