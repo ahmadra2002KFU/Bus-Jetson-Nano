@@ -44,7 +44,7 @@ def build_packet(size: int) -> bytes:
 
 
 def run_attack(target: str, port: int, rate_mbps: float,
-               duration: float | None) -> None:
+               duration=None) -> None:
     """Send UDP flood at the specified rate until stopped."""
 
     rate_bps = rate_mbps * 1e6
