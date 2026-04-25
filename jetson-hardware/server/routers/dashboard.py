@@ -17,11 +17,9 @@ router = APIRouter()
 async def dashboard(request: Request) -> HTMLResponse:
     templates = request.app.state.templates
     return templates.TemplateResponse(
+        request,
         "dashboard.html",
-        {
-            "request": request,
-            "build": os.environ.get("BUILD_SHA") or "dev",
-        },
+        {"build": os.environ.get("BUILD_SHA") or "dev"},
     )
 
 
