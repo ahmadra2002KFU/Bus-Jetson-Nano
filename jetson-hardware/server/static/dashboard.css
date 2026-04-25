@@ -1,59 +1,194 @@
+/* Al-Ahsa Smart Bus dashboard — dark theme, responsive 2x2 panel grid. */
+
 * { box-sizing: border-box; }
+html, body { margin: 0; }
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: #0e1116;
   color: #e4e7eb;
+  min-height: 100vh;
 }
+
+/* -- Banner ----------------------------------------------------------------- */
 .banner {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   background: #1a1f29;
   border-bottom: 1px solid #2a3140;
   padding: 0.75rem 1.25rem;
 }
 .banner .warn { color: #f59e0b; font-size: 0.85rem; }
+.banner code { color: #f59e0b; }
+
 main { padding: 1rem; }
+
+/* -- Grid of panels --------------------------------------------------------- *
+ * `minmax(0, 1fr)` is critical: it overrides the default `min-width: auto`
+ * on grid items, which would otherwise let unbreakable content (long JSON
+ * strings, fixed-width canvases) blow out the column and push siblings
+ * off-screen.
+ */
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
-@media (max-width: 1000px) { .grid { grid-template-columns: 1fr; } }
+@media (max-width: 1100px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* -- Panel ------------------------------------------------------------------ */
 .panel {
   background: #161b22;
   border: 1px solid #2a3140;
   border-radius: 6px;
   padding: 1rem;
+  min-width: 0;            /* see note above */
   min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;        /* belt + suspenders against child overflow */
 }
-.panel h2 { margin: 0 0 0.75rem; font-size: 1.05rem; color: #cbd5e1; }
-.controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem; font-size: 0.85rem; }
-.controls input, .controls select, .controls button {
-  background: #0e1116; color: #e4e7eb;
-  border: 1px solid #2a3140; border-radius: 4px;
-  padding: 0.25rem 0.5rem;
+.panel h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  color: #cbd5e1;
 }
-.controls button { cursor: pointer; }
 
-#events-list { font-family: ui-monospace, "SF Mono", monospace; font-size: 0.8rem; }
-.event-row { display: grid; grid-template-columns: 10em 4em 10em 1fr; gap: 0.5rem; padding: 0.15rem 0; border-bottom: 1px dashed #212838; }
+/* -- Controls (buttons, selects, inputs) ----------------------------------- */
+.controls {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  align-items: center;
+}
+.controls label { display: inline-flex; align-items: center; gap: 0.35rem; }
+.controls input,
+.controls select,
+.controls button {
+  background: #0e1116;
+  color: #e4e7eb;
+  border: 1px solid #2a3140;
+  border-radius: 4px;
+  padding: 0.3rem 0.55rem;
+  font: inherit;
+  font-size: 0.85rem;
+}
+.controls input { width: 7em; }
+.controls button { cursor: pointer; }
+.controls button:hover { background: #1a1f29; }
+
+/* -- Live events ------------------------------------------------------------ */
+#events-list {
+  font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  font-size: 0.78rem;
+  max-height: 360px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+}
+.event-row {
+  display: grid;
+  grid-template-columns: 5.5em 4em 10em minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px dashed #212838;
+  align-items: baseline;
+}
+.event-row > span { min-width: 0; }
+.event-row .ev-ts { color: #94a3b8; }
+.event-row .ev-bus { color: #cbd5e1; }
 .event-row .ev-type { color: #60a5fa; }
 .event-row.ev-attack .ev-type { color: #ef4444; font-weight: 600; }
+.event-row .ev-detail {
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.event-row .ev-detail:hover {
+  white-space: normal;
+  word-break: break-all;
+}
 
+/* -- Live telemetry --------------------------------------------------------- */
+#buses-list {
+  max-height: 240px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
 .bus-card {
-  display: flex; justify-content: space-between; gap: 1rem;
-  padding: 0.5rem 0.75rem; background: #0e1116; border: 1px solid #212838;
-  border-radius: 4px; margin-bottom: 0.35rem; font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: #0e1116;
+  border: 1px solid #212838;
+  border-radius: 4px;
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
 }
 .bus-card .bid { font-weight: 600; color: #a5b4fc; }
-.bus-card .metrics { color: #94a3b8; font-family: ui-monospace, monospace; }
+.bus-card .metrics {
+  color: #94a3b8;
+  font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  font-size: 0.78rem;
+  word-break: break-word;
+}
 
-#map { height: 220px; margin-top: 0.75rem; border-radius: 4px; }
+#map {
+  height: 240px;
+  margin-top: 0.75rem;
+  border-radius: 4px;
+  background: #0a0d12;
+  flex-shrink: 0;
+}
 
-canvas { margin-top: 0.5rem; }
+/* -- Historical charts ------------------------------------------------------ */
+#p-charts canvas {
+  max-width: 100%;
+  width: 100% !important;
+  height: 110px !important;
+  margin-top: 0.35rem;
+}
 
-#fa-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-#fa-table th, #fa-table td { text-align: left; padding: 0.25rem 0.5rem; border-bottom: 1px solid #212838; }
-#fa-table a { color: #a5b4fc; }
+/* -- Forensic archive ------------------------------------------------------- */
+#fa-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  table-layout: fixed;
+}
+#fa-table th,
+#fa-table td {
+  text-align: left;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid #212838;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#fa-table th { color: #cbd5e1; font-weight: 600; }
+#fa-table td:nth-child(1) { width: 11em; }
+#fa-table td:nth-child(2) { width: 4em; }
+#fa-table td:nth-child(3) { width: 7em; }
+#fa-table td:nth-child(4) { width: 6em; text-align: right; }
+#fa-table td:nth-child(5) { width: 6em; }
+#fa-table a { color: #a5b4fc; text-decoration: none; }
+#fa-table a:hover { text-decoration: underline; }
+
+/* -- Small viewports -------------------------------------------------------- */
+@media (max-width: 640px) {
+  main { padding: 0.5rem; }
+  .panel { padding: 0.75rem; }
+  .banner { flex-direction: column; align-items: flex-start; }
+  .event-row { grid-template-columns: 5em 3.5em minmax(0, 1fr); }
+  .event-row .ev-type { display: none; }
+  #fa-table td:nth-child(3) { display: none; }
+  #fa-table th:nth-child(3) { display: none; }
+}
