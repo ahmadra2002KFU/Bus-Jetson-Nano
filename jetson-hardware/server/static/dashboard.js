@@ -206,76 +206,6 @@
   }
 
   // ====================================================================
-  // map
-  // ====================================================================
-
-  const MAP_STATE = { map: null, markers: {}, routesDrawn: false };
-  // ns-3 grid is roughly 0..15000 m on X and 0..20000 m on Y.
-  const GRID_BOUNDS = [[-20000, 0], [0, 15000]];   // [[south, west], [north, east]]
-  // Leaflet Simple CRS uses (y, x); we negate y so north = up.
-  function toLatLng(pos_x, pos_y) { return [-pos_y, pos_x]; }
-
-  function ensureMap() {
-    if (MAP_STATE.map || typeof L === 'undefined') return MAP_STATE.map;
-    const el = document.getElementById('map');
-    if (!el) return null;
-    MAP_STATE.map = L.map(el, {
-      crs: L.CRS.Simple, minZoom: -5, maxZoom: 3,
-      attributionControl: false, zoomControl: true,
-    });
-    MAP_STATE.map.fitBounds(GRID_BOUNDS);
-    L.rectangle(GRID_BOUNDS, { color: '#334155', weight: 1, fillOpacity: 0 })
-      .addTo(MAP_STATE.map);
-    return MAP_STATE.map;
-  }
-
-  async function drawRoutes() {
-    const map = ensureMap();
-    if (!map || MAP_STATE.routesDrawn) return;
-    try {
-      const resp = await fetch('/api/routes');
-      if (!resp.ok) return;
-      const data = await resp.json();
-      (data.routes || []).forEach((route) => {
-        if (!route || !route.length) return;
-        const latlngs = route.map(([x, y]) => toLatLng(x, y));
-        L.polyline(latlngs, { color: '#475569', weight: 1.5, opacity: 0.8 }).addTo(map);
-      });
-      MAP_STATE.routesDrawn = true;
-    } catch (err) {
-      console.warn('drawRoutes failed', err);
-    }
-  }
-
-  function updateMap(buses) {
-    const map = ensureMap();
-    if (!map) return;
-    drawRoutes();
-    const seen = new Set();
-    (buses || []).forEach((b) => {
-      if (!b.last_gps) return;
-      const { pos_x, pos_y } = b.last_gps;
-      if (pos_x == null || pos_y == null) return;
-      const ll = toLatLng(pos_x, pos_y);
-      seen.add(b.bus_id);
-      if (MAP_STATE.markers[b.bus_id]) {
-        MAP_STATE.markers[b.bus_id].setLatLng(ll);
-      } else {
-        MAP_STATE.markers[b.bus_id] = L.circleMarker(ll, {
-          radius: 6, color: '#60a5fa', fillColor: '#60a5fa',
-          fillOpacity: 0.9, weight: 1,
-        }).addTo(map).bindTooltip('bus ' + b.bus_id, { permanent: false });
-      }
-    });
-    Object.keys(MAP_STATE.markers).forEach((id) => {
-      if (!seen.has(parseInt(id, 10))) {
-        MAP_STATE.markers[id].remove();
-        delete MAP_STATE.markers[id];
-      }
-    });
-  }
-
-  // ====================================================================
   // bus-select dropdown population
   // ====================================================================
 
@@ -326,7 +256,6 @@
       const data = await resp.json();
       const arr = Array.isArray(data) ? data : (data.buses || []);
       renderStatusStrip(arr);
-      updateMap(arr);
       refreshBusSelect(arr);
     } catch (err) {
       console.warn('buses poll failed', err);
@@ -476,9 +405,6 @@
         document.getElementById('events-list').innerHTML = renderEvents(lastEvents);
       });
     });
-
-    // Map (eager init so it sizes correctly)
-    setTimeout(ensureMap, 50);
 
     // Initial polls
     refreshBuses();

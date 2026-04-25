@@ -6,7 +6,7 @@ import time
 from functools import lru_cache
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Request
 
 from jetson.routes import create_routes, get_bus_route_assignment
 
@@ -71,6 +71,29 @@ async def api_forensics(
         until=until,
         limit=limit,
     )
+
+
+@router.post("/detector/reset")
+async def reset_detector(
+    request: Request,
+    bus_id: Optional[int] = Query(None, ge=0),
+) -> Dict[str, Any]:
+    """Clear the server-side GPS detector's per-bus latch.
+
+    With ``bus_id``: reset only that bus.
+    Without ``bus_id``: reset every known bus.
+    Subsequent spoof attempts can re-fire the one-shot detector.
+    """
+    detector = request.app.state.gps_detector
+    cleared: List[int] = []
+    if bus_id is not None:
+        detector.reset_bus(bus_id)
+        cleared.append(bus_id)
+    else:
+        for bid in list(detector._states.keys()):  # noqa: SLF001
+            detector.reset_bus(bid)
+            cleared.append(bid)
+    return {"reset": cleared}
 
 
 @router.get("/buses")

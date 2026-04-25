@@ -135,17 +135,8 @@ main {
   letter-spacing: 0.02em;
 }
 
-.row-2col {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  gap: 0.85rem;
-}
-.row-2col > .panel { height: 360px; }
-
-@media (max-width: 1100px) {
-  .row-2col { grid-template-columns: minmax(0, 1fr); }
-  .row-2col > .panel { height: auto; min-height: 280px; }
-}
+#p-events { height: 380px; }
+@media (max-width: 1100px) { #p-events { height: auto; min-height: 280px; } }
 
 /* -- Controls --------------------------------------------------------------- */
 .controls {
@@ -223,26 +214,6 @@ main {
 .event-row .ev-detail .val.bad { color: var(--danger); }
 .event-row .ev-detail .val.warn { color: var(--warn); }
 .events-empty { padding: 2rem 0; color: var(--muted); text-align: center; font-style: italic; }
-
-/* -- Map -------------------------------------------------------------------- */
-#p-map .legend { color: var(--muted); font-size: 0.78rem; display: inline-flex; gap: 0.75rem; align-items: center; }
-.dot { display: inline-block; width: 0.6rem; height: 0.6rem; border-radius: 999px; margin-right: 0.25rem; vertical-align: middle; }
-.dot-route { background: #475569; }
-.dot-bus   { background: var(--accent); }
-#map {
-  flex: 1;
-  min-height: 0;
-  border-radius: 4px;
-  background: var(--panel-2);
-  border: 1px solid var(--border-soft);
-}
-.leaflet-container { background: var(--panel-2) !important; }
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
-  background: var(--panel) !important;
-  color: var(--text) !important;
-  border: 1px solid var(--border) !important;
-  box-shadow: none !important;
-}
 
 /* -- Historical charts ------------------------------------------------------ */
 .charts-row {

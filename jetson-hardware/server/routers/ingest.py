@@ -163,19 +163,10 @@ async def ingest_gps(ws: WebSocket) -> None:
 
             pps_counter[bus_id] = pps_counter.get(bus_id, 0) + 1
 
-            result = await detector.process(bus_id, pos_x, pos_y, src_addr)
-            if result.triggered:
-                try:
-                    await db.insert_event(
-                        bus_id,
-                        "gps_spoof",
-                        ts=ts,
-                        value1=result.speed,
-                        value2=result.corridor_dist,
-                        detail=result.details,
-                    )
-                except Exception:
-                    logger.exception("GPS event insert failed")
+            # Detection writes (and renders the forensic PDF) via the
+            # detector's on_detect callback in app.py — do NOT duplicate
+            # the event row from this side.
+            await detector.process(bus_id, pos_x, pos_y, src_addr)
 
             # Flush per-bus pps into metrics every ~5 s.
             now = time.monotonic()

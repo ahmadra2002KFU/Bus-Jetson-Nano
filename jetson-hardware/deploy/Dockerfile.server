@@ -5,10 +5,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 
-# WeasyPrint isn't needed on the server (PDFs are built on the Jetson), so we
-# only install lightweight runtime deps here.
+# WeasyPrint native deps so the server can render PDF forensic reports
+# for server-side GPS spoof detections.
 RUN apt-get update && apt-get install -y --no-install-recommends \
         curl ca-certificates \
+        libpango-1.0-0 libpangoft2-1.0-0 libcairo2 \
+        libgdk-pixbuf2.0-0 libffi-dev shared-mime-info \
+        fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

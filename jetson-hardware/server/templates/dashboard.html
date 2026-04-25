@@ -7,35 +7,22 @@
   <em>loading bus status&hellip;</em>
 </section>
 
-<section class="row-2col">
-  <div class="panel" id="p-events">
-    <header class="panel-head">
-      <h2>Live events</h2>
-      <div class="filter-tabs" role="tablist" aria-label="Event filter">
-        <button class="tab" data-filter="all">All</button>
-        <button class="tab is-active" data-filter="important">Important</button>
-        <button class="tab" data-filter="attacks">Attacks</button>
-        <button class="tab" data-filter="tickets">Tickets</button>
-      </div>
-    </header>
-    <div id="events-list"
-         hx-get="/api/events?limit=200"
-         hx-trigger="load, every 2s"
-         hx-target="#events-list"
-         hx-swap="innerHTML">
-      <em>loading&hellip;</em>
+<section class="panel" id="p-events">
+  <header class="panel-head">
+    <h2>Live events</h2>
+    <div class="filter-tabs" role="tablist" aria-label="Event filter">
+      <button class="tab" data-filter="all">All</button>
+      <button class="tab is-active" data-filter="important">Important</button>
+      <button class="tab" data-filter="attacks">Attacks</button>
+      <button class="tab" data-filter="tickets">Tickets</button>
     </div>
-  </div>
-
-  <div class="panel" id="p-map">
-    <header class="panel-head">
-      <h2>Route map</h2>
-      <span class="legend">
-        <span class="dot dot-route"></span>route
-        <span class="dot dot-bus"></span>bus
-      </span>
-    </header>
-    <div id="map" aria-label="Bus route map"></div>
+  </header>
+  <div id="events-list"
+       hx-get="/api/events?limit=200"
+       hx-trigger="load, every 2s"
+       hx-target="#events-list"
+       hx-swap="innerHTML">
+    <em>loading&hellip;</em>
   </div>
 </section>
 
