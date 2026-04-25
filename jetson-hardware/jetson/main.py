@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 """BusAgent — Jetson edge device orchestrator (internet-facing build).
 
-Starts WebSocket/HTTPS telemetry, local DDoS detection, heartbeat probe,
-forensic PDF capture + HTTPS upload, Telegram alerts, and CSV logging.
-GPS spoof detection has moved to the server (public ingestion endpoint),
-so the Jetson no longer runs a local GPS detector.
+Starts WebSocket/HTTPS telemetry, local DDoS detection, edge-side GPS
+spoof detection (against the bus's own outgoing positions), heartbeat
+probe, forensic PDF capture + HTTPS upload, Telegram alerts, and CSV
+logging.
+
+Edge-side spoof detection complements the server's. If an RF spoofer
+near the bus hijacks the GPS receiver, the bus reports a fake position;
+the server eventually catches that, but the edge detector catches it
+first and ships a forensic PDF with a real camera frame attached. The
+on-bus spoof can be exercised via ``python -m jetson.spoof_local``.
 """
 
 from __future__ import annotations
@@ -25,6 +31,7 @@ from jetson.alerting.telegram_bot import TelegramAlert
 from jetson.camera.camera_factory import create_camera
 from jetson.config_loader import Config
 from jetson.detection.ddos_detector import DDoSDetector
+from jetson.detection.edge_gps_detector import EdgeGpsDetector
 from jetson.detection.heartbeat import HeartbeatProbe
 from jetson.forensic.evidence_capture import capture_evidence
 from jetson.forensic.evidence_upload import upload_evidence
@@ -58,9 +65,12 @@ class BusAgent:
         self.config = Config(config_path)
         self.stop_event = threading.Event()
         self.ddos_detected = threading.Event()
-        self.forensic_triggered = threading.Event()
+        self.gps_detected = threading.Event()
+        # Per-attack-type latches so a DDoS PDF doesn't block a later GPS
+        # spoof PDF (and vice versa).
+        self._latch_lock = threading.Lock()
+        self._latched: Dict[str, bool] = {"ddos": False, "gps_spoof": False}
         self._detection_details: Dict[str, Any] = {}
-        self._components = []
 
     # ------------------------------------------------------------------
     # Lifecycle
@@ -95,12 +105,30 @@ class BusAgent:
         routes = create_routes()
         self._route_polyline = routes[route_idx]
 
+        # Edge GPS detector (set up before GPS telemetry so we can hand
+        # it the outgoing-position callback).
+        spoof_file = cfg.get("edge_gps", "spoof_file",
+                             fallback="/tmp/smartbus-spoof.json")
+        self.gps_detector = EdgeGpsDetector(
+            bus_id=cfg.bus_id,
+            route_polyline=self._route_polyline,
+            callback=self._on_gps_spoof_detected,
+            cleared=self._on_gps_spoof_cleared,
+            speed_threshold=cfg.gps_speed_ms,
+            jump_threshold=cfg.gps_jump_m,
+            corridor_threshold=cfg.gps_corridor_m,
+            streak_required=cfg.gps_streak_required,
+        )
+        self.gps_detected = self.gps_detector.detected
+
         # Traffic generators
         self.gps = GpsTelemetry(
             server_url=cfg.server_url,
             bus_id=cfg.bus_id,
             route_waypoints=self._route_polyline,
             send_interval=cfg.gps_interval_s,
+            on_send_position=self._on_gps_position_sent,
+            spoof_file=spoof_file,
         )
         self.gps.start()
 
@@ -128,15 +156,8 @@ class BusAgent:
         self.traffic_monitor = TrafficMonitor(interface=cfg.interface)
         self.traffic_monitor.start()
 
-        # Streak gating — read directly via the raw getint accessor so
-        # we don't have to add a typed property for two rarely-tuned
-        # knobs.  Defaults match DDoSDetector's own.
-        loss_streak = cfg.getint(
-            "thresholds", "ddos_loss_streak", fallback=2
-        )
-        clear_streak = cfg.getint(
-            "thresholds", "ddos_clear_streak", fallback=3
-        )
+        loss_streak = cfg.getint("thresholds", "ddos_loss_streak", fallback=2)
+        clear_streak = cfg.getint("thresholds", "ddos_clear_streak", fallback=3)
 
         self.ddos_detector = DDoSDetector(
             traffic_monitor=self.traffic_monitor,
@@ -152,11 +173,8 @@ class BusAgent:
             cleared=self._on_ddos_cleared,
         )
         self.ddos_detector.start()
-        # Mirror the detector's own `detected` Event into ours for the
-        # forensic-trigger loop.
         self.ddos_detected = self.ddos_detector.detected
 
-        # Forensic trigger + offline flusher
         threading.Thread(
             target=self._forensic_trigger_loop,
             name="Forensic-Trigger",
@@ -194,9 +212,10 @@ class BusAgent:
                 self.stop_event.wait(timeout=5.0)
                 if self.stop_event.is_set():
                     break
-                status = "IDLE"
-                if self.ddos_detected.is_set():
-                    status = "DDoS DETECTED"
+                flags = []
+                if self.ddos_detected.is_set(): flags.append("DDoS")
+                if self.gps_detected.is_set():  flags.append("GPS-SPOOF")
+                status = " + ".join(flags) if flags else "IDLE"
                 queued = self.offline_queue.size()
                 logger.info(
                     "status=%s | queue events=%d forensics=%d",
@@ -206,7 +225,7 @@ class BusAgent:
             pass
 
     # ------------------------------------------------------------------
-    # Callbacks
+    # Detection callbacks
     # ------------------------------------------------------------------
 
     def _on_ddos_detected(self, details: Dict[str, Any]) -> None:
@@ -229,18 +248,49 @@ class BusAgent:
             logger.exception("telegram ddos alert failed")
 
     def _on_ddos_cleared(self) -> None:
-        """Re-arm the forensic latch after the DDoS state clears.
-
-        Fired by DDoSDetector once it has seen ``clear_streak_required``
-        consecutive clean windows.  Without this, ``forensic_triggered``
-        would stay set forever and a future genuine attack would never
-        produce a new PDF.
-        """
-        self.forensic_triggered.clear()
-        # Also drop the cached detection details so the next PDF reflects
-        # the new attack, not the old one.
+        with self._latch_lock:
+            self._latched["ddos"] = False
         self._detection_details.pop("ddos", None)
-        logger.info("Forensic re-armed")
+        logger.info("Forensic re-armed (ddos)")
+
+    def _on_gps_spoof_detected(self, details: Dict[str, Any]) -> None:
+        self._detection_details["gps_spoof"] = details
+        bus_id = self.config.bus_id
+        logger.warning("*** EDGE GPS SPOOF DETECTED ***")
+        logger.warning("  speed=%.1f m/s  corridor=%.0f m  streak=%d",
+                       details.get("speed", 0),
+                       details.get("corridor_dist", 0),
+                       details.get("streak", 0))
+        self.csv_logger.log_event(
+            bus_id, "gps_spoof_detect",
+            value1=details.get("speed", 0),
+            value2=details.get("corridor_dist", 0),
+            detail=f"streak={details.get('streak', 0)}",
+        )
+        try:
+            self.telegram.send_gps_alert({**details, "bus_id": bus_id})
+        except Exception:
+            logger.exception("telegram gps alert failed")
+
+    def _on_gps_spoof_cleared(self) -> None:
+        with self._latch_lock:
+            self._latched["gps_spoof"] = False
+        self._detection_details.pop("gps_spoof", None)
+        # Drop the detector's last position so the next legit reading
+        # initialises cleanly (avoids a transient speed_anom on resume).
+        try:
+            self.gps_detector.reset()
+        except Exception:
+            pass
+        logger.info("Forensic re-armed (gps_spoof)")
+
+    def _on_gps_position_sent(self, pos_x: float, pos_y: float, is_spoofed: bool) -> None:
+        """Hook GpsTelemetry calls after each outbound packet so the
+        edge detector sees the same positions the server sees."""
+        try:
+            self.gps_detector.feed(pos_x, pos_y)
+        except Exception:
+            logger.exception("edge GPS detector feed failed")
 
     # ------------------------------------------------------------------
     # Forensic and offline-queue loops
@@ -249,58 +299,68 @@ class BusAgent:
     def _forensic_trigger_loop(self) -> None:
         while not self.stop_event.is_set():
             self.stop_event.wait(timeout=2.0)
-            if self.forensic_triggered.is_set():
-                continue
-            if not self.ddos_detected.is_set():
-                continue
+            if self.stop_event.is_set():
+                break
+            # Fire DDoS path
+            if self.ddos_detected.is_set() and not self._is_latched("ddos"):
+                self._set_latched("ddos")
+                self._fire_forensic("ddos")
+            # Fire GPS-spoof path
+            if self.gps_detected.is_set() and not self._is_latched("gps_spoof"):
+                self._set_latched("gps_spoof")
+                self._fire_forensic("gps_spoof")
 
-            self.forensic_triggered.set()
-            attack_type = "ddos"
-            logger.info("forensic trigger: %s — capturing evidence", attack_type)
-            trigger_time = time.time()
+    def _is_latched(self, kind: str) -> bool:
+        with self._latch_lock:
+            return self._latched.get(kind, False)
 
-            try:
-                pdf_bytes, metadata = capture_evidence(
-                    self.camera, self.csv_logger,
-                    bus_id=self.config.bus_id,
-                    attack_type=attack_type,
-                    detection_details=self._detection_details.get(attack_type),
-                    gps_trace=self.gps.get_recent_trace(),
-                    route_polyline=list(self._route_polyline),
-                )
-            except Exception:
-                logger.exception("capture_evidence failed")
-                continue
+    def _set_latched(self, kind: str) -> None:
+        with self._latch_lock:
+            self._latched[kind] = True
 
-            result = upload_evidence(
-                pdf_bytes, metadata, server_url=self.config.server_url
-            )
-
-            if result["completed"]:
-                logger.info(
-                    "forensic upload complete: %d bytes in %.2fs",
-                    result["bytes_sent"],
-                    result["upload_finish"] - result["upload_start"],
-                )
-            else:
-                logger.error("forensic upload failed; queueing for retry")
-                try:
-                    self.offline_queue.enqueue_forensic(metadata, pdf_bytes)
-                except Exception:
-                    logger.exception("failed to enqueue forensic")
-
-            self.csv_logger.log_forensic(
-                trigger_time=trigger_time,
+    def _fire_forensic(self, attack_type: str) -> None:
+        logger.info("forensic trigger: %s — capturing evidence", attack_type)
+        trigger_time = time.time()
+        try:
+            pdf_bytes, metadata = capture_evidence(
+                self.camera, self.csv_logger,
                 bus_id=self.config.bus_id,
                 attack_type=attack_type,
-                upload_start=result["upload_start"],
-                upload_finish=result["upload_finish"],
-                completed=result["completed"],
-                bytes_received=result["bytes_sent"],
+                detection_details=self._detection_details.get(attack_type),
+                gps_trace=self.gps.get_recent_trace(),
+                route_polyline=list(self._route_polyline),
             )
+        except Exception:
+            logger.exception("capture_evidence failed (%s)", attack_type)
+            return
+
+        result = upload_evidence(
+            pdf_bytes, metadata, server_url=self.config.server_url,
+        )
+        if result["completed"]:
+            logger.info(
+                "forensic upload complete (%s): %d bytes in %.2fs",
+                attack_type, result["bytes_sent"],
+                result["upload_finish"] - result["upload_start"],
+            )
+        else:
+            logger.error("forensic upload failed (%s); queueing for retry", attack_type)
+            try:
+                self.offline_queue.enqueue_forensic(metadata, pdf_bytes)
+            except Exception:
+                logger.exception("failed to enqueue forensic")
+
+        self.csv_logger.log_forensic(
+            trigger_time=trigger_time,
+            bus_id=self.config.bus_id,
+            attack_type=attack_type,
+            upload_start=result["upload_start"],
+            upload_finish=result["upload_finish"],
+            completed=result["completed"],
+            bytes_received=result["bytes_sent"],
+        )
 
     def _offline_flusher_loop(self) -> None:
-        """Periodically flush queued forensics after a prior upload failure."""
         while not self.stop_event.is_set():
             self.stop_event.wait(timeout=30.0)
             if self.stop_event.is_set():
@@ -315,14 +375,14 @@ class BusAgent:
                     self.offline_queue.ack("forensic", row["id"])
                     continue
                 res = upload_evidence(
-                    pdf_bytes, row["metadata"], server_url=self.config.server_url
+                    pdf_bytes, row["metadata"], server_url=self.config.server_url,
                 )
                 if res["completed"]:
                     self.offline_queue.ack("forensic", row["id"])
                     logger.info("flushed queued forensic id=%d", row["id"])
                 else:
                     logger.info("flush failed id=%d; will retry later", row["id"])
-                    break  # don't hammer on outage; try again next tick
+                    break
 
 
 def main() -> None:

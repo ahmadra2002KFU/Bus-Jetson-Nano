@@ -15,14 +15,16 @@ Wire format (little-endian, 200 bytes):
 
 from __future__ import annotations
 
+import json
 import logging
 import math
+import os
 import random
 import struct
 import threading
 import time
 from collections import deque
-from typing import Deque, List, Optional, Tuple
+from typing import Callable, Deque, List, Optional, Tuple
 
 import websocket  # from websocket-client
 
@@ -69,6 +71,8 @@ class GpsTelemetry(threading.Thread):
         bus_id: int,
         route_waypoints: List[Tuple[float, float]],
         send_interval: float = GPS_SEND_INTERVAL,
+        on_send_position: Optional[Callable[[float, float, bool], None]] = None,
+        spoof_file: Optional[str] = "/tmp/smartbus-spoof.json",
     ):
         super().__init__(daemon=True, name=f"GPSTelemetry-bus{bus_id}")
         self._url = _to_ws_url(server_url, "/ingest/gps")
@@ -79,6 +83,11 @@ class GpsTelemetry(threading.Thread):
 
         # Buffer held during disconnects (max ~100 frames, drop oldest)
         self._outbox: Deque[bytes] = deque(maxlen=100)
+
+        # Edge-detector hook + on-bus spoof injection
+        self._on_send_position = on_send_position
+        self._spoof_file = spoof_file
+        self._was_spoofed = False  # for transition logging
 
         # Mobility state
         self._waypoints = list(route_waypoints)
@@ -147,7 +156,27 @@ class GpsTelemetry(threading.Thread):
         while not self._stop_event.is_set():
             t_start = time.monotonic()
             self._advance_position(self._send_interval)
-            packet = self._build_packet()
+
+            # On-bus spoof injection: if /tmp/smartbus-spoof.json (or the
+            # configured file) is present and unexpired, override the
+            # outgoing position with the fake one. Models a local RF
+            # spoofer hijacking the GPS receiver.
+            spoof = self._read_spoof_file()
+            if spoof is not None:
+                send_x, send_y = spoof
+                is_spoofed = True
+                if not self._was_spoofed:
+                    logger.warning("GPS spoof injection ACTIVE bus=%d -> (%g, %g)",
+                                   self._bus_id, send_x, send_y)
+                    self._was_spoofed = True
+            else:
+                send_x, send_y = self._pos_x, self._pos_y
+                is_spoofed = False
+                if self._was_spoofed:
+                    logger.info("GPS spoof injection cleared bus=%d", self._bus_id)
+                    self._was_spoofed = False
+
+            packet = self._build_packet_with(send_x, send_y)
             try:
                 self._ws.send_binary(packet)
             except Exception as exc:
@@ -156,12 +185,35 @@ class GpsTelemetry(threading.Thread):
                 raise
 
             with self._trace_lock:
-                self._trace.append((self._pos_x, self._pos_y))
+                self._trace.append((send_x, send_y))
+
+            if self._on_send_position is not None:
+                try:
+                    self._on_send_position(send_x, send_y, is_spoofed)
+                except Exception:
+                    logger.exception("on_send_position callback error")
 
             elapsed = time.monotonic() - t_start
             sleep_time = self._send_interval - elapsed
             if sleep_time > 0:
                 self._stop_event.wait(timeout=sleep_time)
+
+    def _read_spoof_file(self) -> Optional[Tuple[float, float]]:
+        """Read the local spoof-injection file, if any. Returns
+        ``(pos_x, pos_y)`` while a spoof window is active, else None."""
+        path = self._spoof_file
+        if not path or not os.path.exists(path):
+            return None
+        try:
+            with open(path, "r") as fh:
+                data = json.load(fh)
+            expires = float(data.get("expires_at", 0))
+            if expires > 0 and time.time() > expires:
+                return None
+            return float(data["pos_x"]), float(data["pos_y"])
+        except (KeyError, TypeError, ValueError, OSError, json.JSONDecodeError) as exc:
+            logger.debug("spoof file read error: %s", exc)
+            return None
 
     def _close_ws(self) -> None:
         if self._ws is not None:
@@ -172,8 +224,11 @@ class GpsTelemetry(threading.Thread):
             self._ws = None
 
     def _build_packet(self) -> bytes:
+        return self._build_packet_with(self._pos_x, self._pos_y)
+
+    def _build_packet_with(self, pos_x: float, pos_y: float) -> bytes:
         header = struct.pack(
-            "<IIdd", GPS_PAYLOAD_MAGIC, self._bus_id, self._pos_x, self._pos_y
+            "<IIdd", GPS_PAYLOAD_MAGIC, self._bus_id, pos_x, pos_y
         )
         return header + b"\x00" * (GPS_PACKET_SIZE - len(header))
 
