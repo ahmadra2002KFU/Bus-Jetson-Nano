@@ -3,13 +3,29 @@
 from __future__ import annotations
 
 import time
+from functools import lru_cache
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
 
+from jetson.routes import create_routes, get_bus_route_assignment
+
 from ..storage import db
 
 router = APIRouter(prefix="/api")
+
+
+@lru_cache(maxsize=1)
+def _routes_payload() -> Dict[str, Any]:
+    return {
+        "routes": [[(p[0], p[1]) for p in r] for r in create_routes()],
+        "assignment": list(get_bus_route_assignment()),
+    }
+
+
+@router.get("/routes")
+async def api_routes() -> Dict[str, Any]:
+    return _routes_payload()
 
 RANGE_WINDOWS_S: Dict[str, float] = {
     "1h": 3600.0,

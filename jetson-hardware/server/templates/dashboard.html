@@ -3,12 +3,23 @@
 {% block title %}Al-Ahsa Smart Bus &mdash; Dashboard{% endblock %}
 
 {% block content %}
-<section class="grid">
+<section id="status-strip" class="status-strip" data-loading="true">
+  <em>loading bus status&hellip;</em>
+</section>
+
+<section class="row-2col">
   <div class="panel" id="p-events">
-    <h2>Live events</h2>
+    <header class="panel-head">
+      <h2>Live events</h2>
+      <div class="filter-tabs" role="tablist" aria-label="Event filter">
+        <button class="tab" data-filter="all">All</button>
+        <button class="tab is-active" data-filter="important">Important</button>
+        <button class="tab" data-filter="attacks">Attacks</button>
+        <button class="tab" data-filter="tickets">Tickets</button>
+      </div>
+    </header>
     <div id="events-list"
-         data-since-window="60"
-         hx-get="/api/events?limit=50"
+         hx-get="/api/events?limit=200"
          hx-trigger="load, every 2s"
          hx-target="#events-list"
          hx-swap="innerHTML">
@@ -16,63 +27,81 @@
     </div>
   </div>
 
-  <div class="panel" id="p-buses">
-    <h2>Live telemetry</h2>
-    <div id="buses-list"
-         hx-get="/api/buses"
-         hx-trigger="load, every 3s"
-         hx-target="#buses-list"
-         hx-swap="innerHTML">
-      <em>loading&hellip;</em>
-    </div>
-    <div id="map"></div>
+  <div class="panel" id="p-map">
+    <header class="panel-head">
+      <h2>Route map</h2>
+      <span class="legend">
+        <span class="dot dot-route"></span>route
+        <span class="dot dot-bus"></span>bus
+      </span>
+    </header>
+    <div id="map" aria-label="Bus route map"></div>
   </div>
+</section>
 
-  <div class="panel" id="p-charts">
+<section class="panel" id="p-charts">
+  <header class="panel-head">
     <h2>Historical charts</h2>
     <div class="controls">
-      <label>Range:
+      <label>Range
         <select id="range-select">
           <option value="1h" selected>1 hour</option>
           <option value="24h">24 hours</option>
           <option value="7d">7 days</option>
         </select>
       </label>
-      <label>Bus:
+      <label>Bus
         <select id="bus-select"><option value="">(all)</option></select>
       </label>
       <button id="chart-refresh">refresh</button>
     </div>
-    <canvas id="chart-rx"    height="120"></canvas>
-    <canvas id="chart-cctv"  height="120"></canvas>
-    <canvas id="chart-loss"  height="120"></canvas>
+  </header>
+  <div class="charts-row">
+    <figure>
+      <figcaption>Inbound rate</figcaption>
+      <canvas id="chart-rx"></canvas>
+    </figure>
+    <figure>
+      <figcaption>CCTV uplink</figcaption>
+      <canvas id="chart-cctv"></canvas>
+    </figure>
+    <figure>
+      <figcaption>Heartbeat loss</figcaption>
+      <canvas id="chart-loss"></canvas>
+    </figure>
+    <figure>
+      <figcaption>Heartbeat RTT</figcaption>
+      <canvas id="chart-rtt"></canvas>
+    </figure>
   </div>
+</section>
 
-  <div class="panel" id="p-forensics">
+<section class="panel" id="p-forensics">
+  <header class="panel-head">
     <h2>Forensic archive</h2>
     <div class="controls">
-      <label>Bus: <input id="fa-bus" type="number" min="0" placeholder="all"></label>
-      <label>Attack:
+      <label>Bus <input id="fa-bus" type="number" min="0" placeholder="all"></label>
+      <label>Attack
         <select id="fa-attack">
           <option value="">(any)</option>
           <option value="ddos">DDoS</option>
           <option value="gps_spoof">GPS spoof</option>
         </select>
       </label>
-      <label>Since: <input id="fa-since" type="date"></label>
-      <label>Until: <input id="fa-until" type="date"></label>
+      <label>Since <input id="fa-since" type="date"></label>
+      <label>Until <input id="fa-until" type="date"></label>
       <button id="fa-refresh">refresh</button>
     </div>
-    <div id="fa-scroll">
-      <table id="fa-table">
-        <thead>
-          <tr>
-            <th>time</th><th>bus</th><th>type</th><th>size</th><th>download</th>
-          </tr>
-        </thead>
-        <tbody><tr><td colspan="5"><em>loading&hellip;</em></td></tr></tbody>
-      </table>
-    </div>
+  </header>
+  <div id="fa-scroll">
+    <table id="fa-table">
+      <thead>
+        <tr>
+          <th>time</th><th>bus</th><th>type</th><th>size</th><th>download</th>
+        </tr>
+      </thead>
+      <tbody><tr><td colspan="5"><em>loading&hellip;</em></td></tr></tbody>
+    </table>
   </div>
 </section>
 {% endblock %}
