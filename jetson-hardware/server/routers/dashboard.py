@@ -12,6 +12,24 @@ from ..storage import db
 
 router = APIRouter()
 
+_STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
+
+
+def _asset_version() -> str:
+    """Cache-bust token derived from the latest static-asset mtime.
+
+    Recomputed per request (cheap stat) so any redeploy / file edit on
+    the server invalidates browser caches without a hard refresh.
+    """
+    latest = 0.0
+    for name in ("dashboard.css", "dashboard.js"):
+        p = _STATIC_DIR / name
+        try:
+            latest = max(latest, p.stat().st_mtime)
+        except OSError:
+            pass
+    return f"{int(latest)}"
+
 
 @router.get("/", response_class=HTMLResponse)
 async def dashboard(request: Request) -> HTMLResponse:
@@ -19,7 +37,10 @@ async def dashboard(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(
         request,
         "dashboard.html",
-        {"build": os.environ.get("BUILD_SHA") or "dev"},
+        {
+            "build": os.environ.get("BUILD_SHA") or "dev",
+            "asset_v": _asset_version(),
+        },
     )
 
 

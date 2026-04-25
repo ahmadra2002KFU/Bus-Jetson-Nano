@@ -63,14 +63,16 @@
       <label>Until: <input id="fa-until" type="date"></label>
       <button id="fa-refresh">refresh</button>
     </div>
-    <table id="fa-table">
-      <thead>
-        <tr>
-          <th>time</th><th>bus</th><th>type</th><th>size</th><th>download</th>
-        </tr>
-      </thead>
-      <tbody><tr><td colspan="5"><em>loading&hellip;</em></td></tr></tbody>
-    </table>
+    <div id="fa-scroll">
+      <table id="fa-table">
+        <thead>
+          <tr>
+            <th>time</th><th>bus</th><th>type</th><th>size</th><th>download</th>
+          </tr>
+        </thead>
+        <tbody><tr><td colspan="5"><em>loading&hellip;</em></td></tr></tbody>
+      </table>
+    </div>
   </div>
 </section>
 {% endblock %}

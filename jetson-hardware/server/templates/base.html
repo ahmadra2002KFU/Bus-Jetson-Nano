@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Al-Ahsa Smart Bus{% endblock %}</title>
-  <link rel="stylesheet" href="/static/dashboard.css">
+  <link rel="stylesheet" href="/static/dashboard.css?v={{ asset_v }}">
 
   <link rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -27,7 +27,7 @@
   <main>
     {% block content %}{% endblock %}
   </main>
-  <script src="/static/dashboard.js" defer></script>
+  <script src="/static/dashboard.js?v={{ asset_v }}" defer></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>
