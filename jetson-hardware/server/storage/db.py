@@ -209,21 +209,69 @@ async def fetch_metrics(
 async def fetch_latest_metric_per_bus(
     *, db_path: Optional[str] = None
 ) -> List[Dict[str, Any]]:
-    sql = """
-        SELECT m.bus_id, m.ts, m.rx_bps, m.cctv_bps, m.gps_pps,
-               m.heartbeat_loss, m.rtt_ms
-        FROM metrics m
-        JOIN (
-            SELECT bus_id, MAX(ts) AS max_ts
-            FROM metrics
-            GROUP BY bus_id
-        ) latest ON latest.bus_id = m.bus_id AND latest.max_ts = m.ts
+    """Return the latest **non-null** value per (bus_id, field) for each metric.
+
+    Each metric row only sets a subset of columns — e.g. heartbeat writes only
+    ``heartbeat_loss`` and ``rtt_ms``; the CCTV ingester writes ``cctv_bps`` /
+    ``rx_bps``; the GPS ingester writes ``gps_pps``. A naive ``MAX(ts)`` join
+    therefore returns the most recent row, which is usually a heartbeat with
+    most fields ``NULL`` — so the dashboard saw ``cctv_bps``/``rx_bps`` as null
+    even when CCTV was actively streaming.
+
+    Instead, for every bus and every field we report the timestamp + value of
+    the most recent row whose column is non-null. ``ts`` in the result is the
+    maximum of those per-field timestamps (i.e. the freshest update of any
+    field for that bus).
+
+    Output shape (unchanged, contract preserved for callers)::
+        [{"bus_id": int, "ts": float,
+          "rx_bps": float|None, "cctv_bps": float|None, "gps_pps": float|None,
+          "heartbeat_loss": float|None, "rtt_ms": float|None}, ...]
     """
+    fields = ("rx_bps", "cctv_bps", "gps_pps", "heartbeat_loss", "rtt_ms")
+
+    # One query per field: latest ts for which that column IS NOT NULL, joined
+    # back to the row to recover the value. SQLite handles this efficiently
+    # via the (bus_id, ts) index. We then merge results in Python.
+    per_bus: Dict[int, Dict[str, Any]] = {}
+
     async with aiosqlite.connect(db_path or get_db_path()) as db:
         db.row_factory = aiosqlite.Row
-        async with db.execute(sql) as cursor:
-            rows = await cursor.fetchall()
-    return [dict(r) for r in rows]
+        for field in fields:
+            sql = f"""
+                SELECT m.bus_id, m.ts, m.{field} AS value
+                FROM metrics m
+                JOIN (
+                    SELECT bus_id, MAX(ts) AS max_ts
+                    FROM metrics
+                    WHERE {field} IS NOT NULL
+                    GROUP BY bus_id
+                ) latest
+                  ON latest.bus_id = m.bus_id AND latest.max_ts = m.ts
+                WHERE m.{field} IS NOT NULL
+            """
+            async with db.execute(sql) as cursor:
+                rows = await cursor.fetchall()
+            for r in rows:
+                bus_id = int(r["bus_id"])
+                entry = per_bus.setdefault(
+                    bus_id,
+                    {
+                        "bus_id": bus_id,
+                        "ts": 0.0,
+                        "rx_bps": None,
+                        "cctv_bps": None,
+                        "gps_pps": None,
+                        "heartbeat_loss": None,
+                        "rtt_ms": None,
+                    },
+                )
+                entry[field] = r["value"]
+                ts = float(r["ts"])
+                if ts > entry["ts"]:
+                    entry["ts"] = ts
+
+    return list(per_bus.values())
 
 
 # ---------------------------------------------------------------------------

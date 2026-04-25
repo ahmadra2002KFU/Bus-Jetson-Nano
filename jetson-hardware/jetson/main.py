@@ -128,6 +128,16 @@ class BusAgent:
         self.traffic_monitor = TrafficMonitor(interface=cfg.interface)
         self.traffic_monitor.start()
 
+        # Streak gating — read directly via the raw getint accessor so
+        # we don't have to add a typed property for two rarely-tuned
+        # knobs.  Defaults match DDoSDetector's own.
+        loss_streak = cfg.getint(
+            "thresholds", "ddos_loss_streak", fallback=2
+        )
+        clear_streak = cfg.getint(
+            "thresholds", "ddos_clear_streak", fallback=3
+        )
+
         self.ddos_detector = DDoSDetector(
             traffic_monitor=self.traffic_monitor,
             heartbeat=self.heartbeat,
@@ -137,6 +147,9 @@ class BusAgent:
             delay_threshold=cfg.ddos_delay_s,
             check_interval=cfg.ddos_check_interval_s,
             warmup=cfg.warmup_time_s,
+            loss_streak_required=loss_streak,
+            clear_streak_required=clear_streak,
+            cleared=self._on_ddos_cleared,
         )
         self.ddos_detector.start()
         # Mirror the detector's own `detected` Event into ours for the
@@ -214,6 +227,20 @@ class BusAgent:
             self.telegram.send_ddos_alert({**details, "bus_id": bus_id})
         except Exception:
             logger.exception("telegram ddos alert failed")
+
+    def _on_ddos_cleared(self) -> None:
+        """Re-arm the forensic latch after the DDoS state clears.
+
+        Fired by DDoSDetector once it has seen ``clear_streak_required``
+        consecutive clean windows.  Without this, ``forensic_triggered``
+        would stay set forever and a future genuine attack would never
+        produce a new PDF.
+        """
+        self.forensic_triggered.clear()
+        # Also drop the cached detection details so the next PDF reflects
+        # the new attack, not the old one.
+        self._detection_details.pop("ddos", None)
+        logger.info("Forensic re-armed")
 
     # ------------------------------------------------------------------
     # Forensic and offline-queue loops

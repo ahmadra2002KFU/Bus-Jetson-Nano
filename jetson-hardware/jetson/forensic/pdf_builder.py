@@ -62,8 +62,18 @@ def _build_metric_rows(
         rate_mbps = (float(rate_bps) / 1_000_000.0) if rate_bps is not None else None
         rows.append(("Inbound rate", _fmt_float(rate_mbps, 2, " Mbps")
                      if rate_mbps is not None else "—"))
-        rows.append(("Packet loss", _fmt_float(details.get("loss_pct"),
-                                               2, " %")))
+        # loss_pct is stored as a fraction in [0, 1] (e.g. 0.125 = 12.5 %).
+        # Multiply by 100 here so the PDF prints "12.50 %" instead of
+        # "0.13 %".  Guard against None / non-numeric values.
+        loss_val = details.get("loss_pct")
+        try:
+            loss_str = (
+                _fmt_float(float(loss_val) * 100.0, 2, " %")
+                if loss_val is not None else "—"
+            )
+        except (TypeError, ValueError):
+            loss_str = "—"
+        rows.append(("Packet loss", loss_str))
         rows.append(("Round-trip time", _fmt_float(details.get("rtt_ms"),
                                                    1, " ms")))
         triggers = details.get("triggers_fired") or []

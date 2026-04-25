@@ -36,6 +36,30 @@ MAX_HEARTBEAT_BUS_ID = 1_000_000
 
 _SAFE_ATTACK_TYPE = re.compile(r"^[a-z0-9_\-]{1,32}$")
 
+# Keepalive interval: Cloudflare's default WebSocket idle timeout is 100 s. We
+# proactively send a server-to-client ping every 25 s so the tunnel sees
+# bidirectional traffic even when only the client is publishing data frames.
+WS_KEEPALIVE_INTERVAL_S = 25.0
+
+
+async def _keepalive(ws: WebSocket, interval: float = WS_KEEPALIVE_INTERVAL_S) -> None:
+    """Send a periodic text ping over ``ws`` to keep the tunnel alive.
+
+    Runs as a background task alongside the receive loop. Exits silently on
+    disconnect or cancellation; any other exception is logged so the receive
+    loop can keep handling frames. ``websocket-client`` on the Jetson side
+    treats unsolicited text/binary frames as harmless application data, so the
+    ping payload does not interfere with the existing protocol.
+    """
+    try:
+        while True:
+            await asyncio.sleep(interval)
+            await ws.send_text("ping")
+    except (asyncio.CancelledError, WebSocketDisconnect):
+        return
+    except Exception:
+        logger.debug("WS keepalive: send failed; exiting task", exc_info=True)
+
 
 # ---------------------------------------------------------------------------
 # Health
@@ -108,6 +132,7 @@ async def ingest_gps(ws: WebSocket) -> None:
 
     last_pps_mark = time.monotonic()
     pps_counter: Dict[int, int] = {}
+    keepalive_task = asyncio.create_task(_keepalive(ws))
     try:
         while True:
             frame = await ws.receive_bytes()
@@ -172,6 +197,12 @@ async def ingest_gps(ws: WebSocket) -> None:
             await ws.close()
         except Exception:
             pass
+    finally:
+        keepalive_task.cancel()
+        try:
+            await keepalive_task
+        except (asyncio.CancelledError, Exception):
+            pass
 
 
 # ---------------------------------------------------------------------------
@@ -187,6 +218,7 @@ async def ingest_cctv(
     src_addr = _format_client(ws)
     last_flush = time.monotonic()
     bytes_since_flush = 0
+    keepalive_task = asyncio.create_task(_keepalive(ws))
     try:
         while True:
             frame = await ws.receive_bytes()
@@ -213,6 +245,12 @@ async def ingest_cctv(
         try:
             await ws.close()
         except Exception:
+            pass
+    finally:
+        keepalive_task.cancel()
+        try:
+            await keepalive_task
+        except (asyncio.CancelledError, Exception):
             pass
 
 

@@ -1,12 +1,26 @@
 """Telegram Bot alert sender for detection notifications."""
 
+from __future__ import annotations
+
 import logging
 import threading
 import time
+from typing import Union
 
 logger = logging.getLogger(__name__)
 
 TELEGRAM_API = "https://api.telegram.org/bot{token}/{method}"
+
+
+def _has_unsubstituted_placeholder(value: Union[str, None]) -> bool:
+    """True if ``value`` still contains a ``${...}`` token.
+
+    The Config loader interpolates env vars but leaves the literal
+    ``${NAME}`` token in place when the env var is missing.  Treat that
+    as "not configured" so we don't POST garbage tokens to Telegram and
+    rack up 404s.
+    """
+    return bool(value) and "${" in str(value)
 
 
 class TelegramAlert:
@@ -16,15 +30,35 @@ class TelegramAlert:
     Gracefully degrades if token/chat_id not configured.
     """
 
-    def __init__(self, bot_token="", chat_id="", enabled=True):
+    def __init__(self, bot_token: str = "", chat_id: str = "",
+                 enabled: bool = True) -> None:
         self.bot_token = bot_token
         self.chat_id = chat_id
-        self.enabled = enabled and bool(bot_token) and bool(chat_id)
+
+        # Detect unsubstituted ${TELEGRAM_BOT_TOKEN} / ${TELEGRAM_CHAT_ID}
+        # tokens — the literal string is truthy so the bool() guard
+        # below is not enough on its own.
+        placeholder_token = _has_unsubstituted_placeholder(bot_token)
+        placeholder_chat = _has_unsubstituted_placeholder(chat_id)
+
+        self.enabled = (
+            enabled
+            and bool(bot_token)
+            and bool(chat_id)
+            and not placeholder_token
+            and not placeholder_chat
+        )
         self._last_send = 0
         self._min_interval = 2.0  # rate limit: 1 msg per 2 seconds
 
         if self.enabled:
             logger.info("Telegram alerts enabled (chat_id=%s)", chat_id)
+        elif placeholder_token or placeholder_chat:
+            logger.info(
+                "Telegram disabled — bot_token/chat_id contains "
+                "unsubstituted ${...} placeholder (run "
+                "scripts/setup_telegram.py or export the env vars)"
+            )
         else:
             logger.info("Telegram alerts disabled (no token/chat_id)")
 
