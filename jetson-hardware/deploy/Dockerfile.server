@@ -1,5 +1,8 @@
 # Al-Ahsa Smart Bus — server image (FastAPI + SQLite, behind Cloudflare tunnel)
-FROM python:3.11-slim AS base
+# Pinned to bookworm because trixie retired libgdk-pixbuf2.0-0 (renamed to
+# libgdk-pixbuf-2.0-0). Stay on bookworm to keep WeasyPrint's native deps
+# resolvable and avoid future trixie repackaging surprises.
+FROM python:3.11-slim-bookworm AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
