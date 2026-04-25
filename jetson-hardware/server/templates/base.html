@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Al-Ahsa Smart Bus{% endblock %}</title>
+  <link rel="stylesheet" href="/static/dashboard.css">
+
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          crossorigin=""></script>
+
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <header class="banner">
+    <strong>Al-Ahsa Smart Bus &mdash; Security Dashboard</strong>
+    <span class="warn">
+      Prototype &middot; open endpoints &middot; no authentication
+      &middot; build <code>{{ build }}</code>
+    </span>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <script src="/static/dashboard.js" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

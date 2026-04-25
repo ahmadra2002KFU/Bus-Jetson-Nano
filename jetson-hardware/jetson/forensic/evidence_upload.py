@@ -1,78 +1,89 @@
-"""Forensic evidence TCP upload to server — 10 MB in 1448-byte chunks."""
+"""Forensic upload — HTTPS multipart POST to {server_url}/ingest/forensic.
 
-import socket
+Replaces the TCP bulk uploader. Accepts the PDF bytes produced by
+``evidence_capture.capture_evidence`` plus a metadata dict and uploads
+both as multipart/form-data.
+
+Return shape is preserved so the existing callback path keeps working:
+    {"upload_start": float, "upload_finish": float,
+     "completed": bool, "bytes_sent": int}
+"""
+
+from __future__ import annotations
+
+import json
 import logging
 import time
+from typing import Any, Dict
+
+import requests
 
 logger = logging.getLogger(__name__)
 
-CHUNK_SIZE = 1448  # matching ns-3 BulkSendHelper SendSize (line 1287)
-CONNECT_TIMEOUT = 10
-UPLOAD_TIMEOUT = 200  # matching ns-3 forensic timeout
+_UPLOAD_TIMEOUT = 200.0
 
 
-def upload_evidence(evidence_bytes, server_ip, port=8000):
-    """Upload forensic evidence to the server via TCP.
+def upload_evidence(
+    pdf_bytes: bytes,
+    metadata: Dict[str, Any],
+    *,
+    server_url: str,
+    session: "requests.Session | None" = None,
+) -> Dict[str, Any]:
+    """Upload the forensic PDF and metadata to the server.
 
-    Args:
-        evidence_bytes: The 10 MB evidence package
-        server_ip: Server IP address
-        port: Forensic upload port (default 8000)
+    Parameters
+    ----------
+    pdf_bytes : bytes
+        The rendered PDF file.
+    metadata : dict
+        Metadata for the forensic row. Serialised as the ``metadata``
+        form field (JSON). Required keys: ``bus_id``, ``attack_type``,
+        ``trigger_ts``. Optional: ``details`` (dict).
+    server_url : str
+        Base URL of the server.
+    session : requests.Session, optional
+        Reuse a session for connection pooling.
 
-    Returns:
-        dict with upload_start, upload_finish, completed, bytes_sent
+    Returns
+    -------
+    dict
+        Status of the upload. Keys:
+        ``upload_start``, ``upload_finish``, ``completed``, ``bytes_sent``.
+        ``bytes_sent`` is the PDF size on success, 0 on failure.
     """
-    result = {
-        'upload_start': time.time(),
-        'upload_finish': 0.0,
-        'completed': False,
-        'bytes_sent': 0,
+    url = server_url.rstrip("/") + "/ingest/forensic"
+    sess = session or requests.Session()
+
+    result: Dict[str, Any] = {
+        "upload_start": time.time(),
+        "upload_finish": 0.0,
+        "completed": False,
+        "bytes_sent": 0,
     }
 
+    files = {"pdf": ("incident.pdf", pdf_bytes, "application/pdf")}
+    data = {"metadata": json.dumps(metadata, separators=(",", ":"))}
+
+    logger.info("forensic upload -> %s (%d bytes)", url, len(pdf_bytes))
+
     try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(CONNECT_TIMEOUT)
-        sock.connect((server_ip, port))
-        sock.settimeout(UPLOAD_TIMEOUT)
-
-        total = len(evidence_bytes)
-        sent = 0
-        start = time.time()
-
-        logger.info("Uploading %d bytes to %s:%d...", total, server_ip, port)
-
-        while sent < total:
-            chunk = evidence_bytes[sent:sent + CHUNK_SIZE]
-            sock.sendall(chunk)
-            sent += len(chunk)
-
-            # Progress log every 1 MB
-            if sent % (1024 * 1024) < CHUNK_SIZE:
-                elapsed = time.time() - start
-                rate = (sent * 8) / elapsed / 1e6 if elapsed > 0 else 0
-                logger.info("  Upload progress: %d/%d bytes (%.1f Mbps)",
-                            sent, total, rate)
-
-        result['bytes_sent'] = sent
-        result['completed'] = True
-        result['upload_finish'] = time.time()
-
-        elapsed = result['upload_finish'] - result['upload_start']
-        logger.info("Upload complete: %d bytes in %.1f seconds", sent, elapsed)
-
-    except socket.timeout:
-        result['upload_finish'] = time.time()
-        logger.error("Upload timed out after %d seconds", UPLOAD_TIMEOUT)
-    except ConnectionRefusedError:
-        result['upload_finish'] = time.time()
-        logger.error("Connection refused — is the server running?")
-    except Exception as e:
-        result['upload_finish'] = time.time()
-        logger.error("Upload failed: %s", e)
-    finally:
+        resp = sess.post(url, files=files, data=data, timeout=_UPLOAD_TIMEOUT)
+        result["upload_finish"] = time.time()
+        if resp.status_code >= 400:
+            logger.error(
+                "forensic upload failed status=%d body=%s",
+                resp.status_code, resp.text[:200],
+            )
+            return result
         try:
-            sock.close()
-        except Exception:
-            pass
-
+            body = resp.json()
+            logger.info("forensic uploaded: %s", body)
+        except ValueError:
+            logger.info("forensic uploaded (non-JSON response)")
+        result["completed"] = True
+        result["bytes_sent"] = len(pdf_bytes)
+    except requests.RequestException as exc:
+        result["upload_finish"] = time.time()
+        logger.error("forensic upload error: %s", exc)
     return result

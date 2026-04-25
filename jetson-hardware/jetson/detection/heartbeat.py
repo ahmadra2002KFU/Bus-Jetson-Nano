@@ -1,175 +1,107 @@
+"""Heartbeat probe — HTTPS GET to {server_url}/health/heartbeat.
+
+Replaces the old UDP echo with an HTTPS probe every 1 s. Treats any
+non-2xx response or timeout as a lost probe. Keeps the public API
+(``get_interval_loss`` / ``get_avg_rtt``) unchanged so the DDoS
+detector can keep querying it.
 """
-Al-Ahsa Smart Bus — Heartbeat probe (UDP echo) thread.
 
-Sends 12-byte UDP probes to the server every 1 second and listens for
-echoed replies.  Tracks packet loss and RTT over a sliding 10-second
-window so that the DDoS detector can query network health.
-
-Probe wire format (little-endian):
-    [0..3]  uint32  sequence number
-    [4..11] double  monotonic timestamp (seconds)
-
-The server is expected to echo the exact 12 bytes back on the same
-port (5001).
-"""
+from __future__ import annotations
 
 import logging
-import socket
-import struct
 import threading
 import time
-from typing import List
+from typing import List, Optional
+
+import requests
 
 logger = logging.getLogger(__name__)
 
-# Wire format: little-endian uint32 + double = 12 bytes
-_PROBE_FMT = "<Id"
-_PROBE_SIZE = struct.calcsize(_PROBE_FMT)  # 12
-
-_SEND_INTERVAL = 1.0       # seconds between probes
-_WINDOW_DURATION = 10.0     # seconds per measurement window
+_SEND_INTERVAL = 1.0
+_REQUEST_TIMEOUT = 3.0
 
 
 class HeartbeatProbe:
-    """Thread that sends UDP probes and measures loss / RTT."""
+    """HTTPS-based heartbeat loss / RTT tracker."""
 
-    def __init__(self, server_ip: str, server_port: int = 5001):
-        self._server_ip = server_ip
-        self._server_port = server_port
-
-        # Stop signal
+    def __init__(
+        self,
+        *,
+        server_url: str,
+        bus_id: int,
+        session: "requests.Session | None" = None,
+    ):
+        self._url = server_url.rstrip("/") + "/health/heartbeat"
+        self._bus_id = bus_id
+        self._session = session or requests.Session()
         self._stop_event = threading.Event()
-
-        # Per-window counters (protected by _lock)
         self._lock = threading.Lock()
-        self._sent_count: int = 0
-        self._acked_count: int = 0
-        self._rtt_samples: List[float] = []
+        self._sent = 0
+        self._acked = 0
+        self._rtts: List[float] = []
+        self._seq = 0
+        self._thread: Optional[threading.Thread] = None
 
-        # Sequence counter (only touched by sender thread)
-        self._seq: int = 0
-
-        # Threads
-        self._send_thread: threading.Thread | None = None
-        self._recv_thread: threading.Thread | None = None
-
-        # Socket (created on start)
-        self._sock: socket.socket | None = None
-
-    # ------------------------------------------------------------------
-    # Public API
-    # ------------------------------------------------------------------
+    # Public -----------------------------------------------------------
 
     def start(self) -> None:
-        """Start the sender and receiver threads."""
         self._stop_event.clear()
-
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._sock.settimeout(1.0)  # recv timeout so thread can check stop
-        # Bind to any available port for receiving echoes
-        self._sock.bind(("", 0))
-
-        self._send_thread = threading.Thread(
-            target=self._send_loop, daemon=True, name="heartbeat-tx"
+        self._thread = threading.Thread(
+            target=self._loop, daemon=True, name="heartbeat"
         )
-        self._recv_thread = threading.Thread(
-            target=self._recv_loop, daemon=True, name="heartbeat-rx"
-        )
-        self._send_thread.start()
-        self._recv_thread.start()
-        logger.info(
-            "Heartbeat started -> %s:%d", self._server_ip, self._server_port
-        )
+        self._thread.start()
+        logger.info("Heartbeat start bus=%d url=%s", self._bus_id, self._url)
 
     def stop(self) -> None:
-        """Signal both threads to stop and close the socket."""
         self._stop_event.set()
-        if self._sock:
-            try:
-                self._sock.close()
-            except OSError:
-                pass
-        if self._send_thread:
-            self._send_thread.join(timeout=3.0)
-        if self._recv_thread:
-            self._recv_thread.join(timeout=3.0)
-        logger.info("Heartbeat stopped")
+        if self._thread:
+            self._thread.join(timeout=5.0)
+        logger.info("Heartbeat stop bus=%d", self._bus_id)
 
     def get_interval_loss(self) -> float:
-        """Return packet loss ratio for the last window (0.0 -- 1.0).
-
-        Resets the window counters after the call.
-        """
+        """Loss ratio in [0, 1] over the last window, resets counters."""
         with self._lock:
-            sent = self._sent_count
-            acked = self._acked_count
-            # Reset for next window
-            self._sent_count = 0
-            self._acked_count = 0
-            self._rtt_samples.clear()
-
+            sent, acked = self._sent, self._acked
+            self._sent = 0
+            self._acked = 0
+            self._rtts.clear()
         if sent == 0:
             return 0.0
         lost = sent - acked
         return max(0.0, min(1.0, lost / sent))
 
     def get_avg_rtt(self) -> float:
-        """Return average RTT in seconds for the last window.
-
-        Does NOT reset counters (call get_interval_loss for that).
-        """
+        """Average RTT in seconds over the current window (no reset)."""
         with self._lock:
-            samples = list(self._rtt_samples)
+            samples = list(self._rtts)
         if not samples:
             return 0.0
         return sum(samples) / len(samples)
 
-    # ------------------------------------------------------------------
-    # Internal threads
-    # ------------------------------------------------------------------
+    # Internal ---------------------------------------------------------
 
-    def _send_loop(self) -> None:
-        """Send one probe per second until stopped."""
+    def _loop(self) -> None:
         while not self._stop_event.is_set():
-            try:
-                seq = self._seq
-                self._seq += 1
-                ts = time.monotonic()
-                payload = struct.pack(_PROBE_FMT, seq, ts)
-                self._sock.sendto(
-                    payload, (self._server_ip, self._server_port)
-                )
-                with self._lock:
-                    self._sent_count += 1
-                logger.debug("Heartbeat TX seq=%d", seq)
-            except OSError as exc:
-                if self._stop_event.is_set():
-                    break
-                logger.warning("Heartbeat send error: %s", exc)
-
-            # Sleep in small increments so stop is responsive
+            self._probe_once()
             self._stop_event.wait(timeout=_SEND_INTERVAL)
 
-    def _recv_loop(self) -> None:
-        """Receive echoed probes and record RTT."""
-        while not self._stop_event.is_set():
-            try:
-                data, _addr = self._sock.recvfrom(64)
-                recv_ts = time.monotonic()
-                if len(data) < _PROBE_SIZE:
-                    continue
-                _seq, send_ts = struct.unpack(_PROBE_FMT, data[:_PROBE_SIZE])
-                rtt = recv_ts - send_ts
-                if rtt < 0:
-                    continue  # clock anomaly
+    def _probe_once(self) -> None:
+        self._seq += 1
+        params = {"bus_id": self._bus_id, "seq": self._seq, "ts": time.time()}
+        t0 = time.monotonic()
+        with self._lock:
+            self._sent += 1
+        try:
+            resp = self._session.get(
+                self._url, params=params, timeout=_REQUEST_TIMEOUT
+            )
+            if resp.status_code < 400:
+                rtt = time.monotonic() - t0
                 with self._lock:
-                    self._acked_count += 1
-                    self._rtt_samples.append(rtt)
-                logger.debug("Heartbeat RX seq=%d rtt=%.4fs", _seq, rtt)
-            except socket.timeout:
-                continue
-            except OSError:
-                if self._stop_event.is_set():
-                    break
-                # Socket closed or other error
-                continue
+                    self._acked += 1
+                    self._rtts.append(rtt)
+                logger.debug("heartbeat ok seq=%d rtt=%.3fs", self._seq, rtt)
+            else:
+                logger.debug("heartbeat status=%d seq=%d", resp.status_code, self._seq)
+        except requests.RequestException as exc:
+            logger.debug("heartbeat fail seq=%d: %s", self._seq, exc)

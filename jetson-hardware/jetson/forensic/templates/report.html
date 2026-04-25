@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Incident Forensic Report — Bus {{ bus_id }}</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 2cm;
+      @bottom-center {
+        content: "Al-Ahsa Smart Bus — Forensic Report — Page " counter(page)
+                 " of " counter(pages);
+        font-size: 9pt;
+        color: #666;
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "DejaVu Sans", "Liberation Sans", Arial, sans-serif;
+      font-size: 10pt;
+      color: #1a1a1a;
+      line-height: 1.4;
+    }
+
+    h1 { font-size: 22pt; margin: 0 0 4pt 0; }
+    h2 {
+      font-size: 13pt;
+      margin: 18pt 0 6pt 0;
+      padding-bottom: 3pt;
+      border-bottom: 1px solid #c0c0c0;
+      color: #0b3d66;
+    }
+    h3 { font-size: 11pt; margin: 10pt 0 4pt 0; color: #0b3d66; }
+
+    .cover {
+      border: 2px solid #0b3d66;
+      border-radius: 6pt;
+      padding: 14pt 18pt;
+      margin-bottom: 14pt;
+    }
+    .cover .op { color: #555; font-size: 9pt; text-transform: uppercase;
+                 letter-spacing: 1px; }
+    .cover .title { font-size: 20pt; font-weight: bold; margin-top: 4pt; }
+    .cover .meta { margin-top: 8pt; font-size: 10pt; }
+    .cover .meta div { margin: 2pt 0; }
+
+    .badge {
+      display: inline-block;
+      padding: 3pt 9pt;
+      border-radius: 12pt;
+      color: white;
+      font-weight: bold;
+      font-size: 10pt;
+      letter-spacing: 0.5px;
+    }
+    .badge-ddos      { background: #c0392b; }
+    .badge-gps-spoof { background: #d98416; }
+    .badge-unknown   { background: #555;    }
+
+    table.metrics, table.events {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4pt;
+      font-size: 9.5pt;
+    }
+    table.metrics th, table.metrics td,
+    table.events  th, table.events  td {
+      border: 1px solid #d0d0d0;
+      padding: 4pt 6pt;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.metrics th, table.events th {
+      background: #eef3f8;
+      color: #0b3d66;
+      font-weight: bold;
+    }
+    table.metrics td.k { width: 38%; font-weight: bold; color: #333; }
+
+    .photo-wrap, .map-wrap {
+      margin-top: 6pt;
+      text-align: center;
+    }
+    .photo-wrap img, .map-wrap img {
+      max-width: 100%;
+      max-height: 10cm;
+      border: 1px solid #bbb;
+      border-radius: 3pt;
+    }
+    .placeholder {
+      border: 1px dashed #999;
+      border-radius: 3pt;
+      height: 6cm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-style: italic;
+    }
+
+    .footer-note {
+      margin-top: 24pt;
+      padding-top: 8pt;
+      border-top: 1px solid #d0d0d0;
+      font-size: 8.5pt;
+      color: #666;
+    }
+
+    .kbd {
+      font-family: "DejaVu Sans Mono", "Courier New", monospace;
+      background: #f4f4f4;
+      padding: 0 3pt;
+      border-radius: 2pt;
+    }
+  </style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="op">Al-Ahsa SAPTCO — Smart Bus System</div>
+  <div class="title">Incident Forensic Report</div>
+  <div class="meta">
+    <div><strong>Bus ID:</strong> {{ bus_id }}</div>
+    <div>
+      <strong>Attack Type:</strong>
+      <span class="badge {{ badge_class }}">{{ attack_type_label }}</span>
+    </div>
+    <div><strong>Trigger Time (ISO 8601):</strong> {{ trigger_iso }}</div>
+    <div><strong>Trigger Time (local):</strong> {{ trigger_human }}</div>
+    <div><strong>Operator:</strong> Al-Ahsa SAPTCO</div>
+  </div>
+</section>
+
+<h2>Detection Metrics</h2>
+<table class="metrics">
+  <tr><th colspan="2">Measurement</th></tr>
+  {% for key, val in metric_rows %}
+  <tr><td class="k">{{ key }}</td><td>{{ val }}</td></tr>
+  {% endfor %}
+</table>
+
+<h2>Captured Camera Frame</h2>
+<div class="photo-wrap">
+  {% if camera_data_uri %}
+    <img src="{{ camera_data_uri }}" alt="captured camera frame" />
+  {% else %}
+    <div class="placeholder">Camera frame unavailable at time of capture.</div>
+  {% endif %}
+</div>
+
+{% if gps_map_data_uri %}
+<h2>GPS Trace</h2>
+<div class="map-wrap">
+  <img src="{{ gps_map_data_uri }}" alt="gps trace figure" />
+</div>
+{% endif %}
+
+<h2>Recent Events Log</h2>
+{% if events %}
+<table class="events">
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Type</th>
+      <th>Value 1</th>
+      <th>Value 2</th>
+      <th>Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for ev in events %}
+    <tr>
+      <td><span class="kbd">{{ ev.ts_human }}</span></td>
+      <td>{{ ev.type }}</td>
+      <td>{{ ev.value1 }}</td>
+      <td>{{ ev.value2 }}</td>
+      <td>{{ ev.detail }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p><em>No recent events recorded.</em></p>
+{% endif %}
+
+<div class="footer-note">
+  Generated on bus {{ bus_id }} at {{ generation_ts }}.
+  This is an automatically-generated forensic report. Prototype system.
+</div>
+
+</body>
+</html>

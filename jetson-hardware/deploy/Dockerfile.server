@@ -1,0 +1,36 @@
+# Al-Ahsa Smart Bus — server image (FastAPI + SQLite, behind Cloudflare tunnel)
+FROM python:3.11-slim AS base
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+# WeasyPrint isn't needed on the server (PDFs are built on the Jetson), so we
+# only install lightweight runtime deps here.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements-server.txt /app/requirements-server.txt
+RUN pip install -r /app/requirements-server.txt
+
+COPY server /app/server
+COPY jetson/routes.py /app/jetson/routes.py
+COPY jetson/utils.py /app/jetson/utils.py
+RUN touch /app/jetson/__init__.py
+
+ENV PORT=3232 \
+    DB_PATH=/data/server.db \
+    FORENSICS_DIR=/data/forensics \
+    RETENTION_DAYS=30 \
+    LOG_LEVEL=INFO
+
+VOLUME ["/data"]
+EXPOSE 3232
+
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
+    CMD curl -fsS http://localhost:3232/health || exit 1
+
+CMD ["python", "-m", "uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "3232"]

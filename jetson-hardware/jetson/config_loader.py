@@ -1,109 +1,135 @@
-"""
-Al-Ahsa Smart Bus — Configuration loader.
+"""Al-Ahsa Smart Bus — typed configuration loader.
 
-Reads deploy/config.ini and returns typed values.
-Supports environment variable interpolation for secrets
-(e.g. ${TELEGRAM_BOT_TOKEN}).
+Reads ``config.ini`` (at the package root) and interpolates ``${ENV}``
+tokens. Property accessors fall back to ns-3 defaults so a missing
+config section still yields a working agent.
 """
+
+from __future__ import annotations
 
 import configparser
+import logging
 import os
 import re
 from pathlib import Path
 from typing import Optional
 
-# Default config path: deploy/config.ini relative to this file's package
-_DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.ini"
+logger = logging.getLogger(__name__)
 
-# Pattern to match ${ENV_VAR} in config values
+_DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent.parent / "config.ini"
 _ENV_VAR_PATTERN = re.compile(r"\$\{(\w+)\}")
 
 
 def _interpolate_env(value: str) -> str:
-    """Replace ${VAR} tokens with environment variable values."""
-    def _replacer(match: re.Match) -> str:
-        var_name = match.group(1)
-        env_val = os.environ.get(var_name)
-        if env_val is None:
-            return match.group(0)  # leave placeholder if not set
-        return env_val
-    return _ENV_VAR_PATTERN.sub(_replacer, value)
+    def _sub(m: re.Match) -> str:
+        return os.environ.get(m.group(1), m.group(0))
+    return _ENV_VAR_PATTERN.sub(_sub, value)
 
 
 class Config:
-    """Typed accessor for deploy/config.ini values."""
+    """Typed accessor over ``config.ini``."""
 
     def __init__(self, config_path: Optional[str] = None):
         path = Path(config_path) if config_path else _DEFAULT_CONFIG_PATH
         if not path.exists():
             raise FileNotFoundError(f"Config file not found: {path}")
-
         self._parser = configparser.ConfigParser()
         self._parser.read(str(path))
+        self._path = path
 
-    # ------------------------------------------------------------------
-    # Raw accessors
-    # ------------------------------------------------------------------
+    # -- raw -----------------------------------------------------------
+
     def get(self, section: str, key: str, fallback: str = "") -> str:
         raw = self._parser.get(section, key, fallback=fallback)
         return _interpolate_env(raw)
 
     def getint(self, section: str, key: str, fallback: int = 0) -> int:
-        return self._parser.getint(section, key, fallback=fallback)
+        try:
+            return self._parser.getint(section, key, fallback=fallback)
+        except (ValueError, TypeError):
+            return fallback
 
     def getfloat(self, section: str, key: str, fallback: float = 0.0) -> float:
-        return self._parser.getfloat(section, key, fallback=fallback)
+        try:
+            return self._parser.getfloat(section, key, fallback=fallback)
+        except (ValueError, TypeError):
+            return fallback
 
-    def getboolean(self, section: str, key: str, fallback: bool = False) -> bool:
-        return self._parser.getboolean(section, key, fallback=fallback)
+    def getbool(self, section: str, key: str, fallback: bool = False) -> bool:
+        try:
+            return self._parser.getboolean(section, key, fallback=fallback)
+        except (ValueError, TypeError):
+            return fallback
 
-    # ------------------------------------------------------------------
-    # [network]
-    # ------------------------------------------------------------------
+    # -- [network] -----------------------------------------------------
+
     @property
-    def server_ip(self) -> str:
-        return self.get("network", "server_ip", fallback="192.168.1.100")
+    def server_url(self) -> str:
+        return self.get("network", "server_url",
+                        fallback="https://jetson.testingdomainzforprototypes.website")
 
     @property
     def bus_id(self) -> int:
         return self.getint("network", "bus_id", fallback=0)
 
     @property
-    def lte_interface(self) -> str:
-        return self.get("network", "lte_interface", fallback="wwan0")
+    def interface(self) -> str:
+        return self.get("network", "interface", fallback="wlan0")
 
-    # ------------------------------------------------------------------
-    # [ports]
-    # ------------------------------------------------------------------
-    @property
-    def telemetry_port(self) -> int:
-        return self.getint("ports", "telemetry_port", fallback=5000)
+    # -- [camera] ------------------------------------------------------
 
     @property
-    def cctv_port(self) -> int:
-        return self.getint("ports", "cctv_port", fallback=6000)
+    def use_real_camera(self) -> bool:
+        return self.getbool("camera", "use_real_camera", fallback=False)
 
     @property
-    def ticket_port(self) -> int:
-        return self.getint("ports", "ticket_port", fallback=7000)
+    def camera_device_index(self) -> int:
+        return self.getint("camera", "device_index", fallback=0)
 
     @property
-    def forensic_port(self) -> int:
-        return self.getint("ports", "forensic_port", fallback=8000)
+    def camera_width(self) -> int:
+        return self.getint("camera", "frame_width", fallback=1280)
 
-    # ------------------------------------------------------------------
-    # [thresholds]
-    # ------------------------------------------------------------------
+    @property
+    def camera_height(self) -> int:
+        return self.getint("camera", "frame_height", fallback=720)
+
+    @property
+    def camera_fps(self) -> int:
+        return self.getint("camera", "fps", fallback=30)
+
+    # -- [telegram] ----------------------------------------------------
+
+    @property
+    def telegram_enabled(self) -> bool:
+        return self.getbool("telegram", "enabled", fallback=False)
+
+    @property
+    def telegram_bot_token(self) -> str:
+        return self.get("telegram", "bot_token", fallback="")
+
+    @property
+    def telegram_chat_id(self) -> str:
+        return self.get("telegram", "chat_id", fallback="")
+
+    @property
+    def telegram_alert_cooldown_s(self) -> float:
+        return self.getfloat("telegram", "alert_cooldown_s", fallback=60.0)
+
+    # -- [thresholds] --------------------------------------------------
+
     @property
     def ddos_rate_bps(self) -> float:
         return self.getfloat("thresholds", "ddos_rate_bps", fallback=15e6)
 
     @property
     def ddos_loss_pct(self) -> float:
+        """DDoS packet-loss threshold as a ratio in [0, 1]."""
         return self.getfloat("thresholds", "ddos_loss_pct", fallback=0.05)
 
     @property
     def ddos_delay_s(self) -> float:
+        """DDoS RTT threshold in seconds."""
         return self.getfloat("thresholds", "ddos_delay_s", fallback=0.1)
 
     @property
@@ -126,16 +152,11 @@ class Config:
     def detection_mode(self) -> str:
         return self.get("thresholds", "detection_mode", fallback="any")
 
-    # ------------------------------------------------------------------
-    # [traffic]
-    # ------------------------------------------------------------------
+    # -- [traffic] -----------------------------------------------------
+
     @property
     def gps_interval_s(self) -> float:
         return self.getfloat("traffic", "gps_interval_s", fallback=1.0)
-
-    @property
-    def gps_packet_size(self) -> int:
-        return self.getint("traffic", "gps_packet_size", fallback=200)
 
     @property
     def cctv_packet_size(self) -> int:
@@ -150,8 +171,20 @@ class Config:
         return self.getint("traffic", "ticket_packet_size", fallback=256)
 
     @property
-    def forensic_upload_bytes(self) -> int:
-        return self.getint("traffic", "forensic_upload_bytes", fallback=10485760)
+    def ticket_min_interval_s(self) -> float:
+        return self.getfloat("traffic", "ticket_min_interval_s", fallback=6.0)
+
+    @property
+    def ticket_max_interval_s(self) -> float:
+        return self.getfloat("traffic", "ticket_max_interval_s", fallback=20.0)
+
+    @property
+    def ticket_min_burst(self) -> int:
+        return self.getint("traffic", "ticket_min_burst", fallback=1)
+
+    @property
+    def ticket_max_burst(self) -> int:
+        return self.getint("traffic", "ticket_max_burst", fallback=3)
 
     @property
     def ddos_check_interval_s(self) -> float:
@@ -161,43 +194,23 @@ class Config:
     def warmup_time_s(self) -> float:
         return self.getfloat("traffic", "warmup_time_s", fallback=90.0)
 
-    # ------------------------------------------------------------------
-    # [camera]
-    # ------------------------------------------------------------------
-    @property
-    def camera_device_index(self) -> int:
-        return self.getint("camera", "device_index", fallback=0)
+    # -- [reliability] -------------------------------------------------
 
     @property
-    def camera_frame_width(self) -> int:
-        return self.getint("camera", "frame_width", fallback=1280)
+    def offline_db_path(self) -> str:
+        return self.get("reliability", "offline_db_path",
+                        fallback="./logs/offline_queue.db")
 
     @property
-    def camera_frame_height(self) -> int:
-        return self.getint("camera", "frame_height", fallback=720)
+    def retry_max_backoff_s(self) -> float:
+        return self.getfloat("reliability", "retry_max_backoff_s", fallback=60.0)
 
     @property
-    def camera_fps(self) -> int:
-        return self.getint("camera", "fps", fallback=30)
+    def forensic_max_attempts(self) -> int:
+        return self.getint("reliability", "forensic_max_attempts", fallback=10)
 
-    # ------------------------------------------------------------------
-    # [telegram]
-    # ------------------------------------------------------------------
-    @property
-    def telegram_bot_token(self) -> str:
-        return self.get("telegram", "bot_token", fallback="")
+    # -- [logging] -----------------------------------------------------
 
     @property
-    def telegram_chat_id(self) -> str:
-        return self.get("telegram", "chat_id", fallback="")
-
-    @property
-    def telegram_alert_cooldown_s(self) -> float:
-        return self.getfloat("telegram", "alert_cooldown_s", fallback=60.0)
-
-    # ------------------------------------------------------------------
-    # [route]
-    # ------------------------------------------------------------------
-    @property
-    def route_index(self) -> int:
-        return self.getint("route", "route_index", fallback=0)
+    def log_dir(self) -> str:
+        return self.get("logging", "log_dir", fallback="./logs")

@@ -1,73 +1,112 @@
-"""Forensic evidence capture — camera frame + logs bundled into 10MB package."""
+"""Forensic evidence capture — build a PDF incident report."""
 
+from __future__ import annotations
+
+import csv
 import logging
-import struct
-import time
 import os
+import time
+from typing import Any
+
+from jetson.forensic.pdf_builder import build_incident_pdf
 
 logger = logging.getLogger(__name__)
 
-FORENSIC_SIZE = 10_485_760  # 10 MB, matching ns-3 line 1286
+_MAX_EVENT_ROWS = 25
 
 
-def capture_evidence(camera, csv_logger, bus_id=0, attack_type="unknown"):
-    """Capture forensic evidence package.
+def _read_recent_events(csv_logger, limit: int = _MAX_EVENT_ROWS
+                        ) -> list[dict[str, Any]]:
+    """Return the last ``limit`` events from the CSV logger's events.csv."""
+    if csv_logger is None:
+        return []
 
-    Bundles:
-    1. Camera frame (JPEG)
-    2. Event log snapshot
-    3. Metadata header
-    4. Zero padding to exactly 10,485,760 bytes
+    try:
+        log_dir = getattr(csv_logger, "log_dir", None)
+        if not log_dir:
+            return []
+        events_path = os.path.join(log_dir, "events.csv")
+        if not os.path.exists(events_path):
+            return []
+
+        rows: list[dict[str, Any]] = []
+        with open(events_path, "r", newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    ts = float(row.get("time", 0.0))
+                except (TypeError, ValueError):
+                    ts = 0.0
+                rows.append({
+                    "ts":     ts,
+                    "type":   row.get("eventType", ""),
+                    "value1": row.get("value1", ""),
+                    "value2": row.get("value2", ""),
+                    "detail": row.get("detail", ""),
+                })
+        return rows[-limit:]
+    except Exception as exc:
+        logger.warning("could not read recent events: %s", exc)
+        return []
+
+
+def capture_evidence(
+    camera,
+    csv_logger,
+    bus_id: int = 0,
+    attack_type: str = "unknown",
+    detection_details: dict | None = None,
+    gps_trace: list[tuple[float, float]] | None = None,
+    route_polyline: list[tuple[float, float]] | None = None,
+):
+    """Capture forensic evidence and render it as a PDF incident report.
 
     Returns:
-        bytes: 10 MB evidence package
+        tuple[bytes, dict]:
+            - PDF bytes.
+            - Metadata dict with ``bus_id``, ``attack_type``, ``trigger_ts``,
+              ``details`` — consumed by the forensic uploader.
     """
-    parts = []
+    trigger_ts = time.time()
 
-    # Header (64 bytes)
-    header = struct.pack('<I', 0x45564431)  # "EVD1" magic
-    header += struct.pack('<I', bus_id)
-    header += struct.pack('<d', time.time())
-    header += attack_type.encode('utf-8')[:32].ljust(32, b'\x00')
-    header += b'\x00' * (64 - len(header))
-    parts.append(header)
-
-    # Camera frame
-    jpeg_bytes = b''
-    if camera:
+    jpeg_bytes: bytes | None = None
+    if camera is not None:
         try:
-            jpeg_bytes = camera.grab_jpeg(quality=80) or b''
-            logger.info("Captured camera frame: %d bytes", len(jpeg_bytes))
-        except Exception as e:
-            logger.warning("Camera capture failed: %s", e)
+            jpeg_bytes = camera.grab_jpeg(quality=80) or None
+            if jpeg_bytes:
+                logger.info("captured camera frame: %d bytes",
+                            len(jpeg_bytes))
+        except Exception as exc:
+            logger.warning("camera capture failed: %s", exc)
+            jpeg_bytes = None
 
-    # Frame length prefix + frame data
-    parts.append(struct.pack('<I', len(jpeg_bytes)))
-    if jpeg_bytes:
-        parts.append(jpeg_bytes)
+    recent_events = _read_recent_events(csv_logger)
+    details = dict(detection_details or {})
 
-    # Event log snapshot
-    log_data = b''
-    if csv_logger:
-        try:
-            events_path = os.path.join(csv_logger.log_dir, "events.csv")
-            if os.path.exists(events_path):
-                with open(events_path, 'rb') as f:
-                    log_data = f.read()[-8192:]  # last 8KB of log
-        except Exception as e:
-            logger.warning("Log snapshot failed: %s", e)
+    try:
+        pdf_bytes = build_incident_pdf(
+            bus_id=int(bus_id),
+            attack_type=attack_type,
+            trigger_ts=trigger_ts,
+            detection_details=details,
+            camera_jpeg=jpeg_bytes,
+            recent_events=recent_events,
+            gps_trace=gps_trace,
+            route_polyline=route_polyline,
+        )
+    except Exception as exc:
+        logger.error("PDF render failed: %s", exc)
+        raise
 
-    parts.append(struct.pack('<I', len(log_data)))
-    if log_data:
-        parts.append(log_data)
+    metadata = {
+        "bus_id":      int(bus_id),
+        "attack_type": attack_type,
+        "trigger_ts":  trigger_ts,
+        "details":     details,
+    }
 
-    # Assemble and pad to exactly 10 MB
-    evidence = b''.join(parts)
-    if len(evidence) < FORENSIC_SIZE:
-        evidence += b'\x00' * (FORENSIC_SIZE - len(evidence))
-    elif len(evidence) > FORENSIC_SIZE:
-        evidence = evidence[:FORENSIC_SIZE]
-
-    logger.info("Evidence package: %d bytes (target: %d)",
-                len(evidence), FORENSIC_SIZE)
-    return evidence, jpeg_bytes
+    logger.info(
+        "forensic evidence ready: bus=%d attack=%s pdf=%d bytes",
+        bus_id, attack_type, len(pdf_bytes),
+    )
+    return pdf_bytes, metadata
