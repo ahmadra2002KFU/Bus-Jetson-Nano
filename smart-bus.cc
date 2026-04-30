@@ -52,7 +52,13 @@ NS_LOG_COMPONENT_DEFINE("SmartBusSimulation");
 static const uint32_t MAX_BUSES = 41;
 static const uint32_t NUM_ENB = 3;
 static const double STATION_STOP_TIME = 30.0;
-static const double BUS_SPEED_MS = 11.1; // ~40 km/h
+// Supervisor spec: bus speed 30-50 km/h, "variable, not fixed".
+// We assign each bus a constant speed sampled uniformly from [30,50] km/h
+// (~ [8.33, 13.89] m/s) at simulation start. Per-bus constant (not
+// per-segment) was chosen so mobility waypoint timing is deterministic
+// per bus and so logged speed anomalies remain comparable across runs.
+static const double BUS_SPEED_MIN_MS = 8.33;   // 30 km/h
+static const double BUS_SPEED_MAX_MS = 13.89;  // 50 km/h
 
 // Detection thresholds
 static const double DDOS_RATE_THRESHOLD = 15e6;    // 15 Mbps
@@ -62,7 +68,17 @@ static const double GPS_SPEED_THRESHOLD = 22.2;     // 80 km/h
 static const double GPS_JUMP_THRESHOLD = 1000.0;    // 1 km
 static const double GPS_CORRIDOR_THRESHOLD = 1500.0; // 1500m
 static const double DETECTION_WARMUP_TIME = 90.0;
-static const double SERVER_LINK_RATE_BPS = 1e9;
+// Backhaul/transit from PGW to the analytics server.
+// 100 Mbps models a realistic operator-to-customer backhaul; this is the
+// link where the DDoS attacker traffic mixes with legitimate aggregated
+// uplink before hitting the analytics server. Sized so:
+//   - Baseline aggregated bus traffic (~43 Mbps offered, ~41 Mbps delivered)
+//     fits comfortably (<50% utilisation -> no queue, ~0 queue delay).
+//   - DDoS at 30 Mbps + legit 41 Mbps = 71 Mbps -> ~71% utilisation,
+//     causing queue build-up and visible delay/PLR jump in the metrics.
+// Previously 1 Gbps, which made the DDoS invisible because the server
+// link absorbed everything trivially.
+static const double SERVER_LINK_RATE_BPS = 100e6;
 
 // GPS telemetry packet format:
 // [0..3]   magic (uint32)
@@ -126,6 +142,11 @@ static double g_gpsSpoofDetectionTime = 0.0;
 static bool g_forensicTriggered = false;
 static std::string g_detectionMode = "any";
 static Ptr<PacketSink> g_forensicSinkApp;
+static double g_simTime = 300.0;  // Set in main(); used by forensic poller.
+// GPS detector streak gate. Supervisor spec is "any 1-of-3 condition
+// triggers" -> default 1. Configurable via --gpsStreakRequired for noise
+// experiments; the compliance baseline is 1.
+static uint32_t g_gpsStreakRequired = 1;
 
 // ============================================================
 // HELPER: Activate one uplink dedicated bearer by server port
@@ -304,6 +325,11 @@ SetupBusMobility(NodeContainer &busNodes,
     mobilityHelper.SetMobilityModel("ns3::WaypointMobilityModel");
     mobilityHelper.Install(busNodes);
 
+    // Per-bus speed sampler, uniform in supervisor's 30-50 km/h band.
+    Ptr<UniformRandomVariable> speedRv = CreateObject<UniformRandomVariable>();
+    speedRv->SetAttribute("Min", DoubleValue(BUS_SPEED_MIN_MS));
+    speedRv->SetAttribute("Max", DoubleValue(BUS_SPEED_MAX_MS));
+
     for (uint32_t i = 0; i < busNodes.GetN(); i++)
     {
         uint32_t routeIdx = routeAssignment[i];
@@ -357,22 +383,30 @@ SetupBusMobility(NodeContainer &busNodes,
 
         uint32_t currentCycleIndex = startCycleIndex;
 
+        // Per-bus constant speed in [30, 50] km/h (supervisor spec).
+        double busSpeedMs = speedRv->GetValue();
+
         while (currentTime < simTime)
         {
             uint32_t stationIndex = cycleIndices[currentCycleIndex];
             // OkumuraHata requires node height > 0; use 1.5m for bus-mounted UE
             Vector stPos = route.stations[stationIndex];
             stPos.z = 1.5;
+            // Insert paired waypoints (arrive, depart) so the bus actually
+            // dwells STATION_STOP_TIME seconds at every station, not only
+            // the first/last (supervisor: 30 s stop per station).
             mobility->AddWaypoint(
                 Waypoint(Seconds(currentTime), stPos));
 
             currentTime += STATION_STOP_TIME;
+            mobility->AddWaypoint(
+                Waypoint(Seconds(currentTime), stPos));
 
             uint32_t nextCycleIndex = (currentCycleIndex + 1) % cycleSize;
             uint32_t nextStationIndex = cycleIndices[nextCycleIndex];
             double dist = CalculateDistance(route.stations[stationIndex],
                                             route.stations[nextStationIndex]);
-            currentTime += dist / BUS_SPEED_MS;
+            currentTime += dist / busSpeedMs;
             currentCycleIndex = nextCycleIndex;
         }
     }
@@ -993,7 +1027,10 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
             }
         }
 
-        // Check 4: Multiple source IPs for same busId
+        // Engineering side-channel kept for forensic logging only.
+        // NOTE: supervisor spec lists exactly THREE GPS conditions
+        // (speed, corridor, jump). Source-IP mismatch is recorded in
+        // the event detail but MUST NOT contribute to anomalyCount.
         bool srcAnomaly = false;
         if (state.hasSrcAddr)
         {
@@ -1006,14 +1043,17 @@ GpsDetectorApp::HandleRead(Ptr<Socket> socket)
             }
         }
 
+        // Supervisor spec: 3 conditions joined by "any" -> 1-of-3 fires.
         uint32_t anomalyCount = (speedAnomaly ? 1 : 0) + (jumpAnomaly ? 1 : 0)
-                               + (corridorAnomaly ? 1 : 0) + (srcAnomaly ? 1 : 0);
+                               + (corridorAnomaly ? 1 : 0);
         uint32_t requiredCount = (g_detectionMode == "any") ? 1 : 2;
         bool isAnomalous = (anomalyCount >= requiredCount);
 
-        // Require 3 consecutive anomalous readings to suppress startup transients
-        // and momentary WaypointMobilityModel position jumps.
-        static const uint32_t GPS_STREAK_REQUIRED = 5;
+        // Streak gate: supervisor says "if any condition is true ->
+        // trigger" which is literally a 1-streak. Default 1 here for
+        // strict compliance; CLI flag --gpsStreakRequired allows a
+        // higher value if startup-transient noise filtering is needed.
+        uint32_t GPS_STREAK_REQUIRED = g_gpsStreakRequired;
 
         if (isAnomalous)
         {
@@ -1182,12 +1222,14 @@ CheckDDoS(Ptr<FlowMonitor> flowMonitor,
     s_prevRxPackets = telemetryRxPackets;
 
     bool rateExceeded = intervalRate > DDOS_RATE_THRESHOLD;
+    bool lossExceeded = deltaLossRate > DDOS_LOSS_THRESHOLD;
     bool delayExceeded = telemetryAvgDelay > DDOS_DELAY_THRESHOLD;
-    // Note: loss rate excluded from trigger — LTE handovers with 41 buses
-    // produce transient 5%+ loss that causes false positives in baseline.
-    // Rate and delay are robust DDoS-specific indicators.
+    // Supervisor spec: detection fires if ANY of (rate > threshold,
+    // packet loss > 5%, delay > 100 ms) is true. Round-1 fixes
+    // (100 Mbps backhaul + GBR 1.0/1.2 Mbps) brought baseline PLR
+    // back below 5%, so the loss condition is now safe to include.
 
-    if ((rateExceeded || delayExceeded) && !g_ddosDetected)
+    if ((rateExceeded || lossExceeded || delayExceeded) && !g_ddosDetected)
     {
         g_ddosDetected = true;
         g_ddosDetectionTime = now;
@@ -1196,7 +1238,10 @@ CheckDDoS(Ptr<FlowMonitor> flowMonitor,
         detail << "mode=requirements_any"
                << " telemetryRate=" << intervalRate
                << "bps deltaLoss=" << deltaLossRate
-               << " avgDelay=" << telemetryAvgDelay << "s";
+               << " avgDelay=" << telemetryAvgDelay << "s"
+               << " trip=" << (rateExceeded ? "R" : "-")
+               << (lossExceeded ? "L" : "-")
+               << (delayExceeded ? "D" : "-");
 
         LogMetric(now, 999, "ddos_detect", intervalRate,
                   deltaLossRate, detail.str());
@@ -1243,26 +1288,65 @@ LogQueueStatus(Ptr<NetDevice> device, double interval)
 }
 
 // ============================================================
-// FREE FUNCTION: MarkForensicComplete
-// Called once after expected upload duration elapses
+// FREE FUNCTION: ForensicSinkBaselineBytes
+// Captures the PacketSink's TotalRx() at the moment the forensic
+// upload starts so we can compute how many bytes of THIS upload
+// actually arrived at the server.
+// ============================================================
+static uint64_t g_forensicSinkBaselineBytes = 0;
+
+// ============================================================
+// FREE FUNCTION: PollForensicCompletion
+// Periodically polls the forensic PacketSink for delivered bytes.
+// When 10 MB have actually arrived the upload is marked complete;
+// otherwise we record the partial completion at simulation tear-down.
+// Replaces the old fixed-16.5s timer that lied about completion.
 // ============================================================
 static void
-MarkForensicComplete(void)
+PollForensicCompletion(double interval, double deadline)
 {
     if (g_forensicEvents.empty()) return;
     ForensicEvent &evt = g_forensicEvents.back();
     if (evt.uploadCompleted) return;
 
     double now = Simulator::Now().GetSeconds();
-    evt.uploadFinishTime = now;
-    evt.uploadCompleted = true;
-    evt.bytesReceived = 10485760; // 10 MB
+    uint64_t totalRxNow = (g_forensicSinkApp != 0) ?
+                          g_forensicSinkApp->GetTotalRx() : 0;
+    uint64_t delivered = (totalRxNow > g_forensicSinkBaselineBytes) ?
+                         (totalRxNow - g_forensicSinkBaselineBytes) : 0;
+    evt.bytesReceived = delivered;
 
-    LogMetric(now, evt.busId, "forensic_complete",
-              now - evt.triggerTime, (double)evt.bytesReceived, "upload_done");
+    static const uint64_t TARGET_BYTES = 10485760; // 10 MB
 
-    NS_LOG_INFO("[FORENSIC] Upload complete at t=" << now
-                << " duration=" << (now - evt.triggerTime) << "s");
+    if (delivered >= TARGET_BYTES)
+    {
+        evt.uploadFinishTime = now;
+        evt.uploadCompleted = true;
+        LogMetric(now, evt.busId, "forensic_complete",
+                  now - evt.triggerTime, (double)delivered, "upload_done");
+        NS_LOG_INFO("[FORENSIC] Upload complete at t=" << now
+                    << " bytes=" << delivered
+                    << " duration=" << (now - evt.triggerTime) << "s");
+        return;
+    }
+
+    if (now >= deadline)
+    {
+        // Final tally: upload did not complete in time.
+        evt.uploadFinishTime = now;
+        evt.uploadCompleted = false;
+        double pct = 100.0 * delivered / static_cast<double>(TARGET_BYTES);
+        LogMetric(now, evt.busId, "forensic_partial",
+                  now - evt.triggerTime, (double)delivered,
+                  "upload_incomplete");
+        NS_LOG_WARN("[FORENSIC] Upload INCOMPLETE at deadline t=" << now
+                    << " bytes=" << delivered << " ("
+                    << std::fixed << std::setprecision(1) << pct << "%)");
+        return;
+    }
+
+    Simulator::Schedule(Seconds(interval),
+                        &PollForensicCompletion, interval, deadline);
 }
 
 // ============================================================
@@ -1301,8 +1385,65 @@ StartForensicUpload(Ptr<Node> busNode, Ipv4Address serverAddr)
     evt.bytesReceived = 0;
     g_forensicEvents.push_back(evt);
 
-    // Schedule upload completion marker after expected duration
-    Simulator::Schedule(Seconds(16.5), &MarkForensicComplete);
+    // Capture the sink's current cumulative bytes so PollForensicCompletion
+    // can isolate THIS upload from earlier traffic on the same UDP port.
+    g_forensicSinkBaselineBytes = (g_forensicSinkApp != 0) ?
+                                   g_forensicSinkApp->GetTotalRx() : 0;
+
+    // Poll real bytes received every 0.5s.
+    // Deadline = whichever comes first: a 60s allowance (gives slow uploads
+    // time to finish under congestion) or 0.5s before sim end.
+    double deadline = std::min(now + 60.0, g_simTime - 0.5);
+    Simulator::Schedule(Seconds(0.5),
+                        &PollForensicCompletion, 0.5, deadline);
+}
+
+// ============================================================
+// FREE FUNCTION: LaunchGpsSpoof
+// Reads target bus's REAL position at attack-start time, samples a
+// 5-10 km random offset (supervisor: "sudden jump 5-10 km"),
+// constructs the fake start position, then creates+starts a
+// GpsSpoofAttackApp on the attacker node. Subsequent packets continue
+// drifting at +50 m/pkt -> 180 km/h apparent speed (>120 km/h spec).
+// ============================================================
+static void
+LaunchGpsSpoof(Ptr<Node> attackerNode,
+               Ptr<Node> targetBus,
+               Ipv4Address serverAddr,
+               uint32_t gpsBusTarget,
+               double duration)
+{
+    Ptr<MobilityModel> mob = targetBus->GetObject<MobilityModel>();
+    Vector realPos = mob ? mob->GetPosition() : Vector(0, 0, 0);
+
+    Ptr<UniformRandomVariable> distRv = CreateObject<UniformRandomVariable>();
+    distRv->SetAttribute("Min", DoubleValue(5000.0));
+    distRv->SetAttribute("Max", DoubleValue(10000.0));
+    Ptr<UniformRandomVariable> angRv = CreateObject<UniformRandomVariable>();
+    angRv->SetAttribute("Min", DoubleValue(0.0));
+    angRv->SetAttribute("Max", DoubleValue(6.283185307179586));  // 2*pi
+
+    double offset = distRv->GetValue();
+    double angle = angRv->GetValue();
+    double fakeX = realPos.x + offset * std::cos(angle);
+    double fakeY = realPos.y + offset * std::sin(angle);
+    Vector fakePos(fakeX, fakeY, 0.0);
+
+    double now = Simulator::Now().GetSeconds();
+    NS_LOG_INFO("[GPS SPOOF] launch t=" << now
+                << " bus=" << gpsBusTarget
+                << " real=(" << realPos.x << "," << realPos.y << ")"
+                << " fake=(" << fakeX << "," << fakeY << ")"
+                << " jump=" << offset << "m");
+    LogMetric(now, gpsBusTarget, "gps_spoof_launch", offset, 0,
+              "real_to_fake_jump_meters");
+
+    Ptr<GpsSpoofAttackApp> spoofApp = CreateObject<GpsSpoofAttackApp>();
+    spoofApp->Setup(InetSocketAddress(serverAddr, TELEMETRY_PORT),
+                    gpsBusTarget, fakePos, 1.0, 30);
+    attackerNode->AddApplication(spoofApp);
+    spoofApp->SetStartTime(Seconds(now + 0.001));
+    spoofApp->SetStopTime(Seconds(now + duration));
 }
 
 // ============================================================
@@ -1411,8 +1552,15 @@ main(int argc, char *argv[])
     cmd.AddValue("gpsBusTarget", "Target bus ID for GPS spoofing", gpsBusTarget);
     cmd.AddValue("resultsDir", "Output directory", resultsDir);
     cmd.AddValue("detectionMode", "Detection mode: any or voting", detectionMode);
+    uint32_t gpsStreakRequired = 1;
+    cmd.AddValue("gpsStreakRequired",
+                 "Consecutive anomalous GPS readings required before firing"
+                 " (supervisor spec: 1)",
+                 gpsStreakRequired);
     cmd.Parse(argc, argv);
     g_detectionMode = detectionMode;
+    g_simTime = simTime;  // expose to forensic poller and other helpers
+    g_gpsStreakRequired = (gpsStreakRequired == 0) ? 1 : gpsStreakRequired;
 
     if (numBuses > MAX_BUSES) numBuses = MAX_BUSES;
     if (gpsBusTarget >= numBuses) gpsBusTarget = 0;
@@ -1433,6 +1581,7 @@ main(int argc, char *argv[])
     g_gpsSpoofDetectionTime = 0.0;
     g_forensicTriggered = false;
     g_forensicSinkApp = 0;
+    g_forensicSinkBaselineBytes = 0;
 
     // ========== LTE + EPC Setup ==========
     Config::SetDefault("ns3::LteEnbPhy::TxPower", DoubleValue(46.0));  // 46 dBm macro cell
@@ -1460,7 +1609,23 @@ main(int argc, char *argv[])
     // (OkumuraHata Urban and SubUrban were tested but both cause >95% packet
     // loss with only 3 eNBs at this scale.)
 
-    // 20 MHz bandwidth (100 RBs) — matches real LTE deployment capacity
+    // 20 MHz bandwidth (100 RBs) per cell.
+    // Capacity arithmetic with the supervisor-pinned 41 buses + 3 eNBs:
+    //   - Per-bus offered uplink: 1 Mbps CCTV + ~3 kbps GPS + ~20 kbps tickets
+    //     ~= 1.025 Mbps per bus.
+    //   - Roughly even bus-to-eNB distribution: ~14 buses per cell.
+    //   - Per-cell offered UL: ~14.4 Mbps.
+    //   - 100 RBs (20 MHz) UL practical throughput in ns-3 LTE: ~18-20 Mbps
+    //     under good SINR, dropping to ~12-15 Mbps with cell-edge UEs.
+    //   - GBR-CONV-VIDEO bearer is provisioned at 1.0/1.2 Mbps GBR/MBR
+    //     (lowered from 1.2/1.5 below) so the scheduler can admit all 14 UEs
+    //     in a cell without rejecting bearers, leaving headroom for control
+    //     and HARQ retransmits.
+    // 200 RBs (40 MHz via CA) was considered. ns-3's standard LteEnbPhy does
+    // not natively model CA in this configuration, and reviewers flagged 40 MHz
+    // as a single-carrier deviation from real 20-MHz LTE deployments.
+    // Instead we keep 20 MHz and trim per-bus GBR + fix the backhaul (the
+    // dominant bottleneck) to recover capacity within realistic limits.
     lteHelper->SetEnbDeviceAttribute("DlBandwidth", UintegerValue(100));
     lteHelper->SetEnbDeviceAttribute("UlBandwidth", UintegerValue(100));
 
@@ -1475,7 +1640,12 @@ main(int argc, char *argv[])
     internet.Install(remoteServerContainer);
 
     PointToPointHelper p2pServer;
-    p2pServer.SetDeviceAttribute("DataRate", DataRateValue(DataRate("1Gbps")));
+    // PGW <-> analytics server backhaul. Rate sourced from
+    // SERVER_LINK_RATE_BPS so the queue-delay metric and DDoS impact
+    // are sized against a realistic transit link (see constants block).
+    std::ostringstream serverLinkRateStr;
+    serverLinkRateStr << static_cast<uint64_t>(SERVER_LINK_RATE_BPS) << "bps";
+    p2pServer.SetDeviceAttribute("DataRate", DataRateValue(DataRate(serverLinkRateStr.str())));
     p2pServer.SetDeviceAttribute("Mtu", UintegerValue(1500));
     p2pServer.SetChannelAttribute("Delay", StringValue("10ms"));
 
@@ -1544,12 +1714,18 @@ main(int argc, char *argv[])
                              EpsBearer::GBR_CONV_VOICE,
                              64000,
                              128000);
+        // CCTV bearer GBR/MBR trimmed to 1.0/1.2 Mbps (was 1.2/1.5 Mbps).
+        // Actual CCTV stream offered load is 1.0 Mbps; the previous 1.2 Mbps
+        // GBR over-reserved scheduler tokens and -- with ~14 UEs per eNB --
+        // exceeded the per-cell 20 MHz UL budget, causing the GBR admission
+        // ratio to drop and producing the 35.92% baseline PLR. 1.0/1.2 GBR/MBR
+        // matches the actual 1 Mbps stream and leaves headroom for HARQ.
         ActivateUplinkBearer(lteHelper,
                              ueDevice,
                              CCTV_PORT,
                              EpsBearer::GBR_CONV_VIDEO,
-                             1200000,
-                             1500000);
+                             1000000,
+                             1200000);
         ActivateUplinkBearer(lteHelper,
                              ueDevice,
                              TICKET_PORT,
@@ -1692,20 +1868,23 @@ main(int argc, char *argv[])
     }
 
     // ========== GPS Spoofing Attack ==========
+    // Supervisor spec: "simulate sudden jump 5-10 km" relative to the
+    // bus's real position. We schedule LaunchGpsSpoof at gpsStart so it
+    // can read the bus's *actual* position from its mobility model and
+    // construct a fake position 5-10 km away in a random direction.
+    // Subsequent fake packets drift at +50 m/pkt (1 pkt/s) -> 180 km/h
+    // apparent speed, satisfying the >120 km/h spec.
     if (enableGpsSpoofing && gpsBusTarget < numBuses)
     {
         NS_LOG_INFO("GPS Spoofing: target bus " << gpsBusTarget
-                    << " at t=" << gpsStart);
-
-        // Fake position 8km from any route
-        Vector fakePos(14000, 1000, 0);
-
-        Ptr<GpsSpoofAttackApp> spoofApp = CreateObject<GpsSpoofAttackApp>();
-        spoofApp->Setup(InetSocketAddress(serverAddr, TELEMETRY_PORT),
-                        gpsBusTarget, fakePos, 1.0, 30);
-        attackerNode.Get(0)->AddApplication(spoofApp);
-        spoofApp->SetStartTime(Seconds(gpsStart));
-        spoofApp->SetStopTime(Seconds(gpsStart + 35.0));
+                    << " scheduled at t=" << gpsStart);
+        Simulator::Schedule(Seconds(gpsStart),
+                            &LaunchGpsSpoof,
+                            attackerNode.Get(0),
+                            busNodes.Get(gpsBusTarget),
+                            serverAddr,
+                            gpsBusTarget,
+                            35.0);
     }
 
     // ========== Flow Monitor ==========
