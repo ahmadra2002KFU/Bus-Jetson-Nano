@@ -1,0 +1,143 @@
+[0/2] Re-checking globbed directories...
+-- GLOB mismatch!
+The following files were added:
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/baseline_41buses_any_1.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/baseline_41buses_any_2.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/baseline_41buses_any_3.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/baseline_41buses_any_4.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/baseline_41buses_any_5.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/ddos_41buses_any_1.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/ddos_41buses_any_2.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/ddos_41buses_any_3.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/run_parallel.sh
+[1/2] Re-running CMake...
+-- Using default output directory /home/user/ns-allinone-3.40/ns-3.40/build
+-- [33mProceeding without cmake-format[0m
+-- find_external_library: SQLite3 was found.
+-- [33mEigen was not found[0m
+-- [33mHarfbuzz is required by GTK3 and was not found.[0m
+-- LibXML2 was found.
+-- [33mVisualizer: Python Bindings are disabled[0m
+CMake Warning (dev) at build-support/macros-and-definitions.cmake:1124 (find_package):
+  Policy CMP0167 is not set: The FindBoost module is removed.  Run "cmake
+  --help-policy CMP0167" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+Call Stack (most recent call first):
+  CMakeLists.txt:149 (process_options)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- GSL was found.
+-- [33mdocs: doxygen documentation not enabled due to missing dependencies: doxygen dot dia[0m
+-- Failed to locate sphinx-build executable (missing: SPHINX_EXECUTABLE) 
+-- [33mdocs: sphinx documentation not enabled due to missing dependencies: Sphinx epstopdf pdflatex latexmk convert dvipng[0m
+-- Precompiled headers were enabled
+-- Processing src/antenna
+-- Processing src/aodv
+-- Processing src/applications
+-- Processing src/bridge
+-- Processing src/brite
+-- [33mfind_external_library: brite was not found. Missing headers: "Brite.h" and missing libraries: "brite".[0m
+-- [33mSkipping src/brite[0m
+-- Processing src/buildings
+-- Processing src/click
+-- [33mfind_external_library: click was not found. Missing headers: "simclick.h" and missing libraries: "nsclick click".[0m
+-- [33mSkipping src/click[0m
+-- Processing src/config-store
+-- Processing src/core
+-- Boost Units have been found.
+-- Processing src/csma
+-- Processing src/csma-layout
+-- Processing src/dsdv
+-- Processing src/dsr
+-- Processing src/energy
+-- Processing src/fd-net-device
+-- Checking for module 'libdpdk'
+--   No package 'libdpdk' found
+-- Processing src/flow-monitor
+-- Processing src/internet
+-- Processing src/internet-apps
+-- Processing src/lr-wpan
+-- Processing src/lte
+-- Processing src/mesh
+-- Processing src/mobility
+-- Processing src/netanim
+-- Processing src/network
+-- Processing src/nix-vector-routing
+-- Processing src/olsr
+-- Processing src/openflow
+-- [33mfind_external_library: openflow was not found. Missing headers: "openflow.h" and missing libraries: "openflow".[0m
+-- [33mSkipping src/openflow[0m
+-- Processing src/point-to-point
+-- Processing src/point-to-point-layout
+-- Processing src/propagation
+-- Processing src/sixlowpan
+-- Processing src/spectrum
+-- Processing src/stats
+-- Processing src/tap-bridge
+-- Processing src/test
+-- Processing src/topology-read
+-- Processing src/traffic-control
+-- Processing src/uan
+-- Processing src/virtual-net-device
+-- Processing src/wifi
+-- Processing src/wimax
+-- ---- Summary of ns-3 settings:
+Build profile                 : default
+Build directory               : /home/user/ns-allinone-3.40/ns-3.40/build
+Build with runtime asserts    : [32mON[0m
+Build with runtime logging    : [32mON[0m
+Build version embedding       : OFF (not requested)
+BRITE Integration             : [31mOFF (missing dependency)[0m
+DES Metrics event collection  : OFF (not requested)
+DPDK NetDevice                : OFF (not requested)
+Emulation FdNetDevice         : [32mON[0m
+Examples                      : [32mON[0m
+File descriptor NetDevice     : [32mON[0m
+GNU Scientific Library (GSL)  : [32mON[0m
+GtkConfigStore                : [31mOFF (missing dependency)[0m
+LibXml2 support               : [32mON[0m
+MPI Support                   : OFF (not requested)
+ns-3 Click Integration        : [31mOFF (missing dependency)[0m
+ns-3 OpenFlow Integration     : [31mOFF (missing dependency)[0m
+Netmap emulation FdNetDevice  : [31mOFF (missing dependency)[0m
+PyViz visualizer              : [31mOFF (Python Bindings are disabled)[0m
+Python Bindings               : OFF (not requested)
+SQLite support                : [32mON[0m
+Eigen3 support                : [31mOFF (missing dependency)[0m
+Tap Bridge                    : [32mON[0m
+Tap FdNetDevice               : [32mON[0m
+Tests                         : [32mON[0m
+
+
+Modules configured to be built:
+antenna                   aodv                      applications              
+bridge                    buildings                 config-store              
+core                      csma                      csma-layout               
+dsdv                      dsr                       energy                    
+fd-net-device             flow-monitor              internet                  
+internet-apps             lr-wpan                   lte                       
+mesh                      mobility                  netanim                   
+network                   nix-vector-routing        olsr                      
+point-to-point            point-to-point-layout     propagation               
+sixlowpan                 spectrum                  stats                     
+tap-bridge                test                      topology-read             
+traffic-control           uan                       virtual-net-device        
+wifi                      wimax                     
+
+Modules that cannot be built:
+brite                     click                     mpi                       
+openflow                  visualizer                
+
+
+CMake Error at build-support/custom-modules/ns3-cmake-package.cmake:98 (configure_file):
+  No such file or directory
+Call Stack (most recent call first):
+  build-support/custom-modules/ns3-cmake-package.cmake:129 (pkgconfig_module)
+  CMakeLists.txt:170 (ns3_cmake_package)
+
+
+-- Configuring incomplete, errors occurred!
+FAILED: [code=1] build.ninja /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/antenna/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/aodv/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/aodv/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/applications/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/applications/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/bridge/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/bridge/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/brite/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/buildings/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/buildings/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/click/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/config-store/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/config-store/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/core/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/core/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/csma/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/csma/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/csma-layout/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/csma-layout/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/dsdv/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/dsdv/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/dsr/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/dsr/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/energy/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/energy/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/fd-net-device/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/fd-net-device/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/flow-monitor/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/flow-monitor/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/internet/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/internet/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/internet-apps/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/internet-apps/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/lr-wpan/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/lr-wpan/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/lte/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/lte/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/mesh/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/mesh/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/mobility/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/mobility/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/netanim/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/netanim/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/network/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/network/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/nix-vector-routing/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/nix-vector-routing/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/olsr/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/olsr/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/openflow/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/point-to-point/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/point-to-point/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/point-to-point-layout/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/propagation/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/propagation/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/sixlowpan/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/sixlowpan/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/spectrum/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/spectrum/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/stats/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/stats/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/tap-bridge/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/tap-bridge/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/test/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/topology-read/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/topology-read/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/traffic-control/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/traffic-control/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/uan/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/uan/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/virtual-net-device/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/virtual-net-device/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/wifi/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/wifi/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/wimax/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/wimax/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/channel-models/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/energy/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/error-model/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/ipv6/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/matrix-topology/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/naming/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/realtime/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/routing/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/socket/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/stats/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/tcp/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/traffic-control/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/tutorial/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/udp/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/udp-client-server/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/wireless/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/scratch/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/scratch/nested-subdir/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/utils/cmake_install.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/antenna/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/aodv/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/aodv/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/applications/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/applications/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/bridge/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/bridge/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/brite/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/buildings/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/buildings/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/click/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/config-store/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/config-store/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/core/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/core/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/csma/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/csma/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/csma-layout/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/csma-layout/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/dsdv/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/dsdv/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/dsr/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/dsr/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/energy/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/energy/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/fd-net-device/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/fd-net-device/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/flow-monitor/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/flow-monitor/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/internet/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/internet/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/internet-apps/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/internet-apps/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/lr-wpan/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/lr-wpan/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/lte/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/lte/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/mesh/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/mesh/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/mobility/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/mobility/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/netanim/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/netanim/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/network/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/network/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/nix-vector-routing/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/nix-vector-routing/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/olsr/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/olsr/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/openflow/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/point-to-point/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/point-to-point/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/point-to-point-layout/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/propagation/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/propagation/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/sixlowpan/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/sixlowpan/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/spectrum/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/spectrum/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/stats/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/stats/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/tap-bridge/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/tap-bridge/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/test/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/topology-read/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/topology-read/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/traffic-control/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/traffic-control/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/uan/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/uan/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/virtual-net-device/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/virtual-net-device/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/wifi/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/wifi/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/wimax/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/src/wimax/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/channel-models/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/energy/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/error-model/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/ipv6/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/matrix-topology/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/naming/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/realtime/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/routing/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/socket/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/stats/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/tcp/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/traffic-control/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/tutorial/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/udp/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/udp-client-server/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/examples/wireless/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/scratch/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/scratch/nested-subdir/CTestTestfile.cmake /home/user/ns-allinone-3.40/ns-3.40/cmake-cache/utils/CTestTestfile.cmake 
+/home/user/.local/lib/python3.10/site-packages/cmake/data/bin/cmake --regenerate-during-build -S/home/user/ns-allinone-3.40/ns-3.40 -B/home/user/ns-allinone-3.40/ns-3.40/cmake-cache
+ninja: error: rebuilding 'build.ninja': subcommand failed

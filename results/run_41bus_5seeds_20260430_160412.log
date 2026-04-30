@@ -1,0 +1,47 @@
+Starting Al-Ahsa Smart Bus Network — 41 buses, 3 scenarios, 5 seeds...
+[1/15] Scenario: baseline | Buses: 41 | Seed: 1
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/baseline_41buses_any_1.xml was not created!
+[2/15] Scenario: baseline | Buses: 41 | Seed: 2
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/baseline_41buses_any_2.xml was not created!
+[3/15] Scenario: baseline | Buses: 41 | Seed: 3
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/baseline_41buses_any_3.xml was not created!
+[4/15] Scenario: baseline | Buses: 41 | Seed: 4
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/baseline_41buses_any_4.xml was not created!
+[5/15] Scenario: baseline | Buses: 41 | Seed: 5
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/baseline_41buses_any_5.xml was not created!
+[6/15] Scenario: ddos | Buses: 41 | Seed: 1
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/ddos_41buses_any_1.xml was not created!
+[7/15] Scenario: ddos | Buses: 41 | Seed: 2
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/ddos_41buses_any_2.xml was not created!
+[8/15] Scenario: ddos | Buses: 41 | Seed: 3
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/ddos_41buses_any_3.xml was not created!
+[9/15] Scenario: ddos | Buses: 41 | Seed: 4
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/ddos_41buses_any_4.xml was not created!
+[10/15] Scenario: ddos | Buses: 41 | Seed: 5
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/ddos_41buses_any_5.xml was not created!
+[11/15] Scenario: ddos_gps | Buses: 41 | Seed: 1
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/ddos_gps_41buses_any_1.xml was not created!
+[12/15] Scenario: ddos_gps | Buses: 41 | Seed: 2
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/ddos_gps_41buses_any_2.xml was not created!
+[13/15] Scenario: ddos_gps | Buses: 41 | Seed: 3
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/ddos_gps_41buses_any_3.xml was not created!
+[14/15] Scenario: ddos_gps | Buses: 41 | Seed: 4
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/ddos_gps_41buses_any_4.xml was not created!
+[15/15] Scenario: ddos_gps | Buses: 41 | Seed: 5
+run_41bus_5seeds.sh: line 29: ./ns3: No such file or directory
+  [ERROR] results/ddos_gps_41buses_any_5.xml was not created!
+All 15 simulation runs completed!

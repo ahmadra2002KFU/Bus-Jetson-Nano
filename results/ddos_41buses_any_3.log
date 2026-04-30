@@ -1,0 +1,819 @@
+[0/2] Re-checking globbed directories...
+-- GLOB mismatch!
+The following files were added:
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/baseline_41buses_any_1.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/baseline_41buses_any_2.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/baseline_41buses_any_3.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/baseline_41buses_any_4.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/baseline_41buses_any_5.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/ddos_41buses_any_1.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/ddos_41buses_any_2.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results/ddos_41buses_any_3.log
+  +/home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/run_parallel.sh
+[1/2] Re-running CMake...
+-- Using default output directory /home/user/ns-allinone-3.40/ns-3.40/build
+-- [33mProceeding without cmake-format[0m
+-- find_external_library: SQLite3 was found.
+-- [33mEigen was not found[0m
+-- [33mHarfbuzz is required by GTK3 and was not found.[0m
+-- LibXML2 was found.
+-- [33mVisualizer: Python Bindings are disabled[0m
+CMake Warning (dev) at build-support/macros-and-definitions.cmake:1124 (find_package):
+  Policy CMP0167 is not set: The FindBoost module is removed.  Run "cmake
+  --help-policy CMP0167" for policy details.  Use the cmake_policy command to
+  set the policy and suppress this warning.
+
+Call Stack (most recent call first):
+  CMakeLists.txt:149 (process_options)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- GSL was found.
+-- [33mdocs: doxygen documentation not enabled due to missing dependencies: doxygen dot dia[0m
+-- Failed to locate sphinx-build executable (missing: SPHINX_EXECUTABLE) 
+-- [33mdocs: sphinx documentation not enabled due to missing dependencies: Sphinx epstopdf pdflatex latexmk convert dvipng[0m
+-- Precompiled headers were enabled
+-- Processing src/antenna
+-- Processing src/aodv
+-- Processing src/applications
+-- Processing src/bridge
+-- Processing src/brite
+-- [33mfind_external_library: brite was not found. Missing headers: "Brite.h" and missing libraries: "brite".[0m
+-- [33mSkipping src/brite[0m
+-- Processing src/buildings
+-- Processing src/click
+-- [33mfind_external_library: click was not found. Missing headers: "simclick.h" and missing libraries: "nsclick click".[0m
+-- [33mSkipping src/click[0m
+-- Processing src/config-store
+-- Processing src/core
+-- Boost Units have been found.
+-- Processing src/csma
+-- Processing src/csma-layout
+-- Processing src/dsdv
+-- Processing src/dsr
+-- Processing src/energy
+-- Processing src/fd-net-device
+-- Checking for module 'libdpdk'
+--   No package 'libdpdk' found
+-- Processing src/flow-monitor
+-- Processing src/internet
+-- Processing src/internet-apps
+-- Processing src/lr-wpan
+-- Processing src/lte
+-- Processing src/mesh
+-- Processing src/mobility
+-- Processing src/netanim
+-- Processing src/network
+-- Processing src/nix-vector-routing
+-- Processing src/olsr
+-- Processing src/openflow
+-- [33mfind_external_library: openflow was not found. Missing headers: "openflow.h" and missing libraries: "openflow".[0m
+-- [33mSkipping src/openflow[0m
+-- Processing src/point-to-point
+-- Processing src/point-to-point-layout
+-- Processing src/propagation
+-- Processing src/sixlowpan
+-- Processing src/spectrum
+-- Processing src/stats
+-- Processing src/tap-bridge
+-- Processing src/test
+-- Processing src/topology-read
+-- Processing src/traffic-control
+-- Processing src/uan
+-- Processing src/virtual-net-device
+-- Processing src/wifi
+-- Processing src/wimax
+-- ---- Summary of ns-3 settings:
+Build profile                 : default
+Build directory               : /home/user/ns-allinone-3.40/ns-3.40/build
+Build with runtime asserts    : [32mON[0m
+Build with runtime logging    : [32mON[0m
+Build version embedding       : OFF (not requested)
+BRITE Integration             : [31mOFF (missing dependency)[0m
+DES Metrics event collection  : OFF (not requested)
+DPDK NetDevice                : OFF (not requested)
+Emulation FdNetDevice         : [32mON[0m
+Examples                      : [32mON[0m
+File descriptor NetDevice     : [32mON[0m
+GNU Scientific Library (GSL)  : [32mON[0m
+GtkConfigStore                : [31mOFF (missing dependency)[0m
+LibXml2 support               : [32mON[0m
+MPI Support                   : OFF (not requested)
+ns-3 Click Integration        : [31mOFF (missing dependency)[0m
+ns-3 OpenFlow Integration     : [31mOFF (missing dependency)[0m
+Netmap emulation FdNetDevice  : [31mOFF (missing dependency)[0m
+PyViz visualizer              : [31mOFF (Python Bindings are disabled)[0m
+Python Bindings               : OFF (not requested)
+SQLite support                : [32mON[0m
+Eigen3 support                : [31mOFF (missing dependency)[0m
+Tap Bridge                    : [32mON[0m
+Tap FdNetDevice               : [32mON[0m
+Tests                         : [32mON[0m
+
+
+Modules configured to be built:
+antenna                   aodv                      applications              
+bridge                    buildings                 config-store              
+core                      csma                      csma-layout               
+dsdv                      dsr                       energy                    
+fd-net-device             flow-monitor              internet                  
+internet-apps             lr-wpan                   lte                       
+mesh                      mobility                  netanim                   
+network                   nix-vector-routing        olsr                      
+point-to-point            point-to-point-layout     propagation               
+sixlowpan                 spectrum                  stats                     
+tap-bridge                test                      topology-read             
+traffic-control           uan                       virtual-net-device        
+wifi                      wimax                     
+
+Modules that cannot be built:
+brite                     click                     mpi                       
+openflow                  visualizer                
+
+
+-- Configuring done (0.5s)
+-- Generating done (1.2s)
+-- Build files have been written to: /home/user/ns-allinone-3.40/ns-3.40/cmake-cache
+[0/4] Re-checking globbed directories...
+[1/987] Building CXX object CMakeFiles/stdlib_pch-default.dir/cmake_pch.hxx.gch
+[2/987] Building CXX object CMakeFiles/stdlib_pch_exec.dir/cmake_pch.hxx.gch
+[3/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/int64x64-128.cc.o
+[4/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/make-event.cc.o
+[5/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/watchdog.cc.o
+[6/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/list-scheduler.cc.o
+[7/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/breakpoint.cc.o
+[8/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/heap-scheduler.cc.o
+[9/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/event-impl.cc.o
+[10/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/simulator-impl.cc.o
+[11/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/attribute.cc.o
+[12/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/scheduler.cc.o
+[13/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/helper/event-garbage-collector.cc.o
+[14/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/boolean.cc.o
+[15/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/rng-stream.cc.o
+[16/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/helper/random-variable-stream-helper.cc.o
+[17/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/rng-seed-manager.cc.o
+[18/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/attribute-construction-list.cc.o
+[19/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/double.cc.o
+[20/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/event-id.cc.o
+[21/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/pointer.cc.o
+[22/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/synchronizer.cc.o
+[23/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/priority-queue-scheduler.cc.o
+[24/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/time.cc.o
+[25/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/object-ptr-container.cc.o
+[26/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/uinteger.cc.o
+[27/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/environment-variable.cc.o
+[28/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/timer.cc.o
+[29/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/map-scheduler.cc.o
+[30/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/fatal-impl.cc.o
+[31/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/callback.cc.o
+[32/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/integer.cc.o
+[33/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/trace-source-accessor.cc.o
+[34/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/hash.cc.o
+[35/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/unix-fd-reader.cc.o
+[36/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/int64x64.cc.o
+[37/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/hash-fnv.cc.o
+[38/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/simulator.cc.o
+[39/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/string.cc.o
+[40/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/hash-function.cc.o
+[41/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/calendar-scheduler.cc.o
+[42/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/object.cc.o
+[43/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/ascii-file.cc.o
+[44/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/system-wall-clock-timestamp.cc.o
+[45/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/default-simulator-impl.cc.o
+[46/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/hash-murmur3.cc.o
+[47/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/node-printer.cc.o
+[48/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/des-metrics.cc.o
+[49/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/time-printer.cc.o
+[50/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/wall-clock-synchronizer.cc.o
+[51/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/basic-data-calculators.cc.o
+[52/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/system-wall-clock-ms.cc.o
+[53/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/vector.cc.o
+[54/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/enum.cc.o
+[55/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/example-as-test.cc.o
+[56/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/names.cc.o
+[57/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/trickle-timer.cc.o
+[58/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/global-value.cc.o
+[59/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/sqlite-output.cc.o
+[60/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/data-collector.cc.o
+[61/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/histogram.cc.o
+[62/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/show-progress.cc.o
+[63/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/matrix-array.cc.o
+[64/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/log.cc.o
+[65/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/data-calculator.cc.o
+[66/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/get-wildcard-matches.cc.o
+[67/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/omnet-data-output.cc.o
+[68/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/data-output-interface.cc.o
+[69/987] Building CXX object CMakeFiles/stdlib_pch_exec.dir/build-support/empty-main.cc.o
+[70/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/data-collection-object.cc.o
+[71/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/probe.cc.o
+[72/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/object-factory.cc.o
+[73/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/time-data-calculators.cc.o
+[74/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/helper/csv-reader.cc.o
+[75/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/helper/delay-jitter-estimation.cc.o
+[76/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/sqlite-data-output.cc.o
+[77/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/object-base.cc.o
+[78/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/realtime-simulator-impl.cc.o
+[79/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/gnuplot.cc.o
+[80/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/helper/packet-socket-helper.cc.o
+[81/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/uinteger-32-probe.cc.o
+[82/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/helper/net-device-container.cc.o
+[83/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/helper/application-container.cc.o
+[84/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/chunk.cc.o
+[85/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/helper/node-container.cc.o
+[86/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/byte-tag-list.cc.o
+[87/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/channel-list.cc.o
+[88/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/header.cc.o
+[89/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/net-device.cc.o
+[90/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/file-aggregator.cc.o
+[91/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/channel.cc.o
+[92/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/gnuplot-aggregator.cc.o
+[93/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/tag.cc.o
+[94/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/application.cc.o
+[95/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/socket-factory.cc.o
+[96/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/test.cc.o
+[97/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/nix-vector.cc.o
+[98/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/address.cc.o
+[99/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/time-series-adaptor.cc.o
+[100/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/crc32.cc.o
+[101/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/trailer.cc.o
+[102/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/tag-buffer.cc.o
+[103/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/node-list.cc.o
+[104/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/boolean-probe.cc.o
+[105/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/bit-serializer.cc.o
+[106/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/double-probe.cc.o
+[107/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/uinteger-8-probe.cc.o
+[108/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/uinteger-16-probe.cc.o
+[109/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/packet.cc.o
+[110/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/address-utils.cc.o
+[111/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/ethernet-trailer.cc.o
+[112/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/bit-deserializer.cc.o
+[113/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/inet6-socket-address.cc.o
+[114/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/packet-tag-list.cc.o
+[115/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/command-line.cc.o
+[116/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/model/time-probe.cc.o
+[117/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/inet-socket-address.cc.o
+[118/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/flow-id-tag.cc.o
+[119/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/mac64-address.cc.o
+[120/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/type-id.cc.o
+[121/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/data-rate.cc.o
+[122/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/mac8-address.cc.o
+[123/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/ethernet-header.cc.o
+[124/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/length.cc.o
+[125/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/llc-snap-header.cc.o
+[126/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/net-device-queue-interface.cc.o
+[127/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/output-stream-wrapper.cc.o
+[128/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/buffer.cc.o
+[129/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/error-model.cc.o
+[130/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/packet-socket-factory.cc.o
+[131/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/config.cc.o
+[132/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/random-variable-stream.cc.o
+[133/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/error-channel.cc.o
+[134/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/queue-size.cc.o
+[135/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/queue-limits.cc.o
+[136/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/drop-tail-queue.cc.o
+[137/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/mac16-address.cc.o
+[138/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/packet-socket-address.cc.o
+[139/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/timestamp-tag.cc.o
+[140/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/sll-header.cc.o
+[141/987] Linking CXX executable ns3.40-stdlib_pch_exec-default
+[142/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/radiotap-header.cc.o
+[143/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/packet-burst.cc.o
+[144/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/queue-item.cc.o
+[145/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/packet-data-calculators.cc.o
+[146/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/mac48-address.cc.o
+[147/987] Building CXX object src/bridge/CMakeFiles/libbridge-obj.dir/model/bridge-channel.cc.o
+[148/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/pcap-file.cc.o
+[149/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/constant-acceleration-mobility-model.cc.o
+[150/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/ipv4-address.cc.o
+[151/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/packet-metadata.cc.o
+[152/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/helper/trace-helper.cc.o
+[153/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/packet-socket-client.cc.o
+[154/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/helper/simple-net-device-helper.cc.o
+[155/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/socket.cc.o
+[156/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/helper/gnuplot-helper.cc.o
+[157/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/constant-position-mobility-model.cc.o
+[158/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/pcap-file-wrapper.cc.o
+[159/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/constant-velocity-helper.cc.o
+[160/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/box.cc.o
+[161/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/constant-velocity-mobility-model.cc.o
+[162/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/dynamic-queue-limits.cc.o
+[163/987] Building CXX object src/stats/CMakeFiles/libstats-obj.dir/helper/file-helper.cc.o
+[164/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/geographic-positions.cc.o
+[165/987] Building CXX object src/bridge/CMakeFiles/libbridge-obj.dir/helper/bridge-helper.cc.o
+[166/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/rectangle.cc.o
+[167/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/steady-state-random-waypoint-mobility-model.cc.o
+[168/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/waypoint.cc.o
+[169/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/simple-channel.cc.o
+[170/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/model/node.cc.o
+[171/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/helper/queue-disc-container.cc.o
+[172/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/helper/group-mobility-helper.cc.o
+[173/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/helper/ns2-mobility-helper.cc.o
+[174/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/fifo-queue-disc.cc.o
+[175/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/ipv6-address.cc.o
+[176/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/random-direction-2d-mobility-model.cc.o
+[177/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/random-waypoint-mobility-model.cc.o
+[178/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/waypoint-mobility-model.cc.o
+[179/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/packet-filter.cc.o
+[180/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/pfifo-fast-queue-disc.cc.o
+[181/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/mq-queue-disc.cc.o
+[182/987] Building CXX object src/antenna/CMakeFiles/libantenna-obj.dir/model/isotropic-antenna-model.cc.o
+[183/987] Building CXX object src/antenna/CMakeFiles/libantenna-obj.dir/model/antenna-model.cc.o
+[184/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/gauss-markov-mobility-model.cc.o
+[185/987] Building CXX object src/antenna/CMakeFiles/libantenna-obj.dir/model/angles.cc.o
+[186/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/random-walk-2d-mobility-model.cc.o
+[187/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/fq-cobalt-queue-disc.cc.o
+[188/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/hierarchical-mobility-model.cc.o
+[189/987] Building CXX object src/antenna/CMakeFiles/libantenna-obj.dir/model/phased-array-model.cc.o
+[190/987] Building CXX object src/fd-net-device/CMakeFiles/raw-sock-creator.dir/helper/raw-sock-creator.cc.o
+[191/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/mobility-model.cc.o
+[192/987] Building CXX object src/bridge/CMakeFiles/libbridge-obj.dir/model/bridge-net-device.cc.o
+[193/987] Building CXX object src/antenna/CMakeFiles/libantenna-obj.dir/model/parabolic-antenna-model.cc.o
+[194/987] Building CXX object src/fd-net-device/CMakeFiles/tap-device-creator.dir/helper/encode-decode.cc.o
+[195/987] Building CXX object src/fd-net-device/CMakeFiles/raw-sock-creator.dir/helper/creator-utils.cc.o
+[196/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/packet-socket-server.cc.o
+[197/987] Building CXX object src/fd-net-device/CMakeFiles/raw-sock-creator.dir/helper/encode-decode.cc.o
+[198/987] Building CXX object src/antenna/CMakeFiles/libantenna-obj.dir/model/three-gpp-antenna-model.cc.o
+[199/987] Building CXX object src/antenna/CMakeFiles/libantenna-obj.dir/model/uniform-planar-array.cc.o
+[200/987] Building CXX object src/fd-net-device/CMakeFiles/tap-device-creator.dir/helper/creator-utils.cc.o
+[201/987] Building CXX object src/antenna/CMakeFiles/libantenna-obj.dir/model/cosine-antenna-model.cc.o
+[202/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/packet-probe.cc.o
+[203/987] Building CXX object src/fd-net-device/CMakeFiles/tap-device-creator.dir/helper/tap-device-creator.cc.o
+[204/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/packet-socket.cc.o
+[205/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-address-helper.cc.o
+[206/987] Building CXX object src/core/CMakeFiles/libcore-obj.dir/model/system-path.cc.o
+[207/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/helper/mobility-helper.cc.o
+[208/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv6-routing-helper.cc.o
+[209/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-list-routing-helper.cc.o
+[210/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv6-list-routing-helper.cc.o
+[211/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-global-routing-helper.cc.o
+[212/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/simple-net-device.cc.o
+[213/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/prio-queue-disc.cc.o
+[214/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/helper/traffic-control-helper.cc.o
+[215/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-interface-container.cc.o
+[216/987] Building CXX object src/mobility/CMakeFiles/libmobility-obj.dir/model/position-allocator.cc.o
+[217/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/queue.cc.o
+[218/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/global-route-manager.cc.o
+[219/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv6-static-routing-helper.cc.o
+[220/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ripng-helper.cc.o
+[221/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-core-default.so
+[222/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ip-l4-protocol.cc.o
+[223/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/arp-queue-disc-item.cc.o
+[224/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-routing-helper.cc.o
+[225/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/arp-header.cc.o
+[226/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-stats-default.so
+[227/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/candidate-queue.cc.o
+[228/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/arp-cache.cc.o
+[229/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv6-interface-container.cc.o
+[230/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-address-generator.cc.o
+[231/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-static-routing-helper.cc.o
+[232/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/tbf-queue-disc.cc.o
+[233/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-end-point.cc.o
+[234/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/fq-codel-queue-disc.cc.o
+[235/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv6-address-helper.cc.o
+[236/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/pie-queue-disc.cc.o
+[237/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-interface-address.cc.o
+[238/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-raw-socket-factory.cc.o
+[239/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-packet-filter.cc.o
+[240/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-list-routing.cc.o
+[241/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/rip-helper.cc.o
+[242/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-packet-info-tag.cc.o
+[243/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/fq-pie-queue-disc.cc.o
+[244/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/red-queue-disc.cc.o
+[245/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/icmpv4.cc.o
+[246/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/internet-trace-helper.cc.o
+[247/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-raw-socket-factory-impl.cc.o
+[248/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/traffic-control-layer.cc.o
+[249/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-header.cc.o
+[250/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-routing-protocol.cc.o
+[251/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-end-point-demux.cc.o
+[252/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-queue-disc-item.cc.o
+[253/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-packet-probe.cc.o
+[254/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-end-point-demux.cc.o
+[255/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-extension-header.cc.o
+[256/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4.cc.o
+[257/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-route.cc.o
+[258/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/arp-l3-protocol.cc.o
+[259/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/icmpv4-l4-protocol.cc.o
+[260/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-end-point.cc.o
+[261/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-interface-address.cc.o
+[262/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-routing-table-entry.cc.o
+[263/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-option-demux.cc.o
+[264/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/cobalt-queue-disc.cc.o
+[265/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/codel-queue-disc.cc.o
+[266/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-option.cc.o
+[267/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-header.cc.o
+[268/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-autoconfigured-prefix.cc.o
+[269/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-packet-info-tag.cc.o
+[270/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-extension-demux.cc.o
+[271/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-packet-filter.cc.o
+[272/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-route.cc.o
+[273/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-raw-socket-factory.cc.o
+[274/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/neighbor-cache-helper.cc.o
+[275/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-routing-protocol.cc.o
+[276/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-raw-socket-factory-impl.cc.o
+[277/987] Building CXX object src/network/CMakeFiles/libnetwork-obj.dir/utils/packetbb.cc.o
+[278/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-address-generator.cc.o
+[279/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-list-routing.cc.o
+[280/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-pmtu-cache.cc.o
+[281/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-option-header.cc.o
+[282/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-routing-table-entry.cc.o
+[283/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6.cc.o
+[284/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-queue-disc-item.cc.o
+[285/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ripng-header.cc.o
+[286/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-interface.cc.o
+[287/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-highspeed.cc.o
+[288/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/rip-header.cc.o
+[289/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-global-routing.cc.o
+[290/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-network-default.so
+[291/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/icmpv6-header.cc.o
+[292/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-bridge-default.so
+[293/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-htcp.cc.o
+[294/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-raw-socket-impl.cc.o
+[295/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/loopback-net-device.cc.o
+[296/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-packet-probe.cc.o
+[297/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-congestion-ops.cc.o
+[298/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/rtt-estimator.cc.o
+[299/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option-sack-permitted.cc.o
+[300/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-ledbat.cc.o
+[301/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-header.cc.o
+[302/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-lp.cc.o
+[303/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option-rfc793.cc.o
+[304/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option.cc.o
+[305/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-raw-socket-impl.cc.o
+[306/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-hybla.cc.o
+[307/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option-winscale.cc.o
+[308/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-interface.cc.o
+[309/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option-ts.cc.o
+[310/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-socket-factory-impl.cc.o
+[311/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option-sack.cc.o
+[312/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-linux-reno.cc.o
+[313/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-scalable.cc.o
+[314/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/global-route-manager-impl.cc.o
+[315/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-socket-factory.cc.o
+[316/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-bic.cc.o
+[317/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/rip.cc.o
+[318/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-tx-item.cc.o
+[319/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-recovery-ops.cc.o
+[320/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-illinois.cc.o
+[321/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-veno.cc.o
+[322/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-prr-recovery.cc.o
+[323/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-dctcp.cc.o
+[324/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/udp-header.cc.o
+[325/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ndisc-cache.cc.o
+[326/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-mobility-default.so
+[327/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/udp-socket-factory.cc.o
+[328/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-cubic.cc.o
+[329/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-static-routing.cc.o
+[330/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/udp-socket-factory-impl.cc.o
+[331/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/kun-2600-mhz-propagation-loss-model.cc.o
+[332/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-static-routing.cc.o
+[333/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-bbr.cc.o
+[334/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/jakes-propagation-loss-model.cc.o
+[335/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/probabilistic-v2v-channel-condition-model.cc.o
+[336/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-socket.cc.o
+[337/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-westwood-plus.cc.o
+[338/987] Building CXX object src/traffic-control/CMakeFiles/libtraffic-control-obj.dir/model/queue-disc.cc.o
+[339/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/itu-r-1411-los-propagation-loss-model.cc.o
+[340/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/udp-socket.cc.o
+[341/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/cost231-propagation-loss-model.cc.o
+[342/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/channel-condition-model.cc.o
+[343/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-extension.cc.o
+[344/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-antenna-default.so
+[345/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-socket-state.cc.o
+[346/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/jakes-process.cc.o
+[347/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-traffic-control-default.so
+[348/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/propagation-delay-model.cc.o
+[349/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/global-router-interface.cc.o
+[350/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/okumura-hata-propagation-loss-model.cc.o
+[351/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/packet-loss-counter.cc.o
+[352/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/helper/bulk-send-helper.cc.o
+[353/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-vegas.cc.o
+[354/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/itu-r-1411-nlos-over-rooftop-propagation-loss-model.cc.o
+[355/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/helper/on-off-helper.cc.o
+[356/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-rx-buffer.cc.o
+[357/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/helper/packet-sink-helper.cc.o
+[358/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/seq-ts-size-header.cc.o
+[359/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/helper/three-gpp-http-helper.cc.o
+[360/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/helper/udp-echo-helper.cc.o
+[361/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/three-gpp-v2v-propagation-loss-model.cc.o
+[362/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/icmpv6-l4-protocol.cc.o
+[363/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-yeah.cc.o
+[364/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-rate-ops.cc.o
+[365/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/seq-ts-header.cc.o
+[366/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/helper/udp-client-server-helper.cc.o
+[367/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/seq-ts-echo-header.cc.o
+[368/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/three-gpp-http-header.cc.o
+[369/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/helper/buildings-helper.cc.o
+[370/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/helper/building-container.cc.o
+[371/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/model/buildings-propagation-loss-model.cc.o
+[372/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/model/buildings-channel-condition-model.cc.o
+[373/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/helper/building-allocator.cc.o
+[374/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/model/mobility-building-info.cc.o
+[375/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/application-packet-probe.cc.o
+[376/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/model/building-list.cc.o
+[377/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/udp-trace-client.cc.o
+[378/987] Building CXX object src/config-store/CMakeFiles/libconfig-store-obj.dir/model/attribute-default-iterator.cc.o
+[379/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/propagation-loss-model.cc.o
+[380/987] Building CXX object src/config-store/CMakeFiles/libconfig-store-obj.dir/model/file-config.cc.o
+[381/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/model/itu-r-1238-propagation-loss-model.cc.o
+[382/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/udp-client.cc.o
+[383/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/model/building.cc.o
+[384/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/helper/building-position-allocator.cc.o
+[385/987] Building CXX object src/config-store/CMakeFiles/libconfig-store-obj.dir/model/xml-config.cc.o
+[386/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/udp-l4-protocol.cc.o
+[387/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/model/oh-buildings-propagation-loss-model.cc.o
+[388/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/helper/internet-stack-helper.cc.o
+[389/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-l4-protocol.cc.o
+[390/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/model/three-gpp-v2v-channel-condition-model.cc.o
+[391/987] Building CXX object src/csma/CMakeFiles/libcsma-obj.dir/model/backoff.cc.o
+[392/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/udp-echo-server.cc.o
+[393/987] Building CXX object src/config-store/CMakeFiles/libconfig-store-obj.dir/model/config-store.cc.o
+[394/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/three-gpp-http-variables.cc.o
+[395/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/helper/li-ion-energy-source-helper.cc.o
+[396/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/helper/basic-energy-source-helper.cc.o
+[397/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/helper/basic-energy-harvester-helper.cc.o
+[398/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-tx-buffer.cc.o
+[399/987] Building CXX object src/propagation/CMakeFiles/libpropagation-obj.dir/model/three-gpp-propagation-loss-model.cc.o
+[400/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/udp-server.cc.o
+[401/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/helper/energy-harvester-helper.cc.o
+[402/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/helper/rv-battery-model-helper.cc.o
+[403/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/model/device-energy-model.cc.o
+[404/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/helper/energy-model-helper.cc.o
+[405/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/model/device-energy-model-container.cc.o
+[406/987] Building CXX object src/config-store/CMakeFiles/libconfig-store-obj.dir/model/raw-text-config.cc.o
+[407/987] Building CXX object src/config-store/CMakeFiles/libconfig-store-obj.dir/model/attribute-iterator.cc.o
+[408/987] Linking CXX executable /home/user/ns-allinone-3.40/ns-3.40/build/src/fd-net-device/ns3.40-tap-device-creator-default
+[409/987] Linking CXX executable /home/user/ns-allinone-3.40/ns-3.40/build/src/fd-net-device/ns3.40-raw-sock-creator-default
+[410/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/helper/energy-source-container.cc.o
+[411/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/helper/generic-battery-model-helper.cc.o
+[412/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/helper/energy-harvester-container.cc.o
+[413/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ripng.cc.o
+[414/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/three-gpp-http-client.cc.o
+[415/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/bulk-send-application.cc.o
+[416/987] Building CXX object src/fd-net-device/CMakeFiles/libfd-net-device-obj.dir/helper/encode-decode.cc.o
+[417/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/model/energy-harvester.cc.o
+[418/987] Building CXX object src/fd-net-device/CMakeFiles/libfd-net-device-obj.dir/helper/creator-utils.cc.o
+[419/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/model/hybrid-buildings-propagation-loss-model.cc.o
+[420/987] Building CXX object src/buildings/CMakeFiles/libbuildings-obj.dir/model/random-walk-2d-outdoor-mobility-model.cc.o
+[421/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/model/basic-energy-harvester.cc.o
+[422/987] Building CXX object src/csma/CMakeFiles/libcsma-obj.dir/model/csma-channel.cc.o
+[423/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-propagation-default.so
+[424/987] Building CXX object src/point-to-point/CMakeFiles/libpoint-to-point-obj.dir/model/ppp-header.cc.o
+[425/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/onoff-application.cc.o
+[426/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/udp-echo-client.cc.o
+[427/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/model/energy-source.cc.o
+[428/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/constant-spectrum-propagation-loss.cc.o
+[429/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/ism-spectrum-value-helper.cc.o
+[430/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/aloha-noack-mac-header.cc.o
+[431/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/packet-sink.cc.o
+[432/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/microwave-oven-spectrum-value-helper.cc.o
+[433/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/half-duplex-ideal-phy-signal-parameters.cc.o
+[434/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/udp-socket-impl.cc.o
+[435/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/friis-spectrum-propagation-loss.cc.o
+[436/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/matrix-based-channel-model.cc.o
+[437/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/helper/spectrum-helper.cc.o
+[438/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/model/basic-energy-source.cc.o
+[439/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-converter.cc.o
+[440/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/model/generic-battery-model.cc.o
+[441/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-model-300kHz-300GHz-log.cc.o
+[442/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/model/simple-device-energy-model.cc.o
+[443/987] Building CXX object src/csma/CMakeFiles/libcsma-obj.dir/helper/csma-helper.cc.o
+[444/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/helper/waveform-generator-helper.cc.o
+[445/987] Building CXX object src/point-to-point/CMakeFiles/libpoint-to-point-obj.dir/helper/point-to-point-helper.cc.o
+[446/987] Building CXX object src/fd-net-device/CMakeFiles/libfd-net-device-obj.dir/helper/emu-fd-net-device-helper.cc.o
+[447/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-model-ism2400MHz-res1MHz.cc.o
+[448/987] Building CXX object src/fd-net-device/CMakeFiles/libfd-net-device-obj.dir/helper/tap-fd-net-device-helper.cc.o
+[449/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-model.cc.o
+[450/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-interference.cc.o
+[451/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-signal-parameters.cc.o
+[452/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-error-model.cc.o
+[453/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/multi-model-spectrum-channel.cc.o
+[454/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-value.cc.o
+[455/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/non-communicating-net-device.cc.o
+[456/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-transmit-filter.cc.o
+[457/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-propagation-loss-model.cc.o
+[458/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-phy.cc.o
+[459/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-config-store-default.so
+[460/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/phased-array-spectrum-propagation-loss-model.cc.o
+[461/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-buildings-default.so
+[462/987] Building CXX object src/csma/CMakeFiles/libcsma-obj.dir/model/csma-net-device.cc.o
+[463/987] Building CXX object src/point-to-point/CMakeFiles/libpoint-to-point-obj.dir/model/point-to-point-channel.cc.o
+[464/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/model/li-ion-energy-source.cc.o
+[465/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-csma-default.so
+[466/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/helper/spectrum-analyzer-helper.cc.o
+[467/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-error-model.cc.o
+[468/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/helper/tv-spectrum-transmitter-helper.cc.o
+[469/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-l3-protocol.cc.o
+[470/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-fields.cc.o
+[471/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/single-model-spectrum-channel.cc.o
+[472/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-lqi-tag.cc.o
+[473/987] Building CXX object src/energy/CMakeFiles/libenergy-obj.dir/model/rv-battery-model.cc.o
+[474/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-interference-helper.cc.o
+[475/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-mac-header.cc.o
+[476/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-spectrum-signal-parameters.cc.o
+[477/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-mac-trailer.cc.o
+[478/987] Building CXX object src/fd-net-device/CMakeFiles/libfd-net-device-obj.dir/helper/fd-net-device-helper.cc.o
+[479/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/half-duplex-ideal-phy.cc.o
+[480/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-mac-pl-headers.cc.o
+[481/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-energy-default.so
+[482/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/helper/adhoc-aloha-noack-ideal-phy-helper.cc.o
+[483/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-spectrum-value-helper.cc.o
+[484/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/aloha-noack-net-device.cc.o
+[485/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/two-ray-spectrum-propagation-loss-model.cc.o
+[486/987] Building CXX object src/point-to-point/CMakeFiles/libpoint-to-point-obj.dir/model/point-to-point-net-device.cc.o
+[487/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/epc-helper.cc.o
+[488/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-analyzer.cc.o
+[489/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/three-gpp-spectrum-propagation-loss-model.cc.o
+[490/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/tv-spectrum-transmitter.cc.o
+[491/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/cc-helper.cc.o
+[492/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/phy-rx-stats-calculator.cc.o
+[493/987] Building CXX object src/fd-net-device/CMakeFiles/libfd-net-device-obj.dir/model/fd-net-device.cc.o
+[494/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/spectrum-channel.cc.o
+[495/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-fd-net-device-default.so
+[496/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/trace-fading-loss-model.cc.o
+[497/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-l3-protocol.cc.o
+[498/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/lte-global-pathloss-database.cc.o
+[499/987] Building CXX object src/virtual-net-device/CMakeFiles/libvirtual-net-device-obj.dir/model/virtual-net-device.cc.o
+[500/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/phy-tx-stats-calculator.cc.o
+[501/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-csmaca.cc.o
+[502/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/wifi-spectrum-value-helper.cc.o
+[503/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/waveform-generator.cc.o
+[504/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/a2-a4-rsrq-handover-algorithm.cc.o
+[505/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/mac-stats-calculator.cc.o
+[506/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-enb-s1-sap.cc.o
+[507/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-s11-sap.cc.o
+[508/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/lte-hex-grid-enb-topology-helper.cc.o
+[509/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/phy-stats-calculator.cc.o
+[510/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/component-carrier.cc.o
+[511/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-gtpu-header.cc.o
+[512/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/a3-rsrp-handover-algorithm.cc.o
+[513/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-s1ap-sap.cc.o
+[514/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-x2-sap.cc.o
+[515/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/emu-epc-helper.cc.o
+[516/987] Building CXX object src/applications/CMakeFiles/libapplications-obj.dir/model/three-gpp-http-server.cc.o
+[517/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/radio-environment-map-helper.cc.o
+[518/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/ff-mac-common.cc.o
+[519/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/ff-mac-csched-sap.cc.o
+[520/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/component-carrier-ue.cc.o
+[521/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/eps-bearer-tag.cc.o
+[522/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/ff-mac-sched-sap.cc.o
+[523/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/point-to-point-epc-helper.cc.o
+[524/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-anr-sap.cc.o
+[525/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/eps-bearer.cc.o
+[526/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/helper/lr-wpan-helper.cc.o
+[527/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-gtpc-header.cc.o
+[528/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/ff-mac-scheduler.cc.o
+[529/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-tft.cc.o
+[530/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-as-sap.cc.o
+[531/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/component-carrier-enb.cc.o
+[532/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ccm-mac-sap.cc.o
+[533/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-enb-cmac-sap.cc.o
+[534/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/lte-stats-calculator.cc.o
+[535/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/radio-bearer-stats-connector.cc.o
+[536/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ccm-rrc-sap.cc.o
+[537/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-enb-application.cc.o
+[538/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-common.cc.o
+[539/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-amc.cc.o
+[540/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-enb-cphy-sap.cc.o
+[541/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-control-messages.cc.o
+[542/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-enb-phy-sap.cc.o
+[543/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-chunk-processor.cc.o
+[544/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/radio-bearer-stats-calculator.cc.o
+[545/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ffr-sap.cc.o
+[546/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-anr.cc.o
+[547/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-tft-classifier.cc.o
+[548/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ffr-rrc-sap.cc.o
+[549/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-enb-component-carrier-manager.cc.o
+[550/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ffr-algorithm.cc.o
+[551/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-handover-algorithm.cc.o
+[552/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-x2.cc.o
+[553/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-x2-header.cc.o
+[554/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-handover-management-sap.cc.o
+[555/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-asn1-header.cc.o
+[556/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-ue-nas.cc.o
+[557/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-mac-sap.cc.o
+[558/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ffr-distributed-algorithm.cc.o
+[559/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-harq-phy.cc.o
+[560/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-net-device.cc.o
+[561/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-sgw-application.cc.o
+[562/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-pdcp-tag.cc.o
+[563/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-phy-tag.cc.o
+[564/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-pdcp-header.cc.o
+[565/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-fr-no-op-algorithm.cc.o
+[566/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-pdcp-sap.cc.o
+[567/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-mme-application.cc.o
+[568/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rlc-am-header.cc.o
+[569/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-mi-error-model.cc.o
+[570/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rlc-sequence-number.cc.o
+[571/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rlc-sap.cc.o
+[572/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-radio-bearer-tag.cc.o
+[573/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-fr-hard-algorithm.cc.o
+[574/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rlc-header.cc.o
+[575/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rlc-sdu-status-tag.cc.o
+[576/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-interference.cc.o
+[577/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-phy.cc.o
+[578/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rlc-tag.cc.o
+[579/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rrc-sap.cc.o
+[580/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rlc-tm.cc.o
+[581/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/epc-pgw-application.cc.o
+[582/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-net-device.cc.o
+[583/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-radio-bearer-info.cc.o
+[584/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-fr-soft-algorithm.cc.o
+[585/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ue-cphy-sap.cc.o
+[586/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-spectrum-value-helper.cc.o
+[587/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ue-component-carrier-manager.cc.o
+[588/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ue-ccm-rrc-sap.cc.o
+[589/987] Building CXX object src/spectrum/CMakeFiles/libspectrum-obj.dir/model/three-gpp-channel-model.cc.o
+[590/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ue-cmac-sap.cc.o
+[591/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-phy.cc.o
+[592/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ffr-soft-algorithm.cc.o
+[593/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ue-phy-sap.cc.o
+[594/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-vendor-specific-parameters.cc.o
+[595/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/no-backhaul-epc-helper.cc.o
+[596/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-pdcp.cc.o
+[597/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-spectrum-signal-parameters.cc.o
+[598/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-fr-strict-algorithm.cc.o
+[599/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-enb-net-device.cc.o
+[600/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/no-op-handover-algorithm.cc.o
+[601/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rrc-header.cc.o
+[602/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/simple-ue-component-carrier-manager.cc.o
+[603/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ffr-enhanced-algorithm.cc.o
+[604/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ue-mac.cc.o
+[605/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-point-to-point-default.so
+[606/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/rem-spectrum-phy.cc.o
+[607/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rlc.cc.o
+[608/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/no-op-component-carrier-manager.cc.o
+[609/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-spectrum-default.so
+[610/987] Building CXX object src/point-to-point-layout/CMakeFiles/libpoint-to-point-layout-obj.dir/model/point-to-point-grid.cc.o
+[611/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ue-power-control.cc.o
+[612/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ue-net-device.cc.o
+[613/987] Building CXX object src/point-to-point-layout/CMakeFiles/libpoint-to-point-layout-obj.dir/model/point-to-point-dumbbell.cc.o
+[614/987] Building CXX object src/point-to-point-layout/CMakeFiles/libpoint-to-point-layout-obj.dir/model/point-to-point-star.cc.o
+[615/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-header-rc.cc.o
+[616/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-header-common.cc.o
+[617/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rrc-protocol-ideal.cc.o
+[618/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rlc-um.cc.o
+[619/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/helper/acoustic-modem-energy-model-helper.cc.o
+[620/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/acoustic-modem-energy-model.cc.o
+[621/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rrc-protocol-real.cc.o
+[622/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-mac.cc.o
+[623/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-noise-model.cc.o
+[624/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-mac-aloha.cc.o
+[625/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-noise-model-default.cc.o
+[626/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-channel.cc.o
+[627/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-prop-model-ideal.cc.o
+[628/987] Building CXX object src/lr-wpan/CMakeFiles/liblr-wpan-obj.dir/model/lr-wpan-mac.cc.o
+[629/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/helper/uan-helper.cc.o
+[630/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-enb-phy.cc.o
+[631/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-enb-mac.cc.o
+[632/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-prop-model-thorp.cc.o
+[633/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-virtual-net-device-default.so
+[634/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-tx-mode.cc.o
+[635/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-transducer.cc.o
+[636/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-phy-gen.cc.o
+[637/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-mac-cw.cc.o
+[638/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-prop-model.cc.o
+[639/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-phy.cc.o
+[640/987] Building CXX object src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-socket-base.cc.o
+[641/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-net-device.cc.o
+[642/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/model/ampdu-subframe-header.cc.o
+[643/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-transducer-hd.cc.o
+[644/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/fdmt-ff-mac-scheduler.cc.o
+[645/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-mac-rc.cc.o
+[646/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/model/ampdu-tag.cc.o
+[647/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/helper/yans-wifi-helper.cc.o
+[648/987] Linking CXX shared library /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-internet-default.so
+FAILED: [code=1] /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-internet-default.so 
+: && /usr/bin/c++ -fPIC -O2 -g -DNDEBUG  -shared -Wl,-soname,libns3.40-internet-default.so -o /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-internet-default.so src/internet/CMakeFiles/libinternet-obj.dir/helper/internet-stack-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/internet-trace-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-address-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-global-routing-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-interface-container.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-list-routing-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-routing-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv4-static-routing-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv6-address-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv6-interface-container.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv6-list-routing-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv6-routing-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ipv6-static-routing-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/neighbor-cache-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/rip-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/helper/ripng-helper.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/arp-cache.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/arp-header.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/arp-l3-protocol.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/arp-queue-disc-item.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/candidate-queue.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/global-route-manager-impl.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/global-route-manager.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/global-router-interface.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/icmpv4-l4-protocol.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/icmpv4.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/icmpv6-header.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/icmpv6-l4-protocol.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ip-l4-protocol.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-address-generator.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-end-point-demux.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-end-point.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-global-routing.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-header.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-interface-address.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-interface.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-l3-protocol.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-list-routing.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-packet-filter.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-packet-info-tag.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-packet-probe.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-queue-disc-item.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-raw-socket-factory-impl.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-raw-socket-factory.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-raw-socket-impl.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-route.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-routing-protocol.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-routing-table-entry.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4-static-routing.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv4.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-address-generator.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-autoconfigured-prefix.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-end-point-demux.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-end-point.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-extension-demux.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-extension-header.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-extension.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-header.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-interface-address.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-interface.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-l3-protocol.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-list-routing.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-option-demux.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-option-header.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-option.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-packet-filter.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-packet-info-tag.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-packet-probe.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-pmtu-cache.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-queue-disc-item.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-raw-socket-factory-impl.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-raw-socket-factory.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-raw-socket-impl.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-route.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-routing-protocol.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-routing-table-entry.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6-static-routing.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ipv6.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/loopback-net-device.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ndisc-cache.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/rip-header.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/rip.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ripng-header.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/ripng.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/rtt-estimator.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-bbr.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-bic.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-congestion-ops.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-cubic.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-dctcp.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-header.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-highspeed.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-htcp.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-hybla.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-illinois.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-l4-protocol.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-ledbat.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-linux-reno.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-lp.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option-rfc793.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option-sack-permitted.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option-sack.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option-ts.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option-winscale.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-option.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-prr-recovery.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-rate-ops.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-recovery-ops.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-rx-buffer.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-scalable.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-socket-base.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-socket-factory-impl.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-socket-factory.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-socket-state.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-socket.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-tx-buffer.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-tx-item.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-vegas.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-veno.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-westwood-plus.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/tcp-yeah.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/udp-header.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/udp-l4-protocol.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/udp-socket-factory-impl.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/udp-socket-factory.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/udp-socket-impl.cc.o src/internet/CMakeFiles/libinternet-obj.dir/model/udp-socket.cc.o -L/home/user/ns-allinone-3.40/ns-3.40/build/lib -Wl,-rpath,/home/user/ns-allinone-3.40/ns-3.40/build/lib:  -Wl,--no-as-needed  /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-bridge-default.so  /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-traffic-control-default.so  -Wl,--as-needed  /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-network-default.so  /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-stats-default.so  /usr/lib/x86_64-linux-gnu/libsqlite3.so  /home/user/ns-allinone-3.40/ns-3.40/build/lib/libns3.40-core-default.so  -Wl,--no-as-needed  /usr/lib/x86_64-linux-gnu/libgsl.so  /usr/lib/x86_64-linux-gnu/libgslcblas.so  -Wl,--as-needed && :
+/usr/bin/ld: failed to set dynamic section sizes: file truncated
+collect2: error: ld returned 1 exit status
+[649/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/model/amsdu-subframe-header.cc.o
+[650/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/model/block-ack-agreement.cc.o
+[651/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/model/block-ack-window.cc.o
+[652/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/model/block-ack-type.cc.o
+[653/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/model/adhoc-wifi-mac.cc.o
+[654/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/tta-ff-mac-scheduler.cc.o
+[655/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/helper/wifi-radio-energy-model-helper.cc.o
+[656/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-phy-dual.cc.o
+[657/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/fdbet-ff-mac-scheduler.cc.o
+[658/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/fdtbfq-ff-mac-scheduler.cc.o
+[659/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-spectrum-phy.cc.o
+[660/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-rlc-am.cc.o
+[661/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/helper/athstats-helper.cc.o
+[662/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/cqa-ff-mac-scheduler.cc.o
+[663/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/helper/wifi-mac-helper.cc.o
+[664/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/helper/spectrum-wifi-helper.cc.o
+[665/987] Building CXX object src/uan/CMakeFiles/libuan-obj.dir/model/uan-mac-rc-gw.cc.o
+[666/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/rr-ff-mac-scheduler.cc.o
+[667/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/helper/wifi-helper.cc.o
+[668/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ue-phy.cc.o
+[669/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/tdtbfq-ff-mac-scheduler.cc.o
+[670/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-enb-rrc.cc.o
+[671/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/tdmt-ff-mac-scheduler.cc.o
+[672/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/tdbet-ff-mac-scheduler.cc.o
+[673/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/model/block-ack-manager.cc.o
+[674/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/pf-ff-mac-scheduler.cc.o
+[675/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/lte-ue-rrc.cc.o
+[676/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/helper/lte-helper.cc.o
+[677/987] Building CXX object src/lte/CMakeFiles/liblte-obj.dir/model/pss-ff-mac-scheduler.cc.o
+[678/987] Building CXX object src/wifi/CMakeFiles/libwifi-obj.dir/model/ap-wifi-mac.cc.o
+ninja: build stopped: subcommand failed.
