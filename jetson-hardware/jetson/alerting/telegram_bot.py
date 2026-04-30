@@ -131,6 +131,53 @@ class TelegramAlert:
             logger.error("Telegram photo send failed: %s", e)
             return False
 
+    def send_document(self, file_bytes, filename, caption=""):
+        """Send an arbitrary document (e.g. forensic PDF) with optional caption.
+
+        Mirrors send_photo's structure: rate-limit/cooldown, disabled-fallback,
+        and a try/except around the requests POST. The multipart field name
+        for sendDocument is ``document`` (not ``photo``) and we declare the
+        MIME as ``application/pdf``.
+
+        Notes:
+        - Telegram's sendDocument file-size limit is 50 MB. Forensic PDFs in
+          this project are typically 50-500 KB so no size guard is needed.
+        - 60 s timeout because PDFs are larger than photos and the bus's
+          uplink (LTE / Cloudflare tunnel) can be slow.
+        """
+        if not self.enabled:
+            logger.info("[Telegram disabled] Document: %s", filename)
+            return False
+
+        now = time.time()
+        if now - self._last_send < self._min_interval:
+            time.sleep(self._min_interval - (now - self._last_send))
+
+        try:
+            import requests
+            resp = requests.post(
+                self._api_url("sendDocument"),
+                data={
+                    "chat_id": self.chat_id,
+                    "caption": caption,
+                    "parse_mode": "Markdown",
+                },
+                files={"document": (filename, file_bytes, "application/pdf")},
+                timeout=60,
+            )
+            self._last_send = time.time()
+            if resp.status_code == 200:
+                logger.info("Telegram document sent (%s, %d bytes)",
+                            filename, len(file_bytes))
+                return True
+            else:
+                logger.warning("Telegram document error: %d %s",
+                               resp.status_code, resp.text[:200])
+                return False
+        except Exception as e:
+            logger.error("Telegram document send failed: %s", e)
+            return False
+
     def send_ddos_alert(self, details):
         """Send a formatted DDoS detection alert."""
         msg = (

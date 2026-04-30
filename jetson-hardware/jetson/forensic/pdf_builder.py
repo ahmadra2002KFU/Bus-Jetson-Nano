@@ -207,7 +207,6 @@ def build_incident_pdf(
     attack_type: str,
     trigger_ts: float,
     detection_details: dict,
-    camera_jpeg: bytes | None,
     recent_events: list[dict],
     gps_trace: list[tuple[float, float]] | None,
     route_polyline: list[tuple[float, float]] | None,
@@ -218,8 +217,6 @@ def build_incident_pdf(
     is rendered with Jinja2, then converted to PDF with WeasyPrint.
     """
     from weasyprint import HTML  # local import; heavy native deps
-
-    camera_uri = _jpeg_data_uri(camera_jpeg) if camera_jpeg else None
 
     gps_png: bytes | None = None
     if gps_trace:
@@ -234,7 +231,6 @@ def build_incident_pdf(
         "trigger_human":     _ts_human(trigger_ts),
         "metric_rows":       _build_metric_rows(attack_type,
                                                 detection_details or {}),
-        "camera_data_uri":   camera_uri,
         "gps_map_data_uri":  gps_uri,
         "events":            _prepare_events(recent_events or []),
         "generation_ts":     _ts_human(

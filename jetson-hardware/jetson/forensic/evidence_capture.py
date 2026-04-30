@@ -51,8 +51,8 @@ def _read_recent_events(csv_logger, limit: int = _MAX_EVENT_ROWS
 
 
 def capture_evidence(
-    camera,
-    csv_logger,
+    camera=None,
+    csv_logger=None,
     bus_id: int = 0,
     attack_type: str = "unknown",
     detection_details: dict | None = None,
@@ -60,6 +60,10 @@ def capture_evidence(
     route_polyline: list[tuple[float, float]] | None = None,
 ):
     """Capture forensic evidence and render it as a PDF incident report.
+
+    The ``camera`` parameter is accepted for backward-compatibility with the
+    existing call sites but is no longer used: this project does not run
+    against a real camera, so no frame is captured.
 
     Returns:
         tuple[bytes, dict]:
@@ -69,16 +73,8 @@ def capture_evidence(
     """
     trigger_ts = time.time()
 
-    jpeg_bytes: bytes | None = None
-    if camera is not None:
-        try:
-            jpeg_bytes = camera.grab_jpeg(quality=80) or None
-            if jpeg_bytes:
-                logger.info("captured camera frame: %d bytes",
-                            len(jpeg_bytes))
-        except Exception as exc:
-            logger.warning("camera capture failed: %s", exc)
-            jpeg_bytes = None
+    # Camera capture intentionally removed: no real camera in this project.
+    del camera  # silence unused-arg linters; preserved in signature only
 
     recent_events = _read_recent_events(csv_logger)
     details = dict(detection_details or {})
@@ -89,7 +85,6 @@ def capture_evidence(
             attack_type=attack_type,
             trigger_ts=trigger_ts,
             detection_details=details,
-            camera_jpeg=jpeg_bytes,
             recent_events=recent_events,
             gps_trace=gps_trace,
             route_polyline=route_polyline,

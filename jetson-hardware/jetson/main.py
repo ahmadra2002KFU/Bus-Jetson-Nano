@@ -28,7 +28,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from jetson.alerting.csv_logger import CSVLogger
 from jetson.alerting.telegram_bot import TelegramAlert
-from jetson.camera.camera_factory import create_camera
 from jetson.config_loader import Config
 from jetson.detection.ddos_detector import DDoSDetector
 from jetson.detection.edge_gps_detector import EdgeGpsDetector
@@ -89,12 +88,6 @@ class BusAgent:
             bot_token=cfg.telegram_bot_token,
             chat_id=cfg.telegram_chat_id,
             enabled=cfg.telegram_enabled,
-        )
-
-        self.camera = create_camera(
-            use_real_camera=cfg.use_real_camera,
-            width=cfg.camera_width,
-            height=cfg.camera_height,
         )
 
         self.offline_queue = OfflineQueue(cfg.offline_db_path)
@@ -323,7 +316,7 @@ class BusAgent:
         trigger_time = time.time()
         try:
             pdf_bytes, metadata = capture_evidence(
-                self.camera, self.csv_logger,
+                None, self.csv_logger,
                 bus_id=self.config.bus_id,
                 attack_type=attack_type,
                 detection_details=self._detection_details.get(attack_type),
@@ -333,6 +326,38 @@ class BusAgent:
         except Exception:
             logger.exception("capture_evidence failed (%s)", attack_type)
             return
+
+        # Two-stage Telegram flow:
+        #   Stage 1 (already happened ~2 s ago): _on_ddos_detected /
+        #     _on_gps_spoof_detected fired the moment the detector latched
+        #     and pushed a text-only alert via send_ddos_alert /
+        #     send_gps_alert. That gives the operator immediate awareness.
+        #   Stage 2 (here): now that capture_evidence has produced the PDF,
+        #     ship it as a follow-up document so the operator has the full
+        #     forensic report in-chat without waiting for the server.
+        # Telegram failures must NOT block the server upload below, so this
+        # is wrapped in its own try/except.
+        bus_id = self.config.bus_id
+        pdf_filename = f"incident_bus{bus_id}_{attack_type}_{int(trigger_time)}.pdf"
+        pdf_caption = (
+            f"*Forensic Report*\n"
+            f"Attack: `{attack_type}`\n"
+            f"Bus: `{bus_id}`\n"
+            f"Trigger: `{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(trigger_time))}`"
+        )
+        try:
+            tg_ok = self.telegram.send_document(
+                pdf_bytes, filename=pdf_filename, caption=pdf_caption,
+            )
+            if tg_ok:
+                logger.info("forensic PDF pushed to Telegram (%s, %d bytes)",
+                            pdf_filename, len(pdf_bytes))
+            else:
+                logger.warning("forensic PDF Telegram send returned False (%s)",
+                               attack_type)
+        except Exception:
+            logger.exception("telegram send_document failed (%s) — continuing to server upload",
+                             attack_type)
 
         result = upload_evidence(
             pdf_bytes, metadata, server_url=self.config.server_url,

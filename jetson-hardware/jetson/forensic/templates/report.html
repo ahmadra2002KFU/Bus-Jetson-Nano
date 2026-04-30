@@ -141,15 +141,6 @@
   {% endfor %}
 </table>
 
-<h2>Captured Camera Frame</h2>
-<div class="photo-wrap">
-  {% if camera_data_uri %}
-    <img src="{{ camera_data_uri }}" alt="captured camera frame" />
-  {% else %}
-    <div class="placeholder">Camera frame unavailable at time of capture.</div>
-  {% endif %}
-</div>
-
 {% if gps_map_data_uri %}
 <h2>GPS Trace</h2>
 <div class="map-wrap">
