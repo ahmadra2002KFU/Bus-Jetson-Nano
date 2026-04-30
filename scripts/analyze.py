@@ -29,7 +29,7 @@ DETECTION_MODES = ['any']
 # All 5 seeds produced by run_all_parallel.sh. Previously this was [1] only,
 # which silently dropped 80% of replicate data and reported single-seed values
 # as if they were means.
-SEEDS = [1, 2, 3, 4, 5]
+SEEDS = [int(s) for s in os.environ.get('SEEDS', '1,2,3,4,5').split(',') if s.strip()]
 SIM_TIME = 300.0  # seconds
 
 # 10 MB forensic upload target (must match smart-bus.cc TARGET_BYTES).
@@ -365,7 +365,8 @@ def main():
         mode_df = df[df['mode'] == mode]
         if mode_df.empty:
             continue
-        print(f"\n=== Summary [{mode} mode] (mean across 5 seeds) ===")
+        seed_label = ','.join(str(s) for s in SEEDS)
+        print(f"\n=== Summary [{mode} mode] (mean across {len(SEEDS)} seed(s): {seed_label}) ===")
         summary = mode_df.groupby(['bus_count', 'scenario']).agg(
             delay=('delay_ms', 'mean'),
             throughput=('throughput_mbps', 'mean'),

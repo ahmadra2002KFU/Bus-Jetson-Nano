@@ -1,0 +1,14 @@
+Starting Parallel Runs...
+ns-3 root: /home/user/ns-allinone-3.40/ns-3.40
+results: /home/user/ns-allinone-3.40/ns-3.40/scratch/smart-bus/results
+Clearing old 1/10/41 bus XML/CSV outputs...
+Starting: baseline | Buses: 1 | Seed: 1
+Starting: ddos | Buses: 1 | Seed: 1
+Starting: ddos_gps | Buses: 1 | Seed: 1
+Starting: baseline | Buses: 10 | Seed: 1
+Starting: ddos | Buses: 10 | Seed: 1
+Starting: ddos_gps | Buses: 10 | Seed: 1
+Starting: baseline | Buses: 41 | Seed: 1
+Starting: ddos | Buses: 41 | Seed: 1
+Starting: ddos_gps | Buses: 41 | Seed: 1
+All runs completed!
