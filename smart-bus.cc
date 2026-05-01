@@ -143,6 +143,17 @@ static bool g_forensicTriggered = false;
 static std::string g_detectionMode = "any";
 static Ptr<PacketSink> g_forensicSinkApp;
 static double g_simTime = 300.0;  // Set in main(); used by forensic poller.
+
+// Forensic upload: hand-rolled UDP sender state (Round 4 fix).
+// Bypasses ns-3 OnOffApplication entirely because mid-simulation
+// Application::SetStartTime is unreliable (DoInitialize schedules
+// StartApplication using m_startTime as a delay-from-now, so passing an
+// absolute timestamp pushes the start event past sim end). The sender
+// chain below runs on plain Simulator::Schedule so its lifecycle is
+// deterministic regardless of ns-3 Application semantics.
+static Ptr<Socket> g_forensicSocket;
+static uint64_t g_forensicBytesSent = 0;
+static bool g_forensicSendingActive = false;
 // GPS detector streak gate. Supervisor spec is "any 1-of-3 condition
 // triggers" -> default 1. Configurable via --gpsStreakRequired for noise
 // experiments; the compliance baseline is 1.
@@ -1375,8 +1386,69 @@ PollForensicCompletion(double interval, double deadline)
 }
 
 // ============================================================
+// FREE FUNCTION: SendForensicChunk
+// Round 4: hand-rolled UDP sender driven directly by Simulator::Schedule.
+// Replaces the OnOffApplication injection that produced 0-byte runs.
+// At 5 Mbps with 1400-byte packets the inter-packet interval is
+// 1400 * 8 / 5e6 = 2.24 ms, so 10 MB takes ~16 s of wall sim time and
+// ~7490 reschedules.
+// ============================================================
+static const uint32_t FORENSIC_PKT_SIZE = 1400;
+static const uint64_t FORENSIC_TARGET_BYTES = 10485760; // 10 MB
+static const double FORENSIC_RATE_BPS = 5e6;             // 5 Mbps
+static const double FORENSIC_PKT_INTERVAL =
+    (FORENSIC_PKT_SIZE * 8.0) / FORENSIC_RATE_BPS;       // ~0.00224 s
+
+static void
+SendForensicChunk()
+{
+    if (!g_forensicSendingActive) return;
+    if (g_forensicBytesSent >= FORENSIC_TARGET_BYTES)
+    {
+        if (g_forensicSocket) { g_forensicSocket->Close(); }
+        g_forensicSendingActive = false;
+        std::cerr << "[FORENSIC-DIAG] SENDER finished at t="
+                  << Simulator::Now().GetSeconds()
+                  << " bytesSent=" << g_forensicBytesSent << "\n";
+        return;
+    }
+
+    uint64_t remaining = FORENSIC_TARGET_BYTES - g_forensicBytesSent;
+    uint32_t toSend = (remaining < FORENSIC_PKT_SIZE) ?
+                      static_cast<uint32_t>(remaining) : FORENSIC_PKT_SIZE;
+    Ptr<Packet> pkt = Create<Packet>(toSend);
+    int sent = g_forensicSocket ? g_forensicSocket->Send(pkt) : -1;
+    if (sent > 0)
+    {
+        g_forensicBytesSent += static_cast<uint64_t>(sent);
+    }
+
+    // Periodic sender-side diagnostic so we can compare with the
+    // sink-side PollForensicCompletion poll lines.
+    static double lastSenderDiag = -1e9;
+    double now = Simulator::Now().GetSeconds();
+    if (now - lastSenderDiag >= 5.0)
+    {
+        lastSenderDiag = now;
+        std::cerr << "[FORENSIC-DIAG] SENDER t=" << std::fixed
+                  << std::setprecision(2) << now
+                  << " bytesSent=" << g_forensicBytesSent
+                  << " target=" << FORENSIC_TARGET_BYTES
+                  << " lastSendRet=" << sent << "\n";
+    }
+
+    Simulator::Schedule(Seconds(FORENSIC_PKT_INTERVAL),
+                        &SendForensicChunk);
+}
+
+// ============================================================
 // FREE FUNCTION: StartForensicUpload
-// Called once after DDoS detection; starts BulkSend on bus 0
+// Round 4: bypass ns-3 Application lifecycle entirely. Open a raw UDP
+// socket on the bus UE, Connect() to the server's forensic port, and
+// drive sending through Simulator::Schedule chained calls. This avoids
+// the Application::SetStartTime / DoInitialize delay-vs-absolute
+// ambiguity that left the Round-3 OnOffApplication-based path producing
+// 0 delivered bytes when triggered mid-simulation.
 // ============================================================
 static void
 StartForensicUpload(Ptr<Node> busNode, Ipv4Address serverAddr)
@@ -1384,49 +1456,13 @@ StartForensicUpload(Ptr<Node> busNode, Ipv4Address serverAddr)
     double now = Simulator::Now().GetSeconds();
     NS_LOG_INFO("[FORENSIC] Starting 10MB evidence upload at t=" << now);
 
-    // Round 3 fix for "0 bytes delivered" bug:
-    //
-    // The previous Round-2 implementation used `OnOffHelper::Install(busNode)`
-    // followed by `app.Start(...)`/`app.Stop(...)`. ns-3's
-    // `Node::AddApplication` (called inside Install) immediately calls
-    // `application->Initialize()` if the node is already initialized -- which
-    // it always is when StartForensicUpload runs mid-simulation. Initialize
-    // schedules `StartApplication` based on `m_startTime`, but at install
-    // time `m_startTime` is still its default (0). The subsequent
-    // `app.Start(now+0.01)` only updates the scalar `m_startTime` -- it does
-    // NOT reschedule the already-fired StartApplication event. The same
-    // applies to `m_stopTime`. The result is undefined-but-broken socket
-    // lifecycle: the OnOff app never produces a useful traffic burst, the
-    // server-side PacketSink sees 0 bytes for this upload, and the
-    // PollForensicCompletion poller hits its 60-s deadline with delivered=0.
-    //
-    // Correct pattern when injecting an application into a running
-    // simulation: build the app via CreateObject<>, set its attributes,
-    // call SetStartTime/SetStopTime BEFORE AddApplication, then
-    // AddApplication will Initialize() with the right times in place.
-    Ptr<OnOffApplication> uploadApp = CreateObject<OnOffApplication>();
-    uploadApp->SetAttribute("Protocol",
-        StringValue("ns3::UdpSocketFactory"));
-    uploadApp->SetAttribute("Remote",
-        AddressValue(InetSocketAddress(serverAddr, FORENSIC_PORT)));
-    uploadApp->SetAttribute("DataRate",
-        DataRateValue(DataRate("5Mbps")));
-    uploadApp->SetAttribute("PacketSize", UintegerValue(1400));
-    // 10 MB upload at 5 Mbps takes 16 s. Bound the OnOff sender by total
-    // bytes (MaxBytes) so it produces exactly 10 MB regardless of how
-    // many On/Off cycles are scheduled. Belt-and-braces: also keep an
-    // OnTime of 16 s and OffTime of 0 so a single On burst would also
-    // suffice.
-    uploadApp->SetAttribute("MaxBytes", UintegerValue(10485760));
-    uploadApp->SetAttribute("OnTime",
-        StringValue("ns3::ConstantRandomVariable[Constant=16]"));
-    uploadApp->SetAttribute("OffTime",
-        StringValue("ns3::ConstantRandomVariable[Constant=0]"));
-    // Set start/stop BEFORE AddApplication so Initialize sees the right
-    // schedule.
-    uploadApp->SetStartTime(Seconds(now + 0.01));
-    uploadApp->SetStopTime(Seconds(std::min(now + 60.0, g_simTime - 0.1)));
-    busNode->AddApplication(uploadApp);
+    g_forensicSocket = Socket::CreateSocket(busNode,
+        TypeId::LookupByName("ns3::UdpSocketFactory"));
+    int bindRet = g_forensicSocket->Bind();
+    int connectRet = g_forensicSocket->Connect(
+        InetSocketAddress(serverAddr, FORENSIC_PORT));
+    g_forensicBytesSent = 0;
+    g_forensicSendingActive = (bindRet == 0 && connectRet == 0);
 
     ForensicEvent evt;
     evt.triggerTime = now;
@@ -1438,25 +1474,30 @@ StartForensicUpload(Ptr<Node> busNode, Ipv4Address serverAddr)
     evt.bytesReceived = 0;
     g_forensicEvents.push_back(evt);
 
-    // Capture the sink's current cumulative bytes so PollForensicCompletion
-    // can isolate THIS upload from earlier traffic on the same UDP port.
     uint64_t baseline = (g_forensicSinkApp != 0) ?
                         g_forensicSinkApp->GetTotalRx() : 0;
     g_forensicSinkBaselineBytes = baseline;
 
-    // Round 3 diagnostic: log that the upload was actually wired up. If this
-    // line never appears in stderr the trigger never fired; if it appears
-    // but [FORENSIC-DIAG] poll lines all show delivered=0, the sink/sender
-    // wiring is still broken.
     std::cerr << "[FORENSIC-DIAG] StartForensicUpload triggered t=" << now
               << " busNode=" << (busNode ? busNode->GetId() : 9999)
               << " serverAddr=" << serverAddr
               << " sinkPtrValid=" << (g_forensicSinkApp ? 1 : 0)
               << " baseline=" << baseline
-              << " uploadStart=" << (now + 0.01)
-              << " uploadStop=" << std::min(now + 60.0, g_simTime - 0.1)
+              << " bindRet=" << bindRet
+              << " connectRet=" << connectRet
+              << " sendingActive=" << (g_forensicSendingActive ? 1 : 0)
               << " attackType=" << evt.attackType
               << "\n";
+
+    if (g_forensicSendingActive)
+    {
+        Simulator::ScheduleNow(&SendForensicChunk);
+    }
+    else
+    {
+        std::cerr << "[FORENSIC-DIAG] SENDER refused to start: "
+                  << "bind/connect failed\n";
+    }
 
     // Poll real bytes received every 0.5s.
     // Deadline = whichever comes first: a 60s allowance (gives slow uploads
@@ -1650,6 +1691,9 @@ main(int argc, char *argv[])
     g_forensicTriggered = false;
     g_forensicSinkApp = 0;
     g_forensicSinkBaselineBytes = 0;
+    g_forensicSocket = 0;
+    g_forensicBytesSent = 0;
+    g_forensicSendingActive = false;
 
     // ========== LTE + EPC Setup ==========
     Config::SetDefault("ns3::LteEnbPhy::TxPower", DoubleValue(46.0));  // 46 dBm macro cell
@@ -1689,19 +1733,15 @@ main(int argc, char *argv[])
     //     (lowered from 1.2/1.5 below) so the scheduler can admit all 14 UEs
     //     in a cell without rejecting bearers, leaving headroom for control
     //     and HARQ retransmits.
-    // Round 3: 100 RBs (20 MHz) -> 200 RBs (40 MHz).
-    // STC, Mobily, and Zain all deploy LTE in Saudi Arabia with carrier
-    // aggregation that reaches 40 MHz or more in urban macro cells, so for an
-    // Al-Ahsa fleet deployment 40 MHz is the production-realistic value.
-    // ns-3.40's LteEnbPhy supports 200 RBs natively (the 6/15/25/50/75/100/200
-    // RB grid is enumerated in LteEnbNetDevice::SetDlBandwidth()).
-    // 20 MHz had left the per-cell UL budget at ~14.4 Mbps offered vs ~14 UEs
-    // x 1 Mbps GBR, which saturated the scheduler at 41 buses (baseline PLR
-    // ~41%) and made DDoS effects invisible. 40 MHz roughly doubles per-cell
-    // capacity, restoring headroom so DDoS-induced backhaul congestion
-    // dominates the loss/delay metrics rather than radio saturation.
-    lteHelper->SetEnbDeviceAttribute("DlBandwidth", UintegerValue(200));
-    lteHelper->SetEnbDeviceAttribute("UlBandwidth", UintegerValue(200));
+    // Round 4: revert to 100 RBs (20 MHz, the maximum single-carrier value
+    // ns-3 LENA accepts). The earlier Round-3 attempt at 200 RBs aborted
+    // immediately at startup with "invalid bandwidth value 200" because
+    // ns-3 LENA only enumerates {6, 15, 25, 50, 75, 100} RBs. 40 MHz total
+    // bandwidth in real LTE requires Carrier Aggregation (2 component
+    // carriers), which is a separate, follow-up change tracked under the
+    // bandwidth audit. For now this build runs on a single 20 MHz cell.
+    lteHelper->SetEnbDeviceAttribute("DlBandwidth", UintegerValue(100));
+    lteHelper->SetEnbDeviceAttribute("UlBandwidth", UintegerValue(100));
 
     Ptr<Node> pgw = epcHelper->GetPgwNode();
 
