@@ -91,4 +91,35 @@
     </table>
   </div>
 </section>
+
+<div id="test-modal" class="modal-backdrop" hidden>
+  <div class="modal" role="dialog" aria-labelledby="test-modal-title">
+    <header class="modal-head">
+      <h3 id="test-modal-title">Simulate attack</h3>
+      <button class="modal-close" type="button" aria-label="Close">&times;</button>
+    </header>
+    <div class="modal-body">
+      <p class="modal-note">
+        Drives the same detection paths as a real attack &mdash; writes an event,
+        sends a Telegram alert, and (for GPS spoof) renders a forensic PDF.
+      </p>
+      <label class="modal-field">
+        Device
+        <select id="test-bus-select">
+          <option value="">(loading buses&hellip;)</option>
+        </select>
+      </label>
+      <fieldset class="modal-field">
+        <legend>Attack</legend>
+        <label><input type="radio" name="test-attack" value="ddos" checked> DDoS</label>
+        <label><input type="radio" name="test-attack" value="gps_spoof"> GPS spoof</label>
+      </fieldset>
+      <div id="test-result" class="modal-result" hidden></div>
+    </div>
+    <footer class="modal-foot">
+      <button class="modal-cancel" type="button">Cancel</button>
+      <button id="test-fire" class="modal-fire" type="button">Fire attack</button>
+    </footer>
+  </div>
+</div>
 {% endblock %}

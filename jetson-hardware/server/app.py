@@ -184,9 +184,9 @@ async def _lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.heartbeat_state = {}
     app.state.telegram = TelegramAlerter()
     await app.state.telegram.start()
-    app.state.gps_detector = ServerGpsDetector(
-        on_detect=_make_gps_spoof_handler(app)
-    )
+    spoof_handler = _make_gps_spoof_handler(app)
+    app.state.gps_spoof_handler = spoof_handler
+    app.state.gps_detector = ServerGpsDetector(on_detect=spoof_handler)
     app.state.retention_stop = asyncio.Event()
     app.state.retention_task = asyncio.create_task(
         retention_mod.retention_loop(app.state.retention_stop),

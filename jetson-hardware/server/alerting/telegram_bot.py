@@ -222,6 +222,22 @@ class TelegramAlerter:
         )
 
     @staticmethod
+    def format_ddos(bus_id: int, details: dict) -> str:
+        return (
+            "*DDoS DETECTED on Bus {bus_id}*\n"
+            "Time: `{ts}`\n\n"
+            "Rate: `{rate:.1f} Mbps`\n"
+            "Loss: `{loss:.1f} %`\n"
+            "Source IP: `{src_ip}`\n"
+        ).format(
+            bus_id=bus_id,
+            ts=time.strftime("%Y-%m-%d %H:%M:%S"),
+            rate=float(details.get("rate_mbps") or 0.0),
+            loss=float(details.get("loss_pct") or 0.0),
+            src_ip=details.get("src_ip", "unknown"),
+        )
+
+    @staticmethod
     def format_forensic_upload(
         bus_id: int, attack_type: str, size_bytes: int
     ) -> str:

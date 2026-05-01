@@ -431,5 +431,112 @@
       if (el) el.addEventListener('change', refreshForensics);
     });
     if (faBtn) faBtn.addEventListener('click', refreshForensics);
+
+    initTestingPanel();
   });
+
+  // ====================================================================
+  // testing modal (simulate DDoS / GPS spoof against a chosen bus)
+  // ====================================================================
+
+  async function initTestingPanel() {
+    const btn = document.getElementById('open-test-modal');
+    const modal = document.getElementById('test-modal');
+    if (!btn || !modal) return;
+
+    let enabled = false;
+    try {
+      const resp = await fetch('/api/test/status');
+      if (resp.ok) {
+        const data = await resp.json();
+        enabled = !!data.demo_mode;
+      }
+    } catch (err) {
+      console.warn('test status fetch failed', err);
+    }
+    if (!enabled) return;
+    btn.hidden = false;
+
+    const busSel = document.getElementById('test-bus-select');
+    const fireBtn = document.getElementById('test-fire');
+    const resultBox = document.getElementById('test-result');
+
+    function open() {
+      populateBusOptions();
+      resultBox.hidden = true;
+      resultBox.className = 'modal-result';
+      resultBox.textContent = '';
+      modal.hidden = false;
+    }
+    function close() {
+      modal.hidden = true;
+    }
+
+    btn.addEventListener('click', open);
+    modal.querySelector('.modal-close').addEventListener('click', close);
+    modal.querySelector('.modal-cancel').addEventListener('click', close);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) close();
+    });
+
+    async function populateBusOptions() {
+      let buses = [];
+      try {
+        const resp = await fetch('/api/buses');
+        if (resp.ok) {
+          const data = await resp.json();
+          buses = Array.isArray(data) ? data : (data.buses || []);
+        }
+      } catch (err) {
+        console.warn('test populate buses failed', err);
+      }
+      const ids = buses.map((b) => Number(b.bus_id))
+        .filter((n) => Number.isFinite(n))
+        .sort((a, b) => a - b);
+      if (!ids.length) {
+        busSel.innerHTML = '<option value="0">bus 0 (no buses reporting)</option>';
+        return;
+      }
+      busSel.innerHTML = ids
+        .map((id) => '<option value="' + id + '">bus ' + id + '</option>')
+        .join('');
+    }
+
+    fireBtn.addEventListener('click', async () => {
+      const busId = busSel.value;
+      const attackEl = document.querySelector('input[name="test-attack"]:checked');
+      if (busId === '' || !attackEl) return;
+      fireBtn.disabled = true;
+      resultBox.hidden = false;
+      resultBox.className = 'modal-result is-pending';
+      resultBox.textContent = 'firing…';
+      try {
+        const resp = await fetch('/api/test/simulate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bus_id: Number(busId),
+            attack_type: attackEl.value,
+          }),
+        });
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok) {
+          resultBox.className = 'modal-result is-error';
+          resultBox.textContent = 'error: ' + (data.detail || resp.status);
+        } else {
+          resultBox.className = 'modal-result is-ok';
+          resultBox.textContent = 'fired ' + data.attack_type +
+            ' on bus ' + data.bus_id + ' — check the events feed.';
+        }
+      } catch (err) {
+        resultBox.className = 'modal-result is-error';
+        resultBox.textContent = 'request failed: ' + err.message;
+      } finally {
+        fireBtn.disabled = false;
+      }
+    });
+  }
 })();

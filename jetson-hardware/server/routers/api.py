@@ -2,15 +2,21 @@
 
 from __future__ import annotations
 
+import asyncio
+import logging
+import os
 import time
 from functools import lru_cache
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi import APIRouter, Body, HTTPException, Query, Request
 
 from jetson.routes import create_routes, get_bus_route_assignment
 
+from ..alerting.telegram_bot import TelegramAlerter
 from ..storage import db
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api")
 
@@ -94,6 +100,109 @@ async def reset_detector(
             detector.reset_bus(bid)
             cleared.append(bid)
     return {"reset": cleared}
+
+
+def _demo_mode_enabled() -> bool:
+    raw = os.environ.get("DEMO_MODE", "1").strip().lower()
+    return raw in ("1", "true", "yes", "on")
+
+
+@router.get("/test/status")
+async def test_status() -> Dict[str, Any]:
+    """Report whether the dashboard testing panel is enabled."""
+    return {"demo_mode": _demo_mode_enabled()}
+
+
+@router.post("/test/simulate")
+async def test_simulate(
+    request: Request,
+    payload: Dict[str, Any] = Body(...),
+) -> Dict[str, Any]:
+    """Synthesize a DDoS or GPS-spoof detection for the chosen bus.
+
+    Drives the same code paths that real detections use so the event row,
+    Telegram alert and (for GPS spoof) forensic PDF all appear as if the
+    attack were live. Gated by ``DEMO_MODE`` env var.
+    """
+    if not _demo_mode_enabled():
+        raise HTTPException(status_code=403, detail="demo mode disabled")
+
+    try:
+        bus_id = int(payload["bus_id"])
+        attack_type = str(payload["attack_type"]).lower().strip()
+    except (KeyError, TypeError, ValueError) as exc:
+        raise HTTPException(status_code=400, detail=f"invalid body: {exc}")
+
+    if bus_id < 0:
+        raise HTTPException(status_code=400, detail="bus_id must be >= 0")
+
+    app = request.app
+    now = time.time()
+
+    if attack_type in ("gps_spoof", "gps", "spoof"):
+        handler = getattr(app.state, "gps_spoof_handler", None)
+        if handler is None:
+            raise HTTPException(
+                status_code=503, detail="gps spoof handler not initialised"
+            )
+        details = {
+            "type": "gps_spoof",
+            "timestamp": now,
+            "bus_id": bus_id,
+            "speed": 35.0,
+            "distance": 1500.0,
+            "corridor_dist": 2200.0,
+            "src_addr": "simulated",
+            "src_ip": "simulated",
+            "prev_src_addr": "simulated",
+            "speed_anomaly": True,
+            "jump_anomaly": True,
+            "corridor_anomaly": True,
+            "src_anomaly": False,
+            "streak": 3,
+            "simulated": True,
+        }
+        # Reset detector latch so a real detection can still fire later.
+        try:
+            app.state.gps_detector.reset_bus(bus_id)
+        except Exception:
+            logger.debug("detector reset_bus failed", exc_info=True)
+        await handler(details)
+        return {"status": "ok", "attack_type": "gps_spoof", "bus_id": bus_id}
+
+    if attack_type in ("ddos", "ddos_detect"):
+        rate_mbps = float(payload.get("rate_mbps") or 32.0)
+        loss_pct = float(payload.get("loss_pct") or 12.0)
+        details = {
+            "rate_mbps": rate_mbps,
+            "loss_pct": loss_pct,
+            "src_ip": "simulated",
+            "simulated": True,
+        }
+        event_id = await db.insert_event(
+            bus_id,
+            "ddos_detect",
+            ts=now,
+            value1=rate_mbps,
+            value2=loss_pct,
+            detail=details,
+        )
+        telegram: Optional[TelegramAlerter] = getattr(
+            app.state, "telegram", None
+        )
+        if telegram is not None:
+            asyncio.create_task(
+                telegram.send_text(TelegramAlerter.format_ddos(bus_id, details)),
+                name=f"telegram-ddos-sim-{bus_id}-{int(now)}",
+            )
+        return {
+            "status": "ok",
+            "attack_type": "ddos",
+            "bus_id": bus_id,
+            "event_id": event_id,
+        }
+
+    raise HTTPException(status_code=400, detail="unknown attack_type")
 
 
 @router.get("/buses")
