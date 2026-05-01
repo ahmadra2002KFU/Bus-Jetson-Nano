@@ -493,14 +493,23 @@
       } catch (err) {
         console.warn('test populate buses failed', err);
       }
-      const ids = buses.map((b) => Number(b.bus_id))
+      const now = Date.now() / 1000;
+      const onlineIds = buses
+        .filter((b) => {
+          const last = b.last_metric_ts || (b.last_gps && b.last_gps.ts) || 0;
+          return last && (now - last) <= 30;
+        })
+        .map((b) => Number(b.bus_id))
         .filter((n) => Number.isFinite(n))
         .sort((a, b) => a - b);
-      if (!ids.length) {
-        busSel.innerHTML = '<option value="0">bus 0 (no buses reporting)</option>';
+      if (!onlineIds.length) {
+        busSel.innerHTML =
+          '<option value="">(no online buses — start a Jetson first)</option>';
+        fireBtn.disabled = true;
         return;
       }
-      busSel.innerHTML = ids
+      fireBtn.disabled = false;
+      busSel.innerHTML = onlineIds
         .map((id) => '<option value="' + id + '">bus ' + id + '</option>')
         .join('');
     }

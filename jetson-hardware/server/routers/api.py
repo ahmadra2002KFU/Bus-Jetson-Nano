@@ -107,6 +107,21 @@ def _demo_mode_enabled() -> bool:
     return raw in ("1", "true", "yes", "on")
 
 
+# A bus is considered online if it produced a metric or GPS sample within
+# this window. Mirrors the dashboard's "OFFLINE" badge threshold.
+ONLINE_WINDOW_S = 30.0
+
+
+async def _bus_last_seen(bus_id: int) -> Optional[float]:
+    """Return the most recent metric/GPS timestamp for ``bus_id`` or None."""
+    latest = {row["bus_id"]: row for row in await db.fetch_latest_metric_per_bus()}
+    metric_ts = latest.get(bus_id, {}).get("ts")
+    gps_rows = await db.fetch_recent_gps(bus_id, limit=1)
+    gps_ts = gps_rows[0].get("ts") if gps_rows else None
+    candidates = [t for t in (metric_ts, gps_ts) if t is not None]
+    return max(candidates) if candidates else None
+
+
 @router.get("/test/status")
 async def test_status() -> Dict[str, Any]:
     """Report whether the dashboard testing panel is enabled."""
@@ -138,6 +153,22 @@ async def test_simulate(
 
     app = request.app
     now = time.time()
+
+    last_seen = await _bus_last_seen(bus_id)
+    if last_seen is None:
+        raise HTTPException(
+            status_code=409,
+            detail=f"bus {bus_id} is not reporting — cannot simulate attack",
+        )
+    if now - last_seen > ONLINE_WINDOW_S:
+        age = int(now - last_seen)
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                f"bus {bus_id} is offline (last seen {age}s ago) — "
+                "attack can only be simulated against a live device"
+            ),
+        )
 
     if attack_type in ("gps_spoof", "gps", "spoof"):
         handler = getattr(app.state, "gps_spoof_handler", None)
