@@ -28,6 +28,7 @@ from fastapi.templating import Jinja2Templates
 
 from jetson.routes import create_routes, get_bus_route_assignment
 
+from server.alerting.telegram_bot import TelegramAlerter
 from server.detection.gps_detector import ServerGpsDetector
 from server.forensic.pdf_builder import build_spoof_pdf
 from server.routers import api as api_router
@@ -63,7 +64,7 @@ def _build_sha() -> str:
 # GPS spoof handler — writes the event AND renders/stores the forensic PDF
 # ---------------------------------------------------------------------------
 
-def _make_gps_spoof_handler():
+def _make_gps_spoof_handler(app: FastAPI):
     routes = create_routes()
     assignment = get_bus_route_assignment()
 
@@ -85,10 +86,23 @@ def _make_gps_spoof_handler():
         except Exception:
             logger.exception("gps spoof event insert failed")
 
-        # 2. Render + store the forensic PDF in the background so the WS
-        #    handler that triggered us doesn't stall.
+        # 2. Fire the Telegram text alert immediately (before the PDF
+        #    finishes rendering) so the operator sees something fast.
+        telegram: TelegramAlerter = getattr(app.state, "telegram", None)
+        if telegram is not None:
+            asyncio.create_task(
+                telegram.send_text(
+                    TelegramAlerter.format_gps_spoof(bus_id, details)
+                ),
+                name=f"telegram-spoof-text-{bus_id}-{int(ts)}",
+            )
+
+        # 3. Render + store the forensic PDF in the background, then
+        #    push it to Telegram once it's on disk.
         asyncio.create_task(
-            _render_and_store_spoof_pdf(bus_id, ts, details, routes, assignment),
+            _render_and_store_spoof_pdf(
+                app, bus_id, ts, details, routes, assignment
+            ),
             name=f"spoof-pdf-{bus_id}-{int(ts)}",
         )
 
@@ -96,6 +110,7 @@ def _make_gps_spoof_handler():
 
 
 async def _render_and_store_spoof_pdf(
+    app: FastAPI,
     bus_id: int,
     trigger_ts: float,
     details: Dict[str, Any],
@@ -146,6 +161,13 @@ async def _render_and_store_spoof_pdf(
             "server-side gps_spoof PDF stored: id=%d bus=%d bytes=%d",
             forensic_id, bus_id, len(pdf_bytes),
         )
+
+        telegram: TelegramAlerter = getattr(app.state, "telegram", None)
+        if telegram is not None:
+            await telegram.send_document(
+                out_path,
+                caption=f"GPS spoof forensic | Bus {bus_id} | id={forensic_id}",
+            )
     except Exception:
         logger.exception("gps spoof PDF generation failed (bus=%d)", bus_id)
 
@@ -160,7 +182,11 @@ async def _lifespan(app: FastAPI) -> AsyncIterator[None]:
     await db.init_db()
 
     app.state.heartbeat_state = {}
-    app.state.gps_detector = ServerGpsDetector(on_detect=_make_gps_spoof_handler())
+    app.state.telegram = TelegramAlerter()
+    await app.state.telegram.start()
+    app.state.gps_detector = ServerGpsDetector(
+        on_detect=_make_gps_spoof_handler(app)
+    )
     app.state.retention_stop = asyncio.Event()
     app.state.retention_task = asyncio.create_task(
         retention_mod.retention_loop(app.state.retention_stop),
@@ -179,6 +205,10 @@ async def _lifespan(app: FastAPI) -> AsyncIterator[None]:
                 await task
             except (asyncio.CancelledError, Exception):
                 pass
+        try:
+            await app.state.telegram.aclose()
+        except Exception:
+            logger.debug("telegram aclose failed", exc_info=True)
         logger.info("server shutdown complete")
 
 

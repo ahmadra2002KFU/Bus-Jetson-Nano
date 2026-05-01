@@ -12,6 +12,8 @@ services:
       - RETENTION_DAYS=${RETENTION_DAYS:-30}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - BUILD_SHA=${BUILD_SHA:-dev}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
     volumes:
       - ./data:/data
     networks:

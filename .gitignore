@@ -1,1 +1,7 @@
 **/__pycache__/
+# Server-side secrets (Telegram bot token, Cloudflare tunnel token, etc.)
+# The committed reference is deploy/.env.example; the real values live
+# in deploy/.env on the Droplet and must never reach the repo.
+**/deploy/.env
+**/deploy/.env.*
+!**/deploy/.env.example

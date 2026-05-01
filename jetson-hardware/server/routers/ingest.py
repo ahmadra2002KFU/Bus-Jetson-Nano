@@ -17,6 +17,7 @@ from fastapi import (
     WebSocket, WebSocketDisconnect,
 )
 
+from ..alerting.telegram_bot import TelegramAlerter
 from ..detection.gps_detector import ServerGpsDetector
 from ..storage import db
 
@@ -272,6 +273,7 @@ async def ingest_ticket(payload: Dict[str, Any]) -> Dict[str, Any]:
 
 @router.post("/ingest/forensic")
 async def ingest_forensic(
+    request: Request,
     metadata: str = Form(...),
     pdf: UploadFile = File(...),
 ) -> Dict[str, Any]:
@@ -335,6 +337,18 @@ async def ingest_forensic(
         )
     except Exception:
         logger.exception("forensic: event insert failed")
+
+    telegram: Optional[TelegramAlerter] = getattr(
+        request.app.state, "telegram", None
+    )
+    if telegram is not None:
+        caption = TelegramAlerter.format_forensic_upload(
+            bus_id, attack_type, size
+        )
+        asyncio.create_task(
+            telegram.send_document(final_path, caption=caption),
+            name=f"telegram-forensic-{forensic_id}",
+        )
 
     return {"id": forensic_id, "url": f"/forensics/{forensic_id}.pdf"}
 
