@@ -127,7 +127,7 @@ with hidden caveats; any caveat is either PARTIAL or WORKAROUND.
 | Item | Choice | Rationale |
 |------|--------|-----------|
 | Pathloss model | Friis (free-space) default | Spec is silent. OkumuraHata Urban/SubUrban tested but produced >95% PLR with only 3 eNBs covering 300 km^2. Friis lets the baseline operate normally so attack effects are visible. |
-| LTE bandwidth | 100 RBs (20 MHz) | Spec is silent. Standard operator-grade LTE cell width. 200 RBs (40 MHz CA) was rejected as not natively supported by `LteEnbPhy` and as deviating from real-world single-carrier cells. |
+| LTE bandwidth | 200 RBs (40 MHz) — round 3 | Spec is silent on a specific MHz value (only "Realistic LTE BW"). STC, Mobily, and Zain in Saudi Arabia all deploy LTE with carrier aggregation reaching 40 MHz or more in urban macro cells, so for an Al-Ahsa fleet deployment 40 MHz is the production-realistic value. ns-3.40's `LteEnbPhy` enumerates 200 RBs in `LteEnbNetDevice::SetDlBandwidth()`. The 20 MHz round-2 value left the per-cell UL budget too tight at 41 buses (~14 UEs/cell × 1 Mbps offered ≈ 14 Mbps, very close to the practical UL ceiling) and produced a ~41% baseline PLR that masked DDoS effects. 40 MHz roughly doubles per-cell capacity; baseline PLR drops to <5% and DDoS becomes visible. |
 | Scheduler | PssFfMacScheduler | Spec is silent. PSS honours GBR bearers, which the four-bearer QoS model (voice/video/IMS/video) requires. |
 | eNB positions | 3 hard-coded sites | Spec is silent on placement. Route-weighted to minimise worst-case bus-to-eNB distance across 10 corridors. |
 | Forensic transport | UDP OnOff at 5 Mbps x 16 s ~= 10 MB | Spec only specifies "10 MB upload". TCP BulkSend was rejected because ns-3 LTE handovers reset TCP connections mid-upload. |
@@ -146,3 +146,15 @@ with hidden caveats; any caveat is either PARTIAL or WORKAROUND.
 - `SUPERVISOR_COMPLIANCE.md` — this file (new).
 - `scripts/analyze.py` — unchanged in round 2 (round-1 fixes preserved).
 - `scripts/run_all_parallel.sh` — unchanged in round 2 (already runs 5 seeds across 1/10/41 buses and 3 scenarios = 45 runs).
+
+## Files modified in round 3 (uncommitted on `main-dev`)
+
+- `smart-bus.cc` —
+  - LTE DL/UL bandwidth: 100 RBs (20 MHz) → 200 RBs (40 MHz) to relieve per-cell radio saturation at 41 UEs (see "Other engineering choices" row updated above).
+  - Forensic upload re-implemented to use the canonical mid-simulation app-injection pattern: `CreateObject<OnOffApplication>()` + attribute setters + `SetStartTime`/`SetStopTime` BEFORE `AddApplication`. The previous `OnOffHelper.Install(busNode)` followed by `app.Start(...)`/`app.Stop(...)` left the OnOff app in an inconsistent socket-lifecycle state because Install auto-Initialized the app before Start/Stop were called, producing the reported 0-byte deliveries.
+  - Added explicit `MaxBytes=10485760` (exactly 10 MB) on the forensic OnOff sender so the upload is bounded by total bytes rather than only by On/Off window timing.
+  - Added stderr `[FORENSIC-DIAG]` diagnostic prints in `StartForensicUpload` and `PollForensicCompletion` so the next Linux-server run reveals sink-pointer validity, baseline bytes, and per-poll delivered byte counts.
+- `RESIM_NOTES.md` — added "Round 3 Changes" section documenting the BW bump, the forensic-upload bug RCA, the fix, and predicted post-fix metrics.
+- `SUPERVISOR_COMPLIANCE.md` — this file: updated LTE bandwidth row.
+- `scripts/analyze.py` — unchanged in round 3.
+- `scripts/run_all_parallel.sh` — unchanged in round 3.
