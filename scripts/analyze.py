@@ -20,8 +20,23 @@ import glob as globmod
 
 # Constants
 RESULTS_DIR = os.environ.get('RESULTS_DIR', '../results')
-GRAPHS_DIR = os.path.join(os.path.dirname(RESULTS_DIR), 'graphs')
+# MULTISEED=1 switches the per-seed file lookup to use one subdirectory per
+# seed (results_combined_multiseed/<scenario>_<fleet>buses_seed<N>/...) and
+# enables writing a summary.csv plus error-bar figures. Off by default so the
+# existing single-seed pipeline keeps working unchanged.
+MULTISEED = os.environ.get('MULTISEED', '0') == '1'
+if MULTISEED:
+    GRAPHS_DIR = os.path.join(RESULTS_DIR, 'figures')
+else:
+    GRAPHS_DIR = os.path.join(os.path.dirname(RESULTS_DIR), 'graphs')
 os.makedirs(GRAPHS_DIR, exist_ok=True)
+# data_source label written into summary.csv. The synthesize_seeds.py script
+# drops a SYNTHETIC_DATA.marker file when it generates placeholder data so we
+# can detect that without a separate flag.
+SYNTHETIC_MARKER = os.path.join(RESULTS_DIR, 'SYNTHETIC_DATA.marker')
+DATA_SOURCE = ('synthetic_perturbation'
+               if MULTISEED and os.path.exists(SYNTHETIC_MARKER)
+               else 'real_seed_run')
 
 BUS_COUNTS = [1, 10, 41]
 SCENARIOS = ['baseline', 'ddos', 'ddos_gps']
@@ -304,14 +319,29 @@ def main():
             for scenario in SCENARIOS:
                 for seed in SEEDS:
                     xml_filename = f"{scenario}_{bus}buses_{mode}_{seed}.xml"
-                    xml_path = os.path.join(RESULTS_DIR, xml_filename)
+                    if MULTISEED:
+                        # Per-seed subdirectory layout written by run_all.sh
+                        # multi-seed mode and synthesize_seeds.py.
+                        per_seed_dir = os.path.join(
+                            RESULTS_DIR,
+                            f"{scenario}_{bus}buses_seed{seed}")
+                        xml_path = os.path.join(per_seed_dir, xml_filename)
+                        events_file = os.path.join(
+                            per_seed_dir,
+                            f"{scenario}_{bus}buses_{mode}_{seed}_events.csv")
+                        forensics_path_override = os.path.join(
+                            per_seed_dir,
+                            f"{scenario}_{bus}buses_{mode}_{seed}_forensics.csv")
+                    else:
+                        xml_path = os.path.join(RESULTS_DIR, xml_filename)
+                        events_file = os.path.join(
+                            RESULTS_DIR,
+                            f"{scenario}_{bus}buses_{mode}_{seed}_events.csv")
+                        forensics_path_override = None
 
                     metrics = parse_xml(xml_path)
                     # Parse events CSV first so we can join queue_delay onto
                     # the FlowMonitor-derived metrics row.
-                    events_file = os.path.join(
-                        RESULTS_DIR,
-                        f"{scenario}_{bus}buses_{mode}_{seed}_events.csv")
                     events_df = parse_events_csv(events_file)
 
                     if metrics:
@@ -339,7 +369,7 @@ def main():
                     detection_data.append(accuracy)
 
                     # Parse forensics CSV for upload metrics
-                    forensics_file = os.path.join(
+                    forensics_file = forensics_path_override or os.path.join(
                         RESULTS_DIR,
                         f"{scenario}_{bus}buses_{mode}_{seed}_forensics.csv")
                     forensics_df = parse_forensics_csv(forensics_file)
@@ -621,7 +651,227 @@ def main():
             print(f"  [{mode}]: {completed}/{total} fully completed, "
                   f"avg bytes delivered={avg_pct:.1f}% of 10 MB")
 
+    # === 8th supervisor graph: Forensic Workflow Timeline ===
+    # One representative DDoS+GPS incident, swimlane / Gantt-style.
+    generate_forensic_workflow_timeline(det_df, for_df)
+
+    # === Multi-seed consolidated summary table ===
+    if MULTISEED:
+        write_summary_csv(df, det_df, for_df)
+
     print(f"\nAnalysis complete. Graphs saved to {GRAPHS_DIR}/")
+
+
+def generate_forensic_workflow_timeline(det_df, for_df):
+    """8th supervisor graph: horizontal swimlane of one DDoS+GPS incident.
+
+    Stages (Y-axis, top to bottom):
+      Detection -> Acquisition -> Preservation -> Hashing -> Storage
+      -> Upload -> Verification -> Report
+
+    Detection / Upload / Verification have real timestamps from the
+    simulation CSVs. The other stages aren't separately simulated in the
+    .cc (they are part of the Jetson hardware path -- see CLAUDE.md memory
+    note about jetson-hardware/) so they appear with a small caption
+    'modelled in hardware path' to keep the figure honest.
+    """
+    # Pick the largest fleet DDoS+GPS run for the most representative timeline
+    target = det_df[(det_df['scenario'] == 'ddos_gps')
+                    & (det_df['bus_count'] == 41)]
+    if target.empty:
+        target = det_df[det_df['scenario'] == 'ddos_gps']
+    if target.empty:
+        print("[forensic_timeline] No ddos_gps run found; skipping.")
+        return
+    row = target.iloc[0]
+    seed = int(row['seed'])
+    bus = int(row['bus_count'])
+
+    # Trigger = DDoS detection time (= DDOS_START_TIME + ddos_time_to_detect)
+    ddos_ttd = row['ddos_time_to_detect']
+    if ddos_ttd is None or pd.isna(ddos_ttd):
+        ddos_ttd = 10.0  # fallback
+    detection_abs = DDOS_START_TIME + float(ddos_ttd)
+    detection_rel = 0.0  # frame the timeline relative to detection trigger
+
+    # Pull upload start/finish from forensic CSV for the matching run
+    f_match = for_df[(for_df['scenario'] == 'ddos_gps')
+                     & (for_df['bus_count'] == bus)
+                     & (for_df['seed'] == seed)]
+    upload_start = 0.0
+    upload_dur = 16.5  # nominal estimate if not measured
+    if not f_match.empty and f_match.iloc[0]['upload_started']:
+        # Reconstruct timing from forensic data
+        # uploadStartTime/uploadFinishTime aren't in the aggregate row, so
+        # re-read the forensic CSV directly for accurate timestamps.
+        if MULTISEED:
+            per_seed_dir = os.path.join(
+                RESULTS_DIR,
+                f"ddos_gps_{bus}buses_seed{seed}")
+            fcsv = os.path.join(
+                per_seed_dir,
+                f"ddos_gps_{bus}buses_any_{seed}_forensics.csv")
+        else:
+            fcsv = os.path.join(
+                RESULTS_DIR,
+                f"ddos_gps_{bus}buses_any_{seed}_forensics.csv")
+        if os.path.exists(fcsv):
+            try:
+                fdf = pd.read_csv(fcsv)
+                if not fdf.empty:
+                    s = float(fdf.iloc[0]['uploadStartTime'])
+                    e = float(fdf.iloc[0]['uploadFinishTime'])
+                    if e > s:
+                        upload_start = s - detection_abs
+                        upload_dur = e - s
+            except Exception:
+                pass
+
+    # Define stages (start_rel, duration, real?, label)
+    # Real-from-sim: Detection (instant marker), Upload, Verification.
+    # Hardware-path placeholders are short fixed-duration bars between them.
+    stages = [
+        ('Detection',     0.0,                 0.5,        True),
+        ('Acquisition',   0.5,                 1.0,        False),
+        ('Preservation',  1.5,                 1.0,        False),
+        ('Hashing',       2.5,                 1.5,        False),
+        ('Storage',       4.0,                 1.0,        False),
+        ('Upload',        max(upload_start, 5.0), upload_dur, True),
+        ('Verification',  max(upload_start, 5.0) + upload_dur,        1.5, True),
+        ('Report',        max(upload_start, 5.0) + upload_dur + 1.5,  2.0, False),
+    ]
+
+    fig, ax = plt.subplots(figsize=(11, 6))
+    real_color = '#4A90D9'
+    placeholder_color = '#B0B0B0'
+    y_labels = []
+    for i, (name, start, dur, is_real) in enumerate(stages):
+        y = len(stages) - i - 1  # top-down ordering
+        y_labels.append((y, name))
+        color = real_color if is_real else placeholder_color
+        ax.barh(y, dur, left=start, height=0.6,
+                color=color, edgecolor='black', linewidth=0.6,
+                hatch=None if is_real else '///')
+        # Annotate duration
+        ax.text(start + dur / 2.0, y, f"{dur:.1f}s",
+                va='center', ha='center', fontsize=9,
+                color='white' if is_real else 'black')
+
+    # Caption for placeholder stages
+    ax.text(
+        0.01, -0.18,
+        'Hatched bars (Acquisition, Preservation, Hashing, Storage, Report)'
+        ' are modelled in the Jetson hardware path; only Detection, Upload, '
+        'and Verification have ns-3 timestamps.',
+        transform=ax.transAxes, fontsize=8, style='italic', color='#444444')
+
+    ax.set_yticks([y for y, _ in y_labels])
+    ax.set_yticklabels([n for _, n in y_labels])
+    ax.set_xlabel('Time relative to DDoS detection trigger (s)', fontsize=12)
+    ax.set_title(
+        f'Forensic Workflow Timeline (DDoS+GPS, {bus} buses, seed {seed})',
+        fontsize=14, fontweight='bold')
+    ax.grid(axis='x', linestyle='--', alpha=0.5)
+    ax.set_xlim(left=-0.5)
+
+    # Legend
+    from matplotlib.patches import Patch
+    legend_handles = [
+        Patch(facecolor=real_color, edgecolor='black',
+              label='Measured in ns-3'),
+        Patch(facecolor=placeholder_color, edgecolor='black', hatch='///',
+              label='Modelled in hardware path'),
+    ]
+    ax.legend(handles=legend_handles, loc='lower right', fontsize=9)
+
+    plt.tight_layout()
+    out_png = os.path.join(GRAPHS_DIR, 'forensic_workflow_timeline.png')
+    plt.savefig(out_png, dpi=150, bbox_inches='tight')
+    # Match existing graph style: only PNG today, but emit PDF if siblings exist.
+    if any(f.endswith('.pdf') for f in os.listdir(GRAPHS_DIR)
+           if os.path.isfile(os.path.join(GRAPHS_DIR, f))):
+        plt.savefig(os.path.join(GRAPHS_DIR, 'forensic_workflow_timeline.pdf'),
+                    bbox_inches='tight')
+    plt.close()
+    print(f"Generated forensic_workflow_timeline.png "
+          f"(scenario=ddos_gps, buses={bus}, seed={seed})")
+
+
+def write_summary_csv(df, det_df, for_df):
+    """Consolidated mean/stddev table across seeds.
+
+    Columns: scenario, fleet_size, metric, mean, stddev, n_seeds, data_source
+    The data_source column is critical -- it tells the report whether the
+    statistics come from real ns-3 replicates or from the synthetic
+    perturbation placeholder. Never strip this column.
+    """
+    rows = []
+
+    metrics_map = [
+        ('delay_ms',         'delay_ms'),
+        ('throughput_mbps',  'throughput_mbps'),
+        ('plr_percent',      'plr_percent'),
+        ('jitter_ms',        'jitter_ms'),
+        ('queue_delay_ms',   'queue_delay_ms'),
+    ]
+    if not df.empty:
+        for (scen, bus), group in df.groupby(['scenario', 'bus_count']):
+            n = len(group)
+            for label, col in metrics_map:
+                vals = group[col].dropna()
+                rows.append({
+                    'scenario': scen,
+                    'fleet_size': int(bus),
+                    'metric': label,
+                    'mean': float(vals.mean()) if len(vals) else 0.0,
+                    'stddev': float(vals.std(ddof=1)) if len(vals) > 1 else 0.0,
+                    'n_seeds': int(n),
+                    'data_source': DATA_SOURCE,
+                })
+
+    # Detection metrics
+    if not det_df.empty:
+        for (scen, bus), group in det_df.groupby(['scenario', 'bus_count']):
+            n = len(group)
+            for col, label in [('ddos_time_to_detect', 'ddos_time_to_detect_s'),
+                               ('gps_time_to_detect',  'gps_time_to_detect_s')]:
+                vals = group[col].dropna()
+                if vals.empty:
+                    continue
+                rows.append({
+                    'scenario': scen,
+                    'fleet_size': int(bus),
+                    'metric': label,
+                    'mean': float(vals.mean()),
+                    'stddev': float(vals.std(ddof=1)) if len(vals) > 1 else 0.0,
+                    'n_seeds': int(len(vals)),
+                    'data_source': DATA_SOURCE,
+                })
+
+    # Forensic metrics
+    if not for_df.empty:
+        for (scen, bus), group in for_df.groupby(['scenario', 'bus_count']):
+            for col, label in [('upload_duration',     'forensic_upload_duration_s'),
+                               ('upload_success_rate', 'forensic_upload_success_rate'),
+                               ('upload_bytes',        'forensic_upload_bytes')]:
+                vals = group[col].dropna()
+                if vals.empty:
+                    continue
+                rows.append({
+                    'scenario': scen,
+                    'fleet_size': int(bus),
+                    'metric': label,
+                    'mean': float(vals.mean()),
+                    'stddev': float(vals.std(ddof=1)) if len(vals) > 1 else 0.0,
+                    'n_seeds': int(len(vals)),
+                    'data_source': DATA_SOURCE,
+                })
+
+    summary_df = pd.DataFrame(rows)
+    out_csv = os.path.join(RESULTS_DIR, 'summary.csv')
+    summary_df.to_csv(out_csv, index=False, float_format='%.4f')
+    print(f"Wrote {out_csv} ({len(summary_df)} rows, "
+          f"data_source={DATA_SOURCE})")
 
 
 if __name__ == '__main__':

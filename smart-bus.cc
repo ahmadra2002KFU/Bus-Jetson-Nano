@@ -1666,7 +1666,16 @@ main(int argc, char *argv[])
                  "Consecutive anomalous GPS readings required before firing"
                  " (supervisor spec: 1)",
                  gpsStreakRequired);
+    // Explicit seed/run support so multi-seed replication is deterministic
+    // and not implicit through ns-3's --RngRun parsing alone. SetSeed()
+    // varies the substream selection; SetRun() varies independent runs.
+    uint32_t rngSeed = 1;
+    uint32_t rngRun = 1;
+    cmd.AddValue("seed", "RngSeedManager seed (substream selector)", rngSeed);
+    cmd.AddValue("run", "RngSeedManager run (independent replicate)", rngRun);
     cmd.Parse(argc, argv);
+    RngSeedManager::SetSeed(rngSeed);
+    RngSeedManager::SetRun(rngRun);
     g_detectionMode = detectionMode;
     g_simTime = simTime;  // expose to forensic poller and other helpers
     g_gpsStreakRequired = (gpsStreakRequired == 0) ? 1 : gpsStreakRequired;
