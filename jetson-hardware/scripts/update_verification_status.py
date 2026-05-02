@@ -28,15 +28,91 @@ DEFAULT_SERVER = os.environ.get(
 )
 
 
-def query_verify(server: str, incident_id: str, timeout: float = 10.0) -> str:
-    """Return 'PASS', 'FAIL', or 'ERROR' for one incident."""
-    url = f"{server.rstrip('/')}/verify/{incident_id}"
+# Cloudflare's WAF (rule 1010) returns 403 for the default Python-urllib UA;
+# we send a normal browser-like UA so the call reaches the FastAPI origin.
+USER_AGENT = "Mozilla/5.0 (compatible; jetson-m4-verify/1.0)"
+
+
+def _http_get(url: str, timeout: float = 10.0) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return resp.read()
+
+
+_forensic_index_cache = None  # type: ignore[var-annotated]
+
+# Tolerance for matching CSV trigger_ts to server ts. The agent captures
+# trigger_ts and the upload-side ts at slightly different moments, so they
+# can drift by under a millisecond. 1 second is generous yet still well
+# below the inter-incident gap (≥45s) so the nearest match is unambiguous.
+TS_TOLERANCE_S = 1.0
+
+
+def _load_forensic_index(server: str, timeout: float = 10.0):
+    """Fetch /api/forensics and cache it as a list of (bus_id, ts, id)."""
+    global _forensic_index_cache
+    if _forensic_index_cache is not None:
+        return _forensic_index_cache
+    url = f"{server.rstrip('/')}/api/forensics"
+    rows = json.loads(_http_get(url, timeout))
+    _forensic_index_cache = [
+        (int(r["bus_id"]), float(r["ts"]), int(r["id"])) for r in rows
+    ]
+    return _forensic_index_cache
+
+
+def _resolve_forensic_id(index, bus_id: int, trigger_ts: float):
+    """Return the forensic_id whose (bus_id, ts) is closest to the trigger,
+    within TS_TOLERANCE_S, or None."""
+    best = None  # (abs_dt, fid)
+    for srv_bus, srv_ts, fid in index:
+        if srv_bus != bus_id:
+            continue
+        dt = abs(srv_ts - trigger_ts)
+        if dt <= TS_TOLERANCE_S and (best is None or dt < best[0]):
+            best = (dt, fid)
+    return None if best is None else best[1]
+
+
+def query_verify(
+    server: str,
+    incident_id: str,
+    *,
+    bus_id: int,
+    trigger_ts: float,
+    timeout: float = 10.0,
+) -> str:
+    """Return 'PASS', 'FAIL', or 'ERROR' for one incident.
+
+    The server's /verify endpoint is keyed by integer forensic_id (DB PK),
+    not by the textual incident_id. We resolve forensic_id by matching
+    (bus_id, trigger_ts) against /api/forensics.
+    """
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:
-            body = json.loads(resp.read())
+        index = _load_forensic_index(server, timeout)
+    except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError) as exc:
+        print(f"  WARN: /api/forensics lookup failed: {exc}", file=sys.stderr)
+        return "ERROR"
+
+    forensic_id = _resolve_forensic_id(index, int(bus_id), float(trigger_ts))
+    if forensic_id is None:
+        print(
+            f"  WARN: no forensic_id for {incident_id} "
+            f"(bus={bus_id} ts={trigger_ts:.3f})",
+            file=sys.stderr,
+        )
+        return "ERROR"
+
+    url = f"{server.rstrip('/')}/verify/{forensic_id}"
+    try:
+        body = json.loads(_http_get(url, timeout))
         return "PASS" if body.get("verified") else "FAIL"
     except (urllib.error.URLError, urllib.error.HTTPError, json.JSONDecodeError) as exc:
-        print(f"  WARN: verify failed for {incident_id}: {exc}", file=sys.stderr)
+        print(
+            f"  WARN: verify failed for {incident_id} "
+            f"(forensic_id={forensic_id}): {exc}",
+            file=sys.stderr,
+        )
         return "ERROR"
 
 
@@ -67,7 +143,16 @@ def main() -> int:
         if not incident_id:
             continue
         print(f"  -> verifying {incident_id} ...", end=" ", flush=True)
-        verdict = query_verify(args.server, incident_id)
+        try:
+            bus_id = int(r.get("bus_id", "0"))
+            trigger_ts = float(r.get("trigger_ts", "0"))
+        except ValueError:
+            print("ERROR (bad CSV row)")
+            r["integrity_verification"] = "ERROR"
+            continue
+        verdict = query_verify(
+            args.server, incident_id, bus_id=bus_id, trigger_ts=trigger_ts
+        )
         r["integrity_verification"] = verdict
         print(verdict)
         if verdict in ("PASS", "FAIL"):

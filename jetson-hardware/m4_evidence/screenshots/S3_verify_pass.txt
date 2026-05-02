@@ -1,0 +1,10 @@
+=== Server /verify for INC_20260502-151224_0  (forensic_id=60)
+
+$ curl -sS https://jetson.testingdomainzforprototypes.website/verify/60 | python3 -m json.tool
+{
+    "id": 60,
+    "stored_sha256": "ed6346d5448b4601b95d928f1cb4b15d9d793b585a57d81063d009d2061f6352",
+    "computed_sha256": "ed6346d5448b4601b95d928f1cb4b15d9d793b585a57d81063d009d2061f6352",
+    "verified": true,
+    "checked_at": "2026-05-02T12:21:10.920553+00:00"
+}

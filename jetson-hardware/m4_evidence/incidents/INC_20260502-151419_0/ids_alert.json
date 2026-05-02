@@ -1,0 +1,20 @@
+{
+  "bus_id": 0,
+  "detector_module": "edge_gps_detector",
+  "detector_version": "1.0.0",
+  "indicators": {
+    "bus_id": 0,
+    "corridor_anomaly": true,
+    "corridor_dist": 6500.0,
+    "distance": 0.0,
+    "jump_anomaly": false,
+    "speed": 0.0,
+    "speed_anomaly": false,
+    "streak": 3,
+    "timestamp": 1777724057.790891,
+    "type": "gps_spoof"
+  },
+  "ts": 1777724059.2033923,
+  "ts_iso": "2026-05-02T12:14:19.203392Z",
+  "type": "gps_spoof"
+}

@@ -1,0 +1,20 @@
+=== Tamper test
+Source incident: INC_20260502-151224_0
+Tamper sandbox:  /tmp/tamper.XptcCC
+
+$ printf '\\x00' >> /tmp/tamper.XptcCC/edge_forensic_report.pdf
+(one null byte appended to the PDF)
+
+$ ( cd /tmp/tamper.XptcCC && sha256sum -c hash_manifest.txt )
+edge_forensic_report.pdf: FAILED
+edge_forensic_report.txt: OK
+events.csv: OK
+gps_log.csv: OK
+ids_alert.json: OK
+metadata.json: OK
+sha256sum: WARNING: 1 computed checksum did NOT match
+
+Expected: edge_forensic_report.pdf FAILED, the 5 others OK
+
+(The script does NOT upload the tampered folder. Server's view of
+ INC_20260502-151224_0 is unchanged — see S3 for the live /verify response.)

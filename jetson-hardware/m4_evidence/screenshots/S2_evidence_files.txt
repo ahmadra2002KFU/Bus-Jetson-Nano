@@ -1,0 +1,23 @@
+=== Evidence files for INC_20260502-151224_0
+
+$ ls -la m4_evidence/incidents/INC_20260502-151224_0
+total 88
+drwxrwxr-x 2 fatima fatima  4096 مايو    2 15:15 .
+drwxrwxr-x 6 fatima fatima  4096 مايو    2 15:15 ..
+-rw-rw-r-- 1 fatima fatima 56492 مايو    2 15:15 edge_forensic_report.pdf
+-rw-rw-r-- 1 fatima fatima   905 مايو    2 15:15 edge_forensic_report.txt
+-rw-rw-r-- 1 fatima fatima   108 مايو    2 15:15 events.csv
+-rw-rw-r-- 1 fatima fatima  2057 مايو    2 15:15 gps_log.csv
+-rw-rw-r-- 1 fatima fatima   498 مايو    2 15:15 hash_manifest.txt
+-rw-rw-r-- 1 fatima fatima   456 مايو    2 15:15 ids_alert.json
+-rw-rw-r-- 1 fatima fatima   448 مايو    2 15:15 metadata.json
+
+$ wc -c m4_evidence/incidents/INC_20260502-151224_0/*
+56492 m4_evidence/incidents/INC_20260502-151224_0/edge_forensic_report.pdf
+  905 m4_evidence/incidents/INC_20260502-151224_0/edge_forensic_report.txt
+  108 m4_evidence/incidents/INC_20260502-151224_0/events.csv
+ 2057 m4_evidence/incidents/INC_20260502-151224_0/gps_log.csv
+  498 m4_evidence/incidents/INC_20260502-151224_0/hash_manifest.txt
+  456 m4_evidence/incidents/INC_20260502-151224_0/ids_alert.json
+  448 m4_evidence/incidents/INC_20260502-151224_0/metadata.json
+60964 total

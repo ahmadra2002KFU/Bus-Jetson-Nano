@@ -1,0 +1,18 @@
+=== Incident: INC_20260502-151224_0
+=== Folder:   m4_evidence/incidents/INC_20260502-151224_0
+
+$ cat hash_manifest.txt
+ed6346d5448b4601b95d928f1cb4b15d9d793b585a57d81063d009d2061f6352  edge_forensic_report.pdf
+29594b899c99d1fac47c8e6a08a8488504ea06fdd5fc04022c453bde9f578617  edge_forensic_report.txt
+bc1a3df81c97eeaf295b4e1a44b9387f87dcc0a9985d75f5a4b3e216d190dd32  events.csv
+568fc3c6897faee698ddb0949af64cd1b598accc43b2d47318473d096ca850f2  gps_log.csv
+9121a0c6741c22ceb2ff892a7b4993d29571e06ba699de02ef064051ff1b69e9  ids_alert.json
+9a965bc2ed69036d6e1b106494ceebcc5e9ffef7991548db7ea9544a5e5df635  metadata.json
+
+$ ( cd m4_evidence/incidents/INC_20260502-151224_0 && sha256sum -c hash_manifest.txt )
+edge_forensic_report.pdf: OK
+edge_forensic_report.txt: OK
+events.csv: OK
+gps_log.csv: OK
+ids_alert.json: OK
+metadata.json: OK

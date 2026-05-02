@@ -1,0 +1,18 @@
+=== Fresh-upload tamper test
+  source incident:   INC_20260502-151224_0
+  original sha256:   ed6346d5448b4601b95d928f1cb4b15d9d793b585a57d81063d009d2061f6352
+  tampered sha256:   64687b30b2ba89d6f12740e4ced634f43bb0ec756cced3bceea1299ab5c42149
+  hashes differ:     True
+
+$ POST https://jetson.testingdomainzforprototypes.website/ingest/forensic
+   bytes: 56493 (tampered)
+   claimed sha256: ed6346d5448b4601... (original — lying about it)
+   server response: HTTP 422
+   body: {
+    "error": "sha256_mismatch",
+    "client": "ed6346d5448b4601b95d928f1cb4b15d9d793b585a57d81063d009d2061f6352",
+    "server": "64687b30b2ba89d6f12740e4ced634f43bb0ec756cced3bceea1299ab5c42149"
+}
+
+RESULT: PASS — server REJECTED tampered upload at /ingest/forensic
+        (defense-in-depth: tamper caught at upload time, before storage)

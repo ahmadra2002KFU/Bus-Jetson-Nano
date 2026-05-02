@@ -1,0 +1,5 @@
+incident_id,trigger_ts,bus_id,attack_type,detection_time_s,acquisition_time_s,hash_gen_time_ms,integrity_verification,upload_time_s,upload_success,chain_of_custody_pct,report_gen_time_ms
+INC_20260502-151224_0,1777723944.062,0,gps_spoof,,0.013,0.8,PASS,1.076,1,100.0,3777.4
+INC_20260502-151320_0,1777724000.947,0,gps_spoof,,0.009,0.7,PASS,2.732,1,100.0,1498.8
+INC_20260502-151419_0,1777724059.203,0,gps_spoof,,0.009,0.7,PASS,1.062,1,100.0,1489.8
+INC_20260502-151515_0,1777724115.780,0,gps_spoof,,0.010,0.9,PASS,1.036,1,100.0,1490.2

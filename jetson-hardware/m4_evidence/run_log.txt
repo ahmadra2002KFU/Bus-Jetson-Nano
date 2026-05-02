@@ -1,0 +1,1619 @@
+15:10:44 [jetson.main           ] INFO bus_id=0 server=https://jetson.testingdomainzforprototypes.website interface=wlP1p1s0
+15:10:44 [jetson.alerting.csv_logger] INFO CSVLogger initialized: ./logs
+15:10:44 [jetson.alerting.telegram_bot] INFO Telegram disabled — bot_token/chat_id contains unsubstituted ${...} placeholder (run scripts/setup_telegram.py or export the env vars)
+15:10:44 [jetson.network.offline_queue] INFO OfflineQueue ready at ./logs/offline_queue.db
+15:10:44 [jetson.traffic.gps_telemetry] INFO GPS telemetry start bus=0 url=wss://jetson.testingdomainzforprototypes.website/ingest/gps
+15:10:44 [jetson.traffic.cctv_stream] INFO CCTV stream start bus=0 url=wss://jetson.testingdomainzforprototypes.website/ingest/cctv?bus_id=0
+15:10:44 [jetson.traffic.ticketing] INFO Ticketing start bus=0 url=https://jetson.testingdomainzforprototypes.website/ingest/ticket
+15:10:44 [jetson.detection.heartbeat] INFO Heartbeat start bus=0 url=https://jetson.testingdomainzforprototypes.website/health/heartbeat
+15:10:44 [jetson.network.traffic_monitor] INFO TrafficMonitor started on wlP1p1s0 (linux=True)
+15:10:44 [jetson.detection.ddos_detector] INFO DDoSDetector started (warmup=90s, interval=10s, loss_streak=2, clear_streak=3)
+15:10:44 [jetson.main           ] INFO all subsystems started; warmup=90s
+15:10:44 [jetson.main           ] INFO press Ctrl+C to stop.
+15:10:44 [jetson.traffic.cctv_stream] INFO CCTV WS connected bus=0
+15:10:46 [jetson.traffic.gps_telemetry] INFO GPS WS connected bus=0
+15:10:49 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:10:54 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:10:59 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:04 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:09 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:14 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:19 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:24 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:29 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:34 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:39 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:44 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:49 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:54 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:11:54 [jetson.traffic.cctv_stream] WARNING CCTV send bus=0 failed: socket is already closed.
+15:11:54 [jetson.traffic.cctv_stream] WARNING CCTV WS error bus=0: socket is already closed. (backoff 1.0s)
+15:11:56 [jetson.traffic.gps_telemetry] WARNING GPS WS send bus=0 failed: socket is already closed.
+15:11:56 [jetson.traffic.gps_telemetry] WARNING GPS WS error bus=0: socket is already closed. (backoff 1.0s)
+15:11:56 [jetson.traffic.cctv_stream] INFO CCTV WS connected bus=0
+15:11:57 [jetson.traffic.gps_telemetry] INFO GPS WS connected bus=0
+15:11:59 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:12:04 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:12:09 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:12:14 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.11 Mbps (>15.0? False)  loss=12.50% (>5.0%? True)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=0/3, detected=False]
+15:12:14 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:12:19 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:12:21 [jetson.traffic.gps_telemetry] WARNING GPS spoof injection ACTIVE bus=0 -> (14000, 1000)
+15:12:23 [jetson.detection.edge_gps_detector] WARNING [EDGE GPS SPOOF] bus=0 corridor=6500m speed=0.0 m/s streak=3
+15:12:23 [jetson.main           ] WARNING *** EDGE GPS SPOOF DETECTED ***
+15:12:23 [jetson.main           ] WARNING   speed=0.0 m/s  corridor=6500 m  streak=3
+15:12:23 [jetson.alerting.csv_logger] INFO Event logged: gps_spoof_detect bus=0 v1=0.000 v2=6500.000 streak=3
+15:12:23 [jetson.alerting.telegram_bot] INFO [Telegram disabled] *GPS SPOOFING DETECTED on Bus 0*
+Time: `2026-05-02 15:12:23`
+
+Speed: `0.0 m/s` (threshold: 22.2 m/s)
+15:12:24 [jetson.main           ] INFO forensic trigger: gps_spoof — capturing evidence
+15:12:24 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.11 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=1/2, good=0/3, detected=False]
+15:12:24 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+/home/fatima/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:12:27 [fontTools.subset      ] INFO maxp pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.022s to load 'cmap'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:12:27 [fontTools.subset      ] INFO cmap pruned
+15:12:27 [fontTools.subset      ] INFO fpgm dropped
+15:12:27 [fontTools.subset      ] INFO prep dropped
+15:12:27 [fontTools.subset      ] INFO cvt  dropped
+15:12:27 [fontTools.subset      ] INFO kern dropped
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:12:27 [fontTools.subset      ] INFO post pruned
+15:12:27 [fontTools.subset      ] INFO GPOS dropped
+15:12:27 [fontTools.subset      ] INFO GSUB dropped
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.016s to load 'glyf'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf pruned
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'cmap'
+15:12:27 [fontTools.subset      ] INFO Added gid0 to subset
+15:12:27 [fontTools.subset      ] INFO Closing glyph list over 'MATH': 51 glyphs before
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'four', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 23, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'MATH' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'MATH' table
+15:12:27 [fontTools.subset      ] INFO Closed glyph list over 'MATH': 51 glyphs after
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'four', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 23, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.008s to close glyph list over 'MATH'
+15:12:27 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 51 glyphs before
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'four', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 23, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:12:27 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 51 glyphs after
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'four', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 23, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'glyf'
+15:12:27 [fontTools.subset      ] INFO Retaining 51 glyphs
+15:12:27 [fontTools.subset      ] INFO head subsetting not needed
+15:12:27 [fontTools.subset      ] INFO hhea subsetting not needed
+15:12:27 [fontTools.subset      ] INFO maxp subsetting not needed
+15:12:27 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.008s to subset 'hmtx'
+15:12:27 [fontTools.subset      ] INFO hmtx subsetted
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'cmap'
+15:12:27 [fontTools.subset      ] INFO cmap subsetted
+15:12:27 [fontTools.subset      ] INFO loca subsetting not needed
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:12:27 [fontTools.subset      ] INFO post subsetted
+15:12:27 [fontTools.subset      ] INFO gasp subsetting not needed
+15:12:27 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'MATH'
+15:12:27 [fontTools.subset      ] INFO MATH subsetted
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.004s to subset 'GDEF'
+15:12:27 [fontTools.subset      ] INFO GDEF subsetted
+15:12:27 [fontTools.subset      ] INFO name subsetting not needed
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf subsetted
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:12:27 [fontTools.subset      ] INFO head pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:12:27 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 31]
+15:12:27 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf pruned
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:12:27 [fontTools.subset      ] INFO GDEF pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'name'
+15:12:27 [fontTools.subset      ] INFO name pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:12:27 [fontTools.subset      ] INFO maxp pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.018s to load 'cmap'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:12:27 [fontTools.subset      ] INFO cmap pruned
+15:12:27 [fontTools.subset      ] INFO fpgm dropped
+15:12:27 [fontTools.subset      ] INFO prep dropped
+15:12:27 [fontTools.subset      ] INFO cvt  dropped
+15:12:27 [fontTools.subset      ] INFO kern dropped
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:12:27 [fontTools.subset      ] INFO post pruned
+15:12:27 [fontTools.subset      ] INFO GPOS dropped
+15:12:27 [fontTools.subset      ] INFO GSUB dropped
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.177s to load 'glyf'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf pruned
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'cmap'
+15:12:27 [fontTools.subset      ] INFO Added gid0 to subset
+15:12:27 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 47 glyphs before
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'a', 'c', 'colon', 'd', 'e', 'eight', 'fl', 'g', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'parenleft', 'parenright', 'r', 's', 'six', 'space', 't', 'two', 'u', 'uniFB00', 'v', 'y', 'zero']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 11, 12, 19, 20, 21, 25, 27, 29, 36, 37, 38, 39, 40, 41, 42, 44, 47, 48, 50, 51, 53, 54, 55, 57, 68, 70, 71, 72, 74, 76, 77, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 89, 92, 5037, 5039]
+15:12:27 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 47 glyphs after
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'a', 'c', 'colon', 'd', 'e', 'eight', 'fl', 'g', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'parenleft', 'parenright', 'r', 's', 'six', 'space', 't', 'two', 'u', 'uniFB00', 'v', 'y', 'zero']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 11, 12, 19, 20, 21, 25, 27, 29, 36, 37, 38, 39, 40, 41, 42, 44, 47, 48, 50, 51, 53, 54, 55, 57, 68, 70, 71, 72, 74, 76, 77, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 89, 92, 5037, 5039]
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.003s to close glyph list over 'glyf'
+15:12:27 [fontTools.subset      ] INFO Retaining 47 glyphs
+15:12:27 [fontTools.subset      ] INFO head subsetting not needed
+15:12:27 [fontTools.subset      ] INFO hhea subsetting not needed
+15:12:27 [fontTools.subset      ] INFO maxp subsetting not needed
+15:12:27 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.010s to subset 'hmtx'
+15:12:27 [fontTools.subset      ] INFO hmtx subsetted
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'cmap'
+15:12:27 [fontTools.subset      ] INFO cmap subsetted
+15:12:27 [fontTools.subset      ] INFO loca subsetting not needed
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:12:27 [fontTools.subset      ] INFO post subsetted
+15:12:27 [fontTools.subset      ] INFO gasp subsetting not needed
+15:12:27 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.004s to subset 'GDEF'
+15:12:27 [fontTools.subset      ] INFO GDEF subsetted
+15:12:27 [fontTools.subset      ] INFO name subsetting not needed
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.009s to subset 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf subsetted
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:12:27 [fontTools.subset      ] INFO head pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:12:27 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 62]
+15:12:27 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.004s to prune 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf pruned
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:12:27 [fontTools.subset      ] INFO GDEF pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'name'
+15:12:27 [fontTools.subset      ] INFO name pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:12:27 [fontTools.subset      ] INFO maxp pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.012s to load 'cmap'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:12:27 [fontTools.subset      ] INFO cmap pruned
+15:12:27 [fontTools.subset      ] INFO fpgm dropped
+15:12:27 [fontTools.subset      ] INFO prep dropped
+15:12:27 [fontTools.subset      ] INFO cvt  dropped
+15:12:27 [fontTools.subset      ] INFO kern dropped
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:12:27 [fontTools.subset      ] INFO post pruned
+15:12:27 [fontTools.subset      ] INFO GPOS dropped
+15:12:27 [fontTools.subset      ] INFO GSUB dropped
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.007s to load 'glyf'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf pruned
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'cmap'
+15:12:27 [fontTools.subset      ] INFO Added gid0 to subset
+15:12:27 [fontTools.subset      ] INFO Closing glyph list over 'MATH': 28 glyphs before
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'MATH' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'MATH' table
+15:12:27 [fontTools.subset      ] INFO Closed glyph list over 'MATH': 28 glyphs after
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.005s to close glyph list over 'MATH'
+15:12:27 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 28 glyphs before
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:12:27 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 28 glyphs after
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'glyf'
+15:12:27 [fontTools.subset      ] INFO Retaining 28 glyphs
+15:12:27 [fontTools.subset      ] INFO head subsetting not needed
+15:12:27 [fontTools.subset      ] INFO hhea subsetting not needed
+15:12:27 [fontTools.subset      ] INFO maxp subsetting not needed
+15:12:27 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'hmtx'
+15:12:27 [fontTools.subset      ] INFO hmtx subsetted
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'cmap'
+15:12:27 [fontTools.subset      ] INFO cmap subsetted
+15:12:27 [fontTools.subset      ] INFO loca subsetting not needed
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:12:27 [fontTools.subset      ] INFO post subsetted
+15:12:27 [fontTools.subset      ] INFO gasp subsetting not needed
+15:12:27 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'MATH'
+15:12:27 [fontTools.subset      ] INFO MATH subsetted
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'GDEF'
+15:12:27 [fontTools.subset      ] INFO GDEF subsetted
+15:12:27 [fontTools.subset      ] INFO name subsetting not needed
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf subsetted
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:12:27 [fontTools.subset      ] INFO head pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:12:27 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 31]
+15:12:27 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf pruned
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:12:27 [fontTools.subset      ] INFO GDEF pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:12:27 [fontTools.subset      ] INFO name pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:12:27 [fontTools.subset      ] INFO maxp pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.011s to load 'cmap'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:12:27 [fontTools.subset      ] INFO cmap pruned
+15:12:27 [fontTools.subset      ] INFO fpgm dropped
+15:12:27 [fontTools.subset      ] INFO prep dropped
+15:12:27 [fontTools.subset      ] INFO cvt  dropped
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:12:27 [fontTools.subset      ] INFO post pruned
+15:12:27 [fontTools.subset      ] INFO GPOS dropped
+15:12:27 [fontTools.subset      ] INFO GSUB dropped
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.007s to load 'glyf'
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf pruned
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'cmap'
+15:12:27 [fontTools.subset      ] INFO Added gid0 to subset
+15:12:27 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 10 glyphs before
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'colon', 'five', 'hyphen', 'one', 'six', 'space', 'three', 'two', 'zero']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 19, 20, 21, 22, 24, 25, 29]
+15:12:27 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 10 glyphs after
+15:12:27 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'colon', 'five', 'hyphen', 'one', 'six', 'space', 'three', 'two', 'zero']
+15:12:27 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 19, 20, 21, 22, 24, 25, 29]
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'glyf'
+15:12:27 [fontTools.subset      ] INFO Retaining 10 glyphs
+15:12:27 [fontTools.subset      ] INFO head subsetting not needed
+15:12:27 [fontTools.subset      ] INFO hhea subsetting not needed
+15:12:27 [fontTools.subset      ] INFO maxp subsetting not needed
+15:12:27 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'hmtx'
+15:12:27 [fontTools.subset      ] INFO hmtx subsetted
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'cmap'
+15:12:27 [fontTools.subset      ] INFO cmap subsetted
+15:12:27 [fontTools.subset      ] INFO loca subsetting not needed
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:12:27 [fontTools.subset      ] INFO post subsetted
+15:12:27 [fontTools.subset      ] INFO gasp subsetting not needed
+15:12:27 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'GDEF'
+15:12:27 [fontTools.subset      ] INFO GDEF subsetted
+15:12:27 [fontTools.subset      ] INFO name subsetting not needed
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to subset 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf subsetted
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:12:27 [fontTools.subset      ] INFO head pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:12:27 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0]
+15:12:27 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:12:27 [fontTools.subset      ] INFO glyf pruned
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:12:27 [fontTools.subset      ] INFO GDEF pruned
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:12:27 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:12:27 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:12:27 [fontTools.subset      ] INFO name pruned
+15:12:27 [jetson.forensic.pdf_builder] INFO forensic PDF built: bus=0 attack=gps_spoof size=56492 bytes
+15:12:27 [jetson.forensic.incident_package] INFO forensic folder built: ./logs/incidents/INC_20260502-151224_0 (pdf_sha256=ed6346d5448b4601b95d928f1cb4b15d9d793b585a57d81063d009d2061f6352, acq=0.013s, hash=0.8ms)
+15:12:27 [jetson.forensic.evidence_capture] INFO forensic evidence ready: bus=0 attack=gps_spoof pdf=56492 bytes sha256=ed6346d5448b4601b95d928f1cb4b15d9d793b585a57d81063d009d2061f6352 folder=./logs/incidents/INC_20260502-151224_0
+15:12:27 [jetson.alerting.telegram_bot] INFO [Telegram disabled] Document: incident_bus0_gps_spoof_1777723944.pdf
+15:12:27 [jetson.main           ] WARNING forensic PDF Telegram send returned False (gps_spoof)
+15:12:27 [jetson.forensic.evidence_upload] INFO forensic upload -> https://jetson.testingdomainzforprototypes.website/ingest/forensic (56492 bytes)
+15:12:28 [jetson.forensic.evidence_upload] INFO forensic uploaded: {'id': 60, 'url': '/forensics/60.pdf', 'sha256': 'ed6346d5448b4601b95d928f1cb4b15d9d793b585a57d81063d009d2061f6352'}
+15:12:28 [jetson.main           ] INFO forensic upload complete (gps_spoof): 56492 bytes in 1.08s
+15:12:28 [jetson.alerting.csv_logger] INFO Forensic logged: gps_spoof bus=0 completed=True bytes=56492
+15:12:29 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:12:33 [jetson.traffic.gps_telemetry] INFO GPS spoof injection cleared bus=0
+15:12:34 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.12 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=1/3, detected=False]
+15:12:34 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:12:37 [jetson.traffic.cctv_stream] WARNING CCTV send bus=0 failed: socket is already closed.
+15:12:37 [jetson.traffic.cctv_stream] WARNING CCTV WS error bus=0: socket is already closed. (backoff 1.0s)
+15:12:38 [jetson.detection.edge_gps_detector] INFO [EDGE GPS SPOOF CLEARED] bus=0
+15:12:38 [jetson.main           ] INFO Forensic re-armed (gps_spoof)
+15:12:39 [jetson.traffic.cctv_stream] INFO CCTV WS connected bus=0
+15:12:39 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:12:44 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.13 Mbps (>15.0? False)  loss=14.29% (>5.0%? True)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=2/3, detected=False]
+15:12:44 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:12:49 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:12:54 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.13 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=1/2, good=0/3, detected=False]
+15:12:54 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:12:59 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:13:04 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.15 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=1/3, detected=False]
+15:13:04 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:13:08 [jetson.traffic.gps_telemetry] WARNING GPS WS send bus=0 failed: socket is already closed.
+15:13:08 [jetson.traffic.gps_telemetry] WARNING GPS WS error bus=0: socket is already closed. (backoff 1.0s)
+15:13:09 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:13:11 [jetson.traffic.gps_telemetry] INFO GPS WS connected bus=0
+15:13:14 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.17 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=2/3, detected=False]
+15:13:14 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:13:18 [jetson.traffic.gps_telemetry] WARNING GPS spoof injection ACTIVE bus=0 -> (14000, 1000)
+15:13:19 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:13:20 [jetson.detection.edge_gps_detector] WARNING [EDGE GPS SPOOF] bus=0 corridor=6500m speed=0.0 m/s streak=3
+15:13:20 [jetson.main           ] WARNING *** EDGE GPS SPOOF DETECTED ***
+15:13:20 [jetson.main           ] WARNING   speed=0.0 m/s  corridor=6500 m  streak=3
+15:13:20 [jetson.alerting.csv_logger] INFO Event logged: gps_spoof_detect bus=0 v1=0.000 v2=6500.000 streak=3
+15:13:20 [jetson.alerting.telegram_bot] INFO [Telegram disabled] *GPS SPOOFING DETECTED on Bus 0*
+Time: `2026-05-02 15:13:20`
+
+Speed: `0.0 m/s` (threshold: 22.2 m/s)
+15:13:20 [jetson.main           ] INFO forensic trigger: gps_spoof — capturing evidence
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:13:21 [fontTools.subset      ] INFO maxp pruned
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.022s to load 'cmap'
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:13:21 [fontTools.subset      ] INFO cmap pruned
+15:13:21 [fontTools.subset      ] INFO fpgm dropped
+15:13:21 [fontTools.subset      ] INFO prep dropped
+15:13:21 [fontTools.subset      ] INFO cvt  dropped
+15:13:21 [fontTools.subset      ] INFO kern dropped
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:13:21 [fontTools.subset      ] INFO post pruned
+15:13:21 [fontTools.subset      ] INFO GPOS dropped
+15:13:21 [fontTools.subset      ] INFO GSUB dropped
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.017s to load 'glyf'
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:13:21 [fontTools.subset      ] INFO glyf pruned
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'cmap'
+15:13:21 [fontTools.subset      ] INFO Added gid0 to subset
+15:13:21 [fontTools.subset      ] INFO Closing glyph list over 'MATH': 50 glyphs before
+15:13:21 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:13:21 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'MATH' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'MATH' table
+15:13:21 [fontTools.subset      ] INFO Closed glyph list over 'MATH': 50 glyphs after
+15:13:21 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:13:21 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.009s to close glyph list over 'MATH'
+15:13:21 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 50 glyphs before
+15:13:21 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:13:21 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:13:21 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 50 glyphs after
+15:13:21 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:13:21 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'glyf'
+15:13:21 [fontTools.subset      ] INFO Retaining 50 glyphs
+15:13:21 [fontTools.subset      ] INFO head subsetting not needed
+15:13:21 [fontTools.subset      ] INFO hhea subsetting not needed
+15:13:21 [fontTools.subset      ] INFO maxp subsetting not needed
+15:13:21 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.008s to subset 'hmtx'
+15:13:21 [fontTools.subset      ] INFO hmtx subsetted
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'cmap'
+15:13:21 [fontTools.subset      ] INFO cmap subsetted
+15:13:21 [fontTools.subset      ] INFO loca subsetting not needed
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:13:21 [fontTools.subset      ] INFO post subsetted
+15:13:21 [fontTools.subset      ] INFO gasp subsetting not needed
+15:13:21 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'MATH'
+15:13:21 [fontTools.subset      ] INFO MATH subsetted
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.004s to subset 'GDEF'
+15:13:21 [fontTools.subset      ] INFO GDEF subsetted
+15:13:21 [fontTools.subset      ] INFO name subsetting not needed
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.006s to subset 'glyf'
+15:13:21 [fontTools.subset      ] INFO glyf subsetted
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:13:21 [fontTools.subset      ] INFO head pruned
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:13:21 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 31]
+15:13:21 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'glyf'
+15:13:21 [fontTools.subset      ] INFO glyf pruned
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:13:21 [fontTools.subset      ] INFO GDEF pruned
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'name'
+15:13:21 [fontTools.subset      ] INFO name pruned
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:13:21 [fontTools.subset      ] INFO maxp pruned
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.019s to load 'cmap'
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:13:21 [fontTools.subset      ] INFO cmap pruned
+15:13:21 [fontTools.subset      ] INFO fpgm dropped
+15:13:21 [fontTools.subset      ] INFO prep dropped
+15:13:21 [fontTools.subset      ] INFO cvt  dropped
+15:13:21 [fontTools.subset      ] INFO kern dropped
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:13:21 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:13:21 [fontTools.subset      ] INFO post pruned
+15:13:21 [fontTools.subset      ] INFO GPOS dropped
+15:13:21 [fontTools.subset      ] INFO GSUB dropped
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:13:21 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.210s to load 'glyf'
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:13:22 [fontTools.subset      ] INFO glyf pruned
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'cmap'
+15:13:22 [fontTools.subset      ] INFO Added gid0 to subset
+15:13:22 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 47 glyphs before
+15:13:22 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'a', 'c', 'colon', 'd', 'e', 'eight', 'fl', 'g', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'parenleft', 'parenright', 'r', 's', 'six', 'space', 't', 'two', 'u', 'uniFB00', 'v', 'y', 'zero']
+15:13:22 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 11, 12, 19, 20, 21, 25, 27, 29, 36, 37, 38, 39, 40, 41, 42, 44, 47, 48, 50, 51, 53, 54, 55, 57, 68, 70, 71, 72, 74, 76, 77, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 89, 92, 5037, 5039]
+15:13:22 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 47 glyphs after
+15:13:22 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'a', 'c', 'colon', 'd', 'e', 'eight', 'fl', 'g', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'parenleft', 'parenright', 'r', 's', 'six', 'space', 't', 'two', 'u', 'uniFB00', 'v', 'y', 'zero']
+15:13:22 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 11, 12, 19, 20, 21, 25, 27, 29, 36, 37, 38, 39, 40, 41, 42, 44, 47, 48, 50, 51, 53, 54, 55, 57, 68, 70, 71, 72, 74, 76, 77, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 89, 92, 5037, 5039]
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.003s to close glyph list over 'glyf'
+15:13:22 [fontTools.subset      ] INFO Retaining 47 glyphs
+15:13:22 [fontTools.subset      ] INFO head subsetting not needed
+15:13:22 [fontTools.subset      ] INFO hhea subsetting not needed
+15:13:22 [fontTools.subset      ] INFO maxp subsetting not needed
+15:13:22 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.008s to subset 'hmtx'
+15:13:22 [fontTools.subset      ] INFO hmtx subsetted
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.006s to subset 'cmap'
+15:13:22 [fontTools.subset      ] INFO cmap subsetted
+15:13:22 [fontTools.subset      ] INFO loca subsetting not needed
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:13:22 [fontTools.subset      ] INFO post subsetted
+15:13:22 [fontTools.subset      ] INFO gasp subsetting not needed
+15:13:22 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.004s to subset 'GDEF'
+15:13:22 [fontTools.subset      ] INFO GDEF subsetted
+15:13:22 [fontTools.subset      ] INFO name subsetting not needed
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.010s to subset 'glyf'
+15:13:22 [fontTools.subset      ] INFO glyf subsetted
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:13:22 [fontTools.subset      ] INFO head pruned
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:13:22 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 62]
+15:13:22 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.003s to prune 'glyf'
+15:13:22 [fontTools.subset      ] INFO glyf pruned
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:13:22 [fontTools.subset      ] INFO GDEF pruned
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'name'
+15:13:22 [fontTools.subset      ] INFO name pruned
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:13:22 [fontTools.subset      ] INFO maxp pruned
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.012s to load 'cmap'
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:13:22 [fontTools.subset      ] INFO cmap pruned
+15:13:22 [fontTools.subset      ] INFO fpgm dropped
+15:13:22 [fontTools.subset      ] INFO prep dropped
+15:13:22 [fontTools.subset      ] INFO cvt  dropped
+15:13:22 [fontTools.subset      ] INFO kern dropped
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:13:22 [fontTools.subset      ] INFO post pruned
+15:13:22 [fontTools.subset      ] INFO GPOS dropped
+15:13:22 [fontTools.subset      ] INFO GSUB dropped
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.010s to load 'glyf'
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:13:22 [fontTools.subset      ] INFO glyf pruned
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'cmap'
+15:13:22 [fontTools.subset      ] INFO Added gid0 to subset
+15:13:22 [fontTools.subset      ] INFO Closing glyph list over 'MATH': 28 glyphs before
+15:13:22 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:13:22 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'MATH' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'MATH' table
+15:13:22 [fontTools.subset      ] INFO Closed glyph list over 'MATH': 28 glyphs after
+15:13:22 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:13:22 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.005s to close glyph list over 'MATH'
+15:13:22 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 28 glyphs before
+15:13:22 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:13:22 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:13:22 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 28 glyphs after
+15:13:22 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:13:22 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'glyf'
+15:13:22 [fontTools.subset      ] INFO Retaining 28 glyphs
+15:13:22 [fontTools.subset      ] INFO head subsetting not needed
+15:13:22 [fontTools.subset      ] INFO hhea subsetting not needed
+15:13:22 [fontTools.subset      ] INFO maxp subsetting not needed
+15:13:22 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'hmtx'
+15:13:22 [fontTools.subset      ] INFO hmtx subsetted
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'cmap'
+15:13:22 [fontTools.subset      ] INFO cmap subsetted
+15:13:22 [fontTools.subset      ] INFO loca subsetting not needed
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:13:22 [fontTools.subset      ] INFO post subsetted
+15:13:22 [fontTools.subset      ] INFO gasp subsetting not needed
+15:13:22 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'MATH'
+15:13:22 [fontTools.subset      ] INFO MATH subsetted
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'GDEF'
+15:13:22 [fontTools.subset      ] INFO GDEF subsetted
+15:13:22 [fontTools.subset      ] INFO name subsetting not needed
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'glyf'
+15:13:22 [fontTools.subset      ] INFO glyf subsetted
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:13:22 [fontTools.subset      ] INFO head pruned
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:13:22 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 31]
+15:13:22 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'glyf'
+15:13:22 [fontTools.subset      ] INFO glyf pruned
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:13:22 [fontTools.subset      ] INFO GDEF pruned
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:13:22 [fontTools.subset      ] INFO name pruned
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:13:22 [fontTools.subset      ] INFO maxp pruned
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.012s to load 'cmap'
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:13:22 [fontTools.subset      ] INFO cmap pruned
+15:13:22 [fontTools.subset      ] INFO fpgm dropped
+15:13:22 [fontTools.subset      ] INFO prep dropped
+15:13:22 [fontTools.subset      ] INFO cvt  dropped
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:13:22 [fontTools.subset      ] INFO post pruned
+15:13:22 [fontTools.subset      ] INFO GPOS dropped
+15:13:22 [fontTools.subset      ] INFO GSUB dropped
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.009s to load 'glyf'
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:13:22 [fontTools.subset      ] INFO glyf pruned
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'cmap'
+15:13:22 [fontTools.subset      ] INFO Added gid0 to subset
+15:13:22 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 10 glyphs before
+15:13:22 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'colon', 'five', 'hyphen', 'one', 'six', 'space', 'three', 'two', 'zero']
+15:13:22 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 19, 20, 21, 22, 24, 25, 29]
+15:13:22 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 10 glyphs after
+15:13:22 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'colon', 'five', 'hyphen', 'one', 'six', 'space', 'three', 'two', 'zero']
+15:13:22 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 19, 20, 21, 22, 24, 25, 29]
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'glyf'
+15:13:22 [fontTools.subset      ] INFO Retaining 10 glyphs
+15:13:22 [fontTools.subset      ] INFO head subsetting not needed
+15:13:22 [fontTools.subset      ] INFO hhea subsetting not needed
+15:13:22 [fontTools.subset      ] INFO maxp subsetting not needed
+15:13:22 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'hmtx'
+15:13:22 [fontTools.subset      ] INFO hmtx subsetted
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'cmap'
+15:13:22 [fontTools.subset      ] INFO cmap subsetted
+15:13:22 [fontTools.subset      ] INFO loca subsetting not needed
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:13:22 [fontTools.subset      ] INFO post subsetted
+15:13:22 [fontTools.subset      ] INFO gasp subsetting not needed
+15:13:22 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'GDEF'
+15:13:22 [fontTools.subset      ] INFO GDEF subsetted
+15:13:22 [fontTools.subset      ] INFO name subsetting not needed
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'glyf'
+15:13:22 [fontTools.subset      ] INFO glyf subsetted
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:13:22 [fontTools.subset      ] INFO head pruned
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:13:22 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0]
+15:13:22 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:13:22 [fontTools.subset      ] INFO glyf pruned
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:13:22 [fontTools.subset      ] INFO GDEF pruned
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:13:22 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:13:22 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:13:22 [fontTools.subset      ] INFO name pruned
+15:13:22 [jetson.forensic.pdf_builder] INFO forensic PDF built: bus=0 attack=gps_spoof size=57387 bytes
+15:13:22 [jetson.forensic.incident_package] INFO forensic folder built: ./logs/incidents/INC_20260502-151320_0 (pdf_sha256=9e99896e3fe632fea58a8c680c7b1c083f779508e4bc07116fdb9006b912ed82, acq=0.009s, hash=0.7ms)
+15:13:22 [jetson.forensic.evidence_capture] INFO forensic evidence ready: bus=0 attack=gps_spoof pdf=57387 bytes sha256=9e99896e3fe632fea58a8c680c7b1c083f779508e4bc07116fdb9006b912ed82 folder=./logs/incidents/INC_20260502-151320_0
+15:13:22 [jetson.alerting.telegram_bot] INFO [Telegram disabled] Document: incident_bus0_gps_spoof_1777724000.pdf
+15:13:22 [jetson.main           ] WARNING forensic PDF Telegram send returned False (gps_spoof)
+15:13:22 [jetson.forensic.evidence_upload] INFO forensic upload -> https://jetson.testingdomainzforprototypes.website/ingest/forensic (57387 bytes)
+15:13:24 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.15 Mbps (>15.0? False)  loss=12.50% (>5.0%? True)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=3/3, detected=False]
+15:13:24 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:13:25 [jetson.forensic.evidence_upload] INFO forensic uploaded: {'id': 61, 'url': '/forensics/61.pdf', 'sha256': '9e99896e3fe632fea58a8c680c7b1c083f779508e4bc07116fdb9006b912ed82'}
+15:13:25 [jetson.main           ] INFO forensic upload complete (gps_spoof): 57387 bytes in 2.73s
+15:13:25 [jetson.alerting.csv_logger] INFO Forensic logged: gps_spoof bus=0 completed=True bytes=57387
+15:13:29 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:13:30 [jetson.traffic.gps_telemetry] INFO GPS spoof injection cleared bus=0
+15:13:34 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.18 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=1/2, good=0/3, detected=False]
+15:13:34 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:13:35 [jetson.detection.edge_gps_detector] INFO [EDGE GPS SPOOF CLEARED] bus=0
+15:13:35 [jetson.main           ] INFO Forensic re-armed (gps_spoof)
+15:13:39 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:13:44 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.18 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=1/3, detected=False]
+15:13:44 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:13:48 [jetson.traffic.cctv_stream] WARNING CCTV send bus=0 failed: socket is already closed.
+15:13:48 [jetson.traffic.cctv_stream] WARNING CCTV WS error bus=0: socket is already closed. (backoff 1.0s)
+15:13:49 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:13:50 [jetson.traffic.cctv_stream] INFO CCTV WS connected bus=0
+15:13:54 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.12 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=2/3, detected=False]
+15:13:54 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:13:59 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:14:04 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.11 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=3/3, detected=False]
+15:14:04 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:14:09 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:14:14 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.11 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=4/3, detected=False]
+15:14:14 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:14:15 [jetson.traffic.gps_telemetry] WARNING GPS spoof injection ACTIVE bus=0 -> (14000, 1000)
+15:14:17 [jetson.detection.edge_gps_detector] WARNING [EDGE GPS SPOOF] bus=0 corridor=6500m speed=0.0 m/s streak=3
+15:14:17 [jetson.main           ] WARNING *** EDGE GPS SPOOF DETECTED ***
+15:14:17 [jetson.main           ] WARNING   speed=0.0 m/s  corridor=6500 m  streak=3
+15:14:17 [jetson.alerting.csv_logger] INFO Event logged: gps_spoof_detect bus=0 v1=0.000 v2=6500.000 streak=3
+15:14:17 [jetson.alerting.telegram_bot] INFO [Telegram disabled] *GPS SPOOFING DETECTED on Bus 0*
+Time: `2026-05-02 15:14:17`
+
+Speed: `0.0 m/s` (threshold: 22.2 m/s)
+15:14:19 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:14:19 [jetson.main           ] INFO forensic trigger: gps_spoof — capturing evidence
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:14:20 [fontTools.subset      ] INFO maxp pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.021s to load 'cmap'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:14:20 [fontTools.subset      ] INFO cmap pruned
+15:14:20 [fontTools.subset      ] INFO fpgm dropped
+15:14:20 [fontTools.subset      ] INFO prep dropped
+15:14:20 [fontTools.subset      ] INFO cvt  dropped
+15:14:20 [fontTools.subset      ] INFO kern dropped
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:14:20 [fontTools.subset      ] INFO post pruned
+15:14:20 [fontTools.subset      ] INFO GPOS dropped
+15:14:20 [fontTools.subset      ] INFO GSUB dropped
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.015s to load 'glyf'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf pruned
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'cmap'
+15:14:20 [fontTools.subset      ] INFO Added gid0 to subset
+15:14:20 [fontTools.subset      ] INFO Closing glyph list over 'MATH': 52 glyphs before
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'four', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'nine', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 23, 24, 25, 28, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'MATH' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'MATH' table
+15:14:20 [fontTools.subset      ] INFO Closed glyph list over 'MATH': 52 glyphs after
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'four', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'nine', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 23, 24, 25, 28, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.007s to close glyph list over 'MATH'
+15:14:20 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 52 glyphs before
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'four', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'nine', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 23, 24, 25, 28, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:14:20 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 52 glyphs after
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'four', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'nine', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 23, 24, 25, 28, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'glyf'
+15:14:20 [fontTools.subset      ] INFO Retaining 52 glyphs
+15:14:20 [fontTools.subset      ] INFO head subsetting not needed
+15:14:20 [fontTools.subset      ] INFO hhea subsetting not needed
+15:14:20 [fontTools.subset      ] INFO maxp subsetting not needed
+15:14:20 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.008s to subset 'hmtx'
+15:14:20 [fontTools.subset      ] INFO hmtx subsetted
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.006s to subset 'cmap'
+15:14:20 [fontTools.subset      ] INFO cmap subsetted
+15:14:20 [fontTools.subset      ] INFO loca subsetting not needed
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:14:20 [fontTools.subset      ] INFO post subsetted
+15:14:20 [fontTools.subset      ] INFO gasp subsetting not needed
+15:14:20 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'MATH'
+15:14:20 [fontTools.subset      ] INFO MATH subsetted
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'GDEF'
+15:14:20 [fontTools.subset      ] INFO GDEF subsetted
+15:14:20 [fontTools.subset      ] INFO name subsetting not needed
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.007s to subset 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf subsetted
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:14:20 [fontTools.subset      ] INFO head pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:14:20 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 31]
+15:14:20 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf pruned
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:14:20 [fontTools.subset      ] INFO GDEF pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:14:20 [fontTools.subset      ] INFO name pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:14:20 [fontTools.subset      ] INFO maxp pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.021s to load 'cmap'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:14:20 [fontTools.subset      ] INFO cmap pruned
+15:14:20 [fontTools.subset      ] INFO fpgm dropped
+15:14:20 [fontTools.subset      ] INFO prep dropped
+15:14:20 [fontTools.subset      ] INFO cvt  dropped
+15:14:20 [fontTools.subset      ] INFO kern dropped
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:14:20 [fontTools.subset      ] INFO post pruned
+15:14:20 [fontTools.subset      ] INFO GPOS dropped
+15:14:20 [fontTools.subset      ] INFO GSUB dropped
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.015s to load 'glyf'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf pruned
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'cmap'
+15:14:20 [fontTools.subset      ] INFO Added gid0 to subset
+15:14:20 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 47 glyphs before
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'a', 'c', 'colon', 'd', 'e', 'eight', 'fl', 'g', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'parenleft', 'parenright', 'r', 's', 'six', 'space', 't', 'two', 'u', 'uniFB00', 'v', 'y', 'zero']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 11, 12, 19, 20, 21, 25, 27, 29, 36, 37, 38, 39, 40, 41, 42, 44, 47, 48, 50, 51, 53, 54, 55, 57, 68, 70, 71, 72, 74, 76, 77, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 89, 92, 5037, 5039]
+15:14:20 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 47 glyphs after
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'a', 'c', 'colon', 'd', 'e', 'eight', 'fl', 'g', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'parenleft', 'parenright', 'r', 's', 'six', 'space', 't', 'two', 'u', 'uniFB00', 'v', 'y', 'zero']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 11, 12, 19, 20, 21, 25, 27, 29, 36, 37, 38, 39, 40, 41, 42, 44, 47, 48, 50, 51, 53, 54, 55, 57, 68, 70, 71, 72, 74, 76, 77, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 89, 92, 5037, 5039]
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'glyf'
+15:14:20 [fontTools.subset      ] INFO Retaining 47 glyphs
+15:14:20 [fontTools.subset      ] INFO head subsetting not needed
+15:14:20 [fontTools.subset      ] INFO hhea subsetting not needed
+15:14:20 [fontTools.subset      ] INFO maxp subsetting not needed
+15:14:20 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.009s to subset 'hmtx'
+15:14:20 [fontTools.subset      ] INFO hmtx subsetted
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.006s to subset 'cmap'
+15:14:20 [fontTools.subset      ] INFO cmap subsetted
+15:14:20 [fontTools.subset      ] INFO loca subsetting not needed
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:14:20 [fontTools.subset      ] INFO post subsetted
+15:14:20 [fontTools.subset      ] INFO gasp subsetting not needed
+15:14:20 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.004s to subset 'GDEF'
+15:14:20 [fontTools.subset      ] INFO GDEF subsetted
+15:14:20 [fontTools.subset      ] INFO name subsetting not needed
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.010s to subset 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf subsetted
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:14:20 [fontTools.subset      ] INFO head pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:14:20 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 62]
+15:14:20 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.003s to prune 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf pruned
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:14:20 [fontTools.subset      ] INFO GDEF pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:14:20 [fontTools.subset      ] INFO name pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:14:20 [fontTools.subset      ] INFO maxp pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.011s to load 'cmap'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:14:20 [fontTools.subset      ] INFO cmap pruned
+15:14:20 [fontTools.subset      ] INFO fpgm dropped
+15:14:20 [fontTools.subset      ] INFO prep dropped
+15:14:20 [fontTools.subset      ] INFO cvt  dropped
+15:14:20 [fontTools.subset      ] INFO kern dropped
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:14:20 [fontTools.subset      ] INFO post pruned
+15:14:20 [fontTools.subset      ] INFO GPOS dropped
+15:14:20 [fontTools.subset      ] INFO GSUB dropped
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.007s to load 'glyf'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf pruned
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'cmap'
+15:14:20 [fontTools.subset      ] INFO Added gid0 to subset
+15:14:20 [fontTools.subset      ] INFO Closing glyph list over 'MATH': 28 glyphs before
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'MATH' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'MATH' table
+15:14:20 [fontTools.subset      ] INFO Closed glyph list over 'MATH': 28 glyphs after
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.005s to close glyph list over 'MATH'
+15:14:20 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 28 glyphs before
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:14:20 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 28 glyphs after
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'glyf'
+15:14:20 [fontTools.subset      ] INFO Retaining 28 glyphs
+15:14:20 [fontTools.subset      ] INFO head subsetting not needed
+15:14:20 [fontTools.subset      ] INFO hhea subsetting not needed
+15:14:20 [fontTools.subset      ] INFO maxp subsetting not needed
+15:14:20 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'hmtx'
+15:14:20 [fontTools.subset      ] INFO hmtx subsetted
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'cmap'
+15:14:20 [fontTools.subset      ] INFO cmap subsetted
+15:14:20 [fontTools.subset      ] INFO loca subsetting not needed
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:14:20 [fontTools.subset      ] INFO post subsetted
+15:14:20 [fontTools.subset      ] INFO gasp subsetting not needed
+15:14:20 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'MATH'
+15:14:20 [fontTools.subset      ] INFO MATH subsetted
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'GDEF'
+15:14:20 [fontTools.subset      ] INFO GDEF subsetted
+15:14:20 [fontTools.subset      ] INFO name subsetting not needed
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.004s to subset 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf subsetted
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:14:20 [fontTools.subset      ] INFO head pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:14:20 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 31]
+15:14:20 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf pruned
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:14:20 [fontTools.subset      ] INFO GDEF pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:14:20 [fontTools.subset      ] INFO name pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:14:20 [fontTools.subset      ] INFO maxp pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.011s to load 'cmap'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:14:20 [fontTools.subset      ] INFO cmap pruned
+15:14:20 [fontTools.subset      ] INFO fpgm dropped
+15:14:20 [fontTools.subset      ] INFO prep dropped
+15:14:20 [fontTools.subset      ] INFO cvt  dropped
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:14:20 [fontTools.subset      ] INFO post pruned
+15:14:20 [fontTools.subset      ] INFO GPOS dropped
+15:14:20 [fontTools.subset      ] INFO GSUB dropped
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.008s to load 'glyf'
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf pruned
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'cmap'
+15:14:20 [fontTools.subset      ] INFO Added gid0 to subset
+15:14:20 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 12 glyphs before
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'colon', 'five', 'four', 'hyphen', 'one', 'seven', 'six', 'space', 'three', 'two', 'zero']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 19, 20, 21, 22, 23, 24, 25, 26, 29]
+15:14:20 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 12 glyphs after
+15:14:20 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'colon', 'five', 'four', 'hyphen', 'one', 'seven', 'six', 'space', 'three', 'two', 'zero']
+15:14:20 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 19, 20, 21, 22, 23, 24, 25, 26, 29]
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'glyf'
+15:14:20 [fontTools.subset      ] INFO Retaining 12 glyphs
+15:14:20 [fontTools.subset      ] INFO head subsetting not needed
+15:14:20 [fontTools.subset      ] INFO hhea subsetting not needed
+15:14:20 [fontTools.subset      ] INFO maxp subsetting not needed
+15:14:20 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'hmtx'
+15:14:20 [fontTools.subset      ] INFO hmtx subsetted
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'cmap'
+15:14:20 [fontTools.subset      ] INFO cmap subsetted
+15:14:20 [fontTools.subset      ] INFO loca subsetting not needed
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:14:20 [fontTools.subset      ] INFO post subsetted
+15:14:20 [fontTools.subset      ] INFO gasp subsetting not needed
+15:14:20 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'GDEF'
+15:14:20 [fontTools.subset      ] INFO GDEF subsetted
+15:14:20 [fontTools.subset      ] INFO name subsetting not needed
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf subsetted
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:14:20 [fontTools.subset      ] INFO head pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:14:20 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0]
+15:14:20 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:14:20 [fontTools.subset      ] INFO glyf pruned
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:14:20 [fontTools.subset      ] INFO GDEF pruned
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:14:20 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:14:20 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:14:20 [fontTools.subset      ] INFO name pruned
+15:14:20 [jetson.forensic.pdf_builder] INFO forensic PDF built: bus=0 attack=gps_spoof size=58329 bytes
+15:14:20 [jetson.forensic.incident_package] INFO forensic folder built: ./logs/incidents/INC_20260502-151419_0 (pdf_sha256=45b569de30edef8eeb3be6409d9f8eaef511dcafc54f3e2ab35826e40b7f9d4c, acq=0.009s, hash=0.7ms)
+15:14:20 [jetson.forensic.evidence_capture] INFO forensic evidence ready: bus=0 attack=gps_spoof pdf=58329 bytes sha256=45b569de30edef8eeb3be6409d9f8eaef511dcafc54f3e2ab35826e40b7f9d4c folder=./logs/incidents/INC_20260502-151419_0
+15:14:20 [jetson.alerting.telegram_bot] INFO [Telegram disabled] Document: incident_bus0_gps_spoof_1777724059.pdf
+15:14:20 [jetson.main           ] WARNING forensic PDF Telegram send returned False (gps_spoof)
+15:14:20 [jetson.forensic.evidence_upload] INFO forensic upload -> https://jetson.testingdomainzforprototypes.website/ingest/forensic (58329 bytes)
+15:14:21 [jetson.forensic.evidence_upload] INFO forensic uploaded: {'id': 62, 'url': '/forensics/62.pdf', 'sha256': '45b569de30edef8eeb3be6409d9f8eaef511dcafc54f3e2ab35826e40b7f9d4c'}
+15:14:21 [jetson.main           ] INFO forensic upload complete (gps_spoof): 58329 bytes in 1.06s
+15:14:21 [jetson.alerting.csv_logger] INFO Forensic logged: gps_spoof bus=0 completed=True bytes=58329
+15:14:22 [jetson.traffic.gps_telemetry] WARNING GPS WS send bus=0 failed: socket is already closed.
+15:14:22 [jetson.traffic.gps_telemetry] WARNING GPS WS error bus=0: socket is already closed. (backoff 1.0s)
+15:14:24 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.13 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=5/3, detected=False]
+15:14:24 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:14:24 [jetson.traffic.gps_telemetry] INFO GPS WS connected bus=0
+15:14:27 [jetson.traffic.gps_telemetry] INFO GPS spoof injection cleared bus=0
+15:14:29 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:14:32 [jetson.detection.edge_gps_detector] INFO [EDGE GPS SPOOF CLEARED] bus=0
+15:14:32 [jetson.main           ] INFO Forensic re-armed (gps_spoof)
+15:14:34 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.12 Mbps (>15.0? False)  loss=12.50% (>5.0%? True)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=6/3, detected=False]
+15:14:34 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:14:39 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:14:44 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.12 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=1/2, good=0/3, detected=False]
+15:14:44 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:14:49 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:14:54 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.12 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=1/3, detected=False]
+15:14:54 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:14:59 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:15:00 [jetson.traffic.cctv_stream] WARNING CCTV send bus=0 failed: socket is already closed.
+15:15:00 [jetson.traffic.cctv_stream] WARNING CCTV WS error bus=0: socket is already closed. (backoff 1.0s)
+15:15:03 [jetson.traffic.cctv_stream] INFO CCTV WS connected bus=0
+15:15:04 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.11 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=2/3, detected=False]
+15:15:04 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:15:09 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:15:12 [jetson.traffic.gps_telemetry] WARNING GPS spoof injection ACTIVE bus=0 -> (14000, 1000)
+15:15:14 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.15 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=3/3, detected=False]
+15:15:14 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:15:14 [jetson.detection.edge_gps_detector] WARNING [EDGE GPS SPOOF] bus=0 corridor=6500m speed=0.0 m/s streak=3
+15:15:14 [jetson.main           ] WARNING *** EDGE GPS SPOOF DETECTED ***
+15:15:14 [jetson.main           ] WARNING   speed=0.0 m/s  corridor=6500 m  streak=3
+15:15:14 [jetson.alerting.csv_logger] INFO Event logged: gps_spoof_detect bus=0 v1=0.000 v2=6500.000 streak=3
+15:15:14 [jetson.alerting.telegram_bot] INFO [Telegram disabled] *GPS SPOOFING DETECTED on Bus 0*
+Time: `2026-05-02 15:15:14`
+
+Speed: `0.0 m/s` (threshold: 22.2 m/s)
+15:15:15 [jetson.main           ] INFO forensic trigger: gps_spoof — capturing evidence
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:15:16 [fontTools.subset      ] INFO maxp pruned
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.020s to load 'cmap'
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:15:16 [fontTools.subset      ] INFO cmap pruned
+15:15:16 [fontTools.subset      ] INFO fpgm dropped
+15:15:16 [fontTools.subset      ] INFO prep dropped
+15:15:16 [fontTools.subset      ] INFO cvt  dropped
+15:15:16 [fontTools.subset      ] INFO kern dropped
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:15:16 [fontTools.subset      ] INFO post pruned
+15:15:16 [fontTools.subset      ] INFO GPOS dropped
+15:15:16 [fontTools.subset      ] INFO GSUB dropped
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.017s to load 'glyf'
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:15:16 [fontTools.subset      ] INFO glyf pruned
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'cmap'
+15:15:16 [fontTools.subset      ] INFO Added gid0 to subset
+15:15:16 [fontTools.subset      ] INFO Closing glyph list over 'MATH': 50 glyphs before
+15:15:16 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:15:16 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'MATH' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'MATH' table
+15:15:16 [fontTools.subset      ] INFO Closed glyph list over 'MATH': 50 glyphs after
+15:15:16 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:15:16 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.008s to close glyph list over 'MATH'
+15:15:16 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 50 glyphs before
+15:15:16 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:15:16 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:15:16 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 50 glyphs after
+15:15:16 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'E', 'G', 'H', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'U', 'Y', 'a', 'b', 'c', 'colon', 'd', 'e', 'emdash', 'equal', 'f', 'five', 'g', 'h', 'hyphen', 'i', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'period', 'plus', 'r', 's', 'six', 'space', 't', 'three', 'two', 'u', 'underscore', 'y', 'zero']
+15:15:16 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 14, 16, 17, 19, 20, 21, 22, 24, 25, 29, 32, 36, 37, 38, 40, 42, 43, 47, 48, 50, 51, 53, 54, 55, 56, 60, 66, 68, 69, 70, 71, 72, 73, 74, 75, 76, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 92, 2807]
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'glyf'
+15:15:16 [fontTools.subset      ] INFO Retaining 50 glyphs
+15:15:16 [fontTools.subset      ] INFO head subsetting not needed
+15:15:16 [fontTools.subset      ] INFO hhea subsetting not needed
+15:15:16 [fontTools.subset      ] INFO maxp subsetting not needed
+15:15:16 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.007s to subset 'hmtx'
+15:15:16 [fontTools.subset      ] INFO hmtx subsetted
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'cmap'
+15:15:16 [fontTools.subset      ] INFO cmap subsetted
+15:15:16 [fontTools.subset      ] INFO loca subsetting not needed
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:15:16 [fontTools.subset      ] INFO post subsetted
+15:15:16 [fontTools.subset      ] INFO gasp subsetting not needed
+15:15:16 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'MATH'
+15:15:16 [fontTools.subset      ] INFO MATH subsetted
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.004s to subset 'GDEF'
+15:15:16 [fontTools.subset      ] INFO GDEF subsetted
+15:15:16 [fontTools.subset      ] INFO name subsetting not needed
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.194s to subset 'glyf'
+15:15:16 [fontTools.subset      ] INFO glyf subsetted
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:15:16 [fontTools.subset      ] INFO head pruned
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:15:16 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 31]
+15:15:16 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.003s to prune 'glyf'
+15:15:16 [fontTools.subset      ] INFO glyf pruned
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:15:16 [fontTools.subset      ] INFO GDEF pruned
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:15:16 [fontTools.subset      ] INFO name pruned
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:15:16 [fontTools.subset      ] INFO maxp pruned
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.020s to load 'cmap'
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:15:16 [fontTools.subset      ] INFO cmap pruned
+15:15:16 [fontTools.subset      ] INFO fpgm dropped
+15:15:16 [fontTools.subset      ] INFO prep dropped
+15:15:16 [fontTools.subset      ] INFO cvt  dropped
+15:15:16 [fontTools.subset      ] INFO kern dropped
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:15:16 [fontTools.subset      ] INFO post pruned
+15:15:16 [fontTools.subset      ] INFO GPOS dropped
+15:15:16 [fontTools.subset      ] INFO GSUB dropped
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.016s to load 'glyf'
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:15:16 [fontTools.subset      ] INFO glyf pruned
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'cmap'
+15:15:16 [fontTools.subset      ] INFO Added gid0 to subset
+15:15:16 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 47 glyphs before
+15:15:16 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'a', 'c', 'colon', 'd', 'e', 'eight', 'fl', 'g', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'parenleft', 'parenright', 'r', 's', 'six', 'space', 't', 'two', 'u', 'uniFB00', 'v', 'y', 'zero']
+15:15:16 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 11, 12, 19, 20, 21, 25, 27, 29, 36, 37, 38, 39, 40, 41, 42, 44, 47, 48, 50, 51, 53, 54, 55, 57, 68, 70, 71, 72, 74, 76, 77, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 89, 92, 5037, 5039]
+15:15:16 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 47 glyphs after
+15:15:16 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'L', 'M', 'O', 'P', 'R', 'S', 'T', 'V', 'a', 'c', 'colon', 'd', 'e', 'eight', 'fl', 'g', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'one', 'p', 'parenleft', 'parenright', 'r', 's', 'six', 'space', 't', 'two', 'u', 'uniFB00', 'v', 'y', 'zero']
+15:15:16 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 11, 12, 19, 20, 21, 25, 27, 29, 36, 37, 38, 39, 40, 41, 42, 44, 47, 48, 50, 51, 53, 54, 55, 57, 68, 70, 71, 72, 74, 76, 77, 78, 79, 80, 81, 82, 83, 85, 86, 87, 88, 89, 92, 5037, 5039]
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'glyf'
+15:15:16 [fontTools.subset      ] INFO Retaining 47 glyphs
+15:15:16 [fontTools.subset      ] INFO head subsetting not needed
+15:15:16 [fontTools.subset      ] INFO hhea subsetting not needed
+15:15:16 [fontTools.subset      ] INFO maxp subsetting not needed
+15:15:16 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.008s to subset 'hmtx'
+15:15:16 [fontTools.subset      ] INFO hmtx subsetted
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.006s to subset 'cmap'
+15:15:16 [fontTools.subset      ] INFO cmap subsetted
+15:15:16 [fontTools.subset      ] INFO loca subsetting not needed
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:15:16 [fontTools.subset      ] INFO post subsetted
+15:15:16 [fontTools.subset      ] INFO gasp subsetting not needed
+15:15:16 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:15:16 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:15:16 [fontTools.subset.timer] DEBUG Took 0.005s to subset 'GDEF'
+15:15:16 [fontTools.subset      ] INFO GDEF subsetted
+15:15:16 [fontTools.subset      ] INFO name subsetting not needed
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.011s to subset 'glyf'
+15:15:17 [fontTools.subset      ] INFO glyf subsetted
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:15:17 [fontTools.subset      ] INFO head pruned
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:15:17 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 62]
+15:15:17 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.003s to prune 'glyf'
+15:15:17 [fontTools.subset      ] INFO glyf pruned
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:15:17 [fontTools.subset      ] INFO GDEF pruned
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:15:17 [fontTools.subset      ] INFO name pruned
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:15:17 [fontTools.subset      ] INFO maxp pruned
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.012s to load 'cmap'
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:15:17 [fontTools.subset      ] INFO cmap pruned
+15:15:17 [fontTools.subset      ] INFO fpgm dropped
+15:15:17 [fontTools.subset      ] INFO prep dropped
+15:15:17 [fontTools.subset      ] INFO cvt  dropped
+15:15:17 [fontTools.subset      ] INFO kern dropped
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:15:17 [fontTools.subset      ] INFO post pruned
+15:15:17 [fontTools.subset      ] INFO GPOS dropped
+15:15:17 [fontTools.subset      ] INFO GSUB dropped
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.009s to load 'glyf'
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:15:17 [fontTools.subset      ] INFO glyf pruned
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'cmap'
+15:15:17 [fontTools.subset      ] INFO Added gid0 to subset
+15:15:17 [fontTools.subset      ] INFO Closing glyph list over 'MATH': 28 glyphs before
+15:15:17 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:15:17 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'MATH' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'MATH' table
+15:15:17 [fontTools.subset      ] INFO Closed glyph list over 'MATH': 28 glyphs after
+15:15:17 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:15:17 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.005s to close glyph list over 'MATH'
+15:15:17 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 28 glyphs before
+15:15:17 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:15:17 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:15:17 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 28 glyphs after
+15:15:17 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'A', 'B', 'F', 'P', 'R', 'S', 'a', 'c', 'e', 'emdash', 'f', 'g', 'h', 'hyphen', 'i', 'l', 'm', 'n', 'o', 'one', 'p', 'r', 's', 'space', 't', 'two', 'u']
+15:15:17 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 20, 21, 36, 37, 41, 51, 53, 54, 68, 70, 72, 73, 74, 75, 76, 79, 80, 81, 82, 83, 85, 86, 87, 88, 1923]
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'glyf'
+15:15:17 [fontTools.subset      ] INFO Retaining 28 glyphs
+15:15:17 [fontTools.subset      ] INFO head subsetting not needed
+15:15:17 [fontTools.subset      ] INFO hhea subsetting not needed
+15:15:17 [fontTools.subset      ] INFO maxp subsetting not needed
+15:15:17 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.004s to subset 'hmtx'
+15:15:17 [fontTools.subset      ] INFO hmtx subsetted
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'cmap'
+15:15:17 [fontTools.subset      ] INFO cmap subsetted
+15:15:17 [fontTools.subset      ] INFO loca subsetting not needed
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:15:17 [fontTools.subset      ] INFO post subsetted
+15:15:17 [fontTools.subset      ] INFO gasp subsetting not needed
+15:15:17 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'MATH'
+15:15:17 [fontTools.subset      ] INFO MATH subsetted
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'GDEF'
+15:15:17 [fontTools.subset      ] INFO GDEF subsetted
+15:15:17 [fontTools.subset      ] INFO name subsetting not needed
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.004s to subset 'glyf'
+15:15:17 [fontTools.subset      ] INFO glyf subsetted
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:15:17 [fontTools.subset      ] INFO head pruned
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:15:17 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0, 31]
+15:15:17 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'glyf'
+15:15:17 [fontTools.subset      ] INFO glyf pruned
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:15:17 [fontTools.subset      ] INFO GDEF pruned
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.002s to prune 'name'
+15:15:17 [fontTools.subset      ] INFO name pruned
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'maxp' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'maxp' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.001s to load 'maxp'
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'maxp'
+15:15:17 [fontTools.subset      ] INFO maxp pruned
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'cmap' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'cmap' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'post' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'post' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.012s to load 'cmap'
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'cmap'
+15:15:17 [fontTools.subset      ] INFO cmap pruned
+15:15:17 [fontTools.subset      ] INFO fpgm dropped
+15:15:17 [fontTools.subset      ] INFO prep dropped
+15:15:17 [fontTools.subset      ] INFO cvt  dropped
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to load 'post'
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'post'
+15:15:17 [fontTools.subset      ] INFO post pruned
+15:15:17 [fontTools.subset      ] INFO GPOS dropped
+15:15:17 [fontTools.subset      ] INFO GSUB dropped
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'glyf' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'glyf' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'loca' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'loca' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'head' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'head' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.008s to load 'glyf'
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:15:17 [fontTools.subset      ] INFO glyf pruned
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.001s to close glyph list over 'cmap'
+15:15:17 [fontTools.subset      ] INFO Added gid0 to subset
+15:15:17 [fontTools.subset      ] INFO Closing glyph list over 'glyf': 12 glyphs before
+15:15:17 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'colon', 'five', 'four', 'hyphen', 'one', 'seven', 'six', 'space', 'three', 'two', 'zero']
+15:15:17 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 19, 20, 21, 22, 23, 24, 25, 26, 29]
+15:15:17 [fontTools.subset      ] INFO Closed glyph list over 'glyf': 12 glyphs after
+15:15:17 [fontTools.subset      ] INFO Glyph names: ['.notdef', 'colon', 'five', 'four', 'hyphen', 'one', 'seven', 'six', 'space', 'three', 'two', 'zero']
+15:15:17 [fontTools.subset      ] INFO Glyph IDs:   [0, 3, 16, 19, 20, 21, 22, 23, 24, 25, 26, 29]
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.002s to close glyph list over 'glyf'
+15:15:17 [fontTools.subset      ] INFO Retaining 12 glyphs
+15:15:17 [fontTools.subset      ] INFO head subsetting not needed
+15:15:17 [fontTools.subset      ] INFO hhea subsetting not needed
+15:15:17 [fontTools.subset      ] INFO maxp subsetting not needed
+15:15:17 [fontTools.subset      ] INFO OS/2 subsetting not needed
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'hmtx' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hmtx' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'hhea' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'hhea' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'hmtx'
+15:15:17 [fontTools.subset      ] INFO hmtx subsetted
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.003s to subset 'cmap'
+15:15:17 [fontTools.subset      ] INFO cmap subsetted
+15:15:17 [fontTools.subset      ] INFO loca subsetting not needed
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to subset 'post'
+15:15:17 [fontTools.subset      ] INFO post subsetted
+15:15:17 [fontTools.subset      ] INFO gasp subsetting not needed
+15:15:17 [fontTools.subset      ] INFO FFTM NOT subset; don't know how to subset
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'GDEF' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'GDEF' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'GDEF'
+15:15:17 [fontTools.subset      ] INFO GDEF subsetted
+15:15:17 [fontTools.subset      ] INFO name subsetting not needed
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.002s to subset 'glyf'
+15:15:17 [fontTools.subset      ] INFO glyf subsetted
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to subset GlyphOrder
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'head'
+15:15:17 [fontTools.subset      ] INFO head pruned
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'OS/2' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'OS/2' table
+15:15:17 [fontTools.subset      ] INFO OS/2 Unicode ranges pruned: [0]
+15:15:17 [fontTools.subset      ] INFO OS/2 CodePage ranges pruned: [0]
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'glyf'
+15:15:17 [fontTools.subset      ] INFO glyf pruned
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.000s to prune 'GDEF'
+15:15:17 [fontTools.subset      ] INFO GDEF pruned
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'name' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'name' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'gasp' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'gasp' table
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Reading 'FFTM' table from disk
+15:15:17 [fontTools.ttLib.ttFont] DEBUG Decompiling 'FFTM' table
+15:15:17 [fontTools.subset.timer] DEBUG Took 0.001s to prune 'name'
+15:15:17 [fontTools.subset      ] INFO name pruned
+15:15:17 [jetson.forensic.pdf_builder] INFO forensic PDF built: bus=0 attack=gps_spoof size=58091 bytes
+15:15:17 [jetson.forensic.incident_package] INFO forensic folder built: ./logs/incidents/INC_20260502-151515_0 (pdf_sha256=ceb1c252edbc53c0c0ab4fec9db852fc0245f76c544a5f9ce81347d24131795e, acq=0.010s, hash=0.9ms)
+15:15:17 [jetson.forensic.evidence_capture] INFO forensic evidence ready: bus=0 attack=gps_spoof pdf=58091 bytes sha256=ceb1c252edbc53c0c0ab4fec9db852fc0245f76c544a5f9ce81347d24131795e folder=./logs/incidents/INC_20260502-151515_0
+15:15:17 [jetson.alerting.telegram_bot] INFO [Telegram disabled] Document: incident_bus0_gps_spoof_1777724115.pdf
+15:15:17 [jetson.main           ] WARNING forensic PDF Telegram send returned False (gps_spoof)
+15:15:17 [jetson.forensic.evidence_upload] INFO forensic upload -> https://jetson.testingdomainzforprototypes.website/ingest/forensic (58091 bytes)
+15:15:18 [jetson.forensic.evidence_upload] INFO forensic uploaded: {'id': 63, 'url': '/forensics/63.pdf', 'sha256': 'ceb1c252edbc53c0c0ab4fec9db852fc0245f76c544a5f9ce81347d24131795e'}
+15:15:18 [jetson.main           ] INFO forensic upload complete (gps_spoof): 58091 bytes in 1.04s
+15:15:18 [jetson.alerting.csv_logger] INFO Forensic logged: gps_spoof bus=0 completed=True bytes=58091
+15:15:19 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:15:24 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.19 Mbps (>15.0? False)  loss=14.29% (>5.0%? True)  rtt=0.0 ms (>100 ms? False)  [bad=0/2, good=4/3, detected=False]
+15:15:24 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:15:24 [jetson.traffic.gps_telemetry] INFO GPS spoof injection cleared bus=0
+15:15:29 [jetson.main           ] INFO status=GPS-SPOOF | queue events=0 forensics=0
+15:15:29 [jetson.detection.edge_gps_detector] INFO [EDGE GPS SPOOF CLEARED] bus=0
+15:15:29 [jetson.main           ] INFO Forensic re-armed (gps_spoof)
+15:15:34 [jetson.detection.ddos_detector] INFO DDoS check: rate=0.14 Mbps (>15.0? False)  loss=0.00% (>5.0%? False)  rtt=0.0 ms (>100 ms? False)  [bad=1/2, good=0/3, detected=False]
+15:15:34 [jetson.main           ] INFO status=IDLE | queue events=0 forensics=0
+15:15:35 [jetson.traffic.gps_telemetry] WARNING GPS WS send bus=0 failed: socket is already closed.
+15:15:35 [jetson.traffic.gps_telemetry] WARNING GPS WS error bus=0: socket is already closed. (backoff 1.0s)
+15:15:38 [jetson.traffic.gps_telemetry] INFO GPS WS connected bus=0

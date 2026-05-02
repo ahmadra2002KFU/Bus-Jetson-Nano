@@ -1,0 +1,13 @@
+{
+  "agent_git_sha": "1e0a593",
+  "attack_type": "gps_spoof",
+  "bus_id": 0,
+  "detector_module": "edge_gps_detector",
+  "detector_version": "1.0.0",
+  "incident_id": "INC_20260502-151224_0",
+  "jetson_hostname": "fatima-desktop",
+  "pdf_sha256": "ed6346d5448b4601b95d928f1cb4b15d9d793b585a57d81063d009d2061f6352",
+  "platform": "Linux-5.15.148-tegra-aarch64-with-glibc2.35",
+  "ts": 1777723944.0629504,
+  "ts_iso": "2026-05-02T12:12:24.062950Z"
+}

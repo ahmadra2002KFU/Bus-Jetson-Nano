@@ -1,0 +1,29 @@
+Al-Ahsa Smart Bus — Edge Forensic Report (text summary)
+============================================================
+Incident ID    : INC_20260502-151515_0
+Type           : gps_spoof
+Trigger ts     : 1777724115.781  (2026-05-02T12:15:15.780618Z)
+Bus ID         : 0
+Hostname       : fatima-desktop
+Detector ver.  : 1.0.0
+PDF sha256     : ceb1c252edbc53c0c0ab4fec9db852fc0245f76c544a5f9ce81347d24131795e
+
+Detector outputs:
+  - bus_id: 0
+  - corridor_anomaly: True
+  - corridor_dist: 6500.0
+  - distance: 0.0
+  - jump_anomaly: False
+  - speed: 0.0
+  - speed_anomaly: False
+  - streak: 3
+  - timestamp: 1777724114.312489
+  - type: gps_spoof
+
+Action taken:
+  1. Detection latched on edge.
+  2. WeasyPrint PDF rendered (edge_forensic_report.pdf).
+  3. SHA-256 manifest written (hash_manifest.txt).
+  4. Multipart upload to /ingest/forensic with sha256 field.
+
+Verify locally:  sha256sum -c hash_manifest.txt
