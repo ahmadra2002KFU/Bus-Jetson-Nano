@@ -34,6 +34,7 @@ from jetson.detection.edge_gps_detector import EdgeGpsDetector
 from jetson.detection.heartbeat import HeartbeatProbe
 from jetson.forensic.evidence_capture import capture_evidence
 from jetson.forensic.evidence_upload import upload_evidence
+from jetson.forensic.metrics import record_forensic_metrics
 from jetson.network.offline_queue import OfflineQueue
 from jetson.network.traffic_monitor import TrafficMonitor
 from jetson.routes import create_routes, get_bus_route_assignment
@@ -384,6 +385,25 @@ class BusAgent:
             completed=result["completed"],
             bytes_received=result["bytes_sent"],
         )
+
+        try:
+            record_forensic_metrics(
+                log_dir=getattr(self.csv_logger, "log_dir", "logs"),
+                incident_id=metadata.get("incident_id", ""),
+                trigger_ts=trigger_time,
+                bus_id=self.config.bus_id,
+                attack_type=attack_type,
+                detection_time_s=None,  # populated by detector hook in M5
+                acquisition_time_s=metadata.get("acquisition_time_s", 0.0),
+                hash_gen_time_ms=metadata.get("hash_gen_time_ms", 0.0),
+                integrity_verification="PENDING",  # populated by post-run /verify sweep
+                upload_time_s=result["upload_finish"] - result["upload_start"],
+                upload_success=result["completed"],
+                incident_folder=metadata.get("incident_dir", ""),
+                report_gen_time_ms=metadata.get("report_gen_time_ms", 0.0),
+            )
+        except Exception:
+            logger.exception("record_forensic_metrics failed (non-fatal)")
 
     def _offline_flusher_loop(self) -> None:
         while not self.stop_event.is_set():

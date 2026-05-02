@@ -269,6 +269,7 @@ def build_incident_folder(
     folder = os.path.join(base_dir, incident_id)
     os.makedirs(folder, exist_ok=True)
 
+    acquisition_start = time.monotonic()
     pdf_sha256 = _sha256_bytes(pdf_bytes)
 
     # 1. PDF
@@ -326,7 +327,16 @@ def build_incident_folder(
         f.write("\n")
 
     # 7. hash_manifest.txt (last — covers everything else)
+    hash_start = time.monotonic()
     _write_manifest(folder)
+    hash_gen_time_ms = (time.monotonic() - hash_start) * 1000.0
+    acquisition_time_s = time.monotonic() - acquisition_start
 
-    logger.info("forensic folder built: %s (pdf_sha256=%s)", folder, pdf_sha256)
+    meta["acquisition_time_s"] = acquisition_time_s
+    meta["hash_gen_time_ms"] = hash_gen_time_ms
+
+    logger.info(
+        "forensic folder built: %s (pdf_sha256=%s, acq=%.3fs, hash=%.1fms)",
+        folder, pdf_sha256, acquisition_time_s, hash_gen_time_ms,
+    )
     return folder, pdf_sha256, meta

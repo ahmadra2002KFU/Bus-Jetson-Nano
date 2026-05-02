@@ -80,6 +80,7 @@ def capture_evidence(
     recent_events = _read_recent_events(csv_logger)
     details = dict(detection_details or {})
 
+    render_start = time.monotonic()
     try:
         pdf_bytes = build_incident_pdf(
             bus_id=int(bus_id),
@@ -93,6 +94,7 @@ def capture_evidence(
     except Exception as exc:
         logger.error("PDF render failed: %s", exc)
         raise
+    report_gen_time_ms = (time.monotonic() - render_start) * 1000.0
 
     pdf_sha256 = hashlib.sha256(pdf_bytes).hexdigest()
 
@@ -121,6 +123,9 @@ def capture_evidence(
         "sha256":      pdf_sha256,
         "incident_id": folder_meta["incident_id"],
         "incident_dir": folder,
+        "report_gen_time_ms": report_gen_time_ms,
+        "acquisition_time_s": folder_meta.get("acquisition_time_s", 0.0),
+        "hash_gen_time_ms": folder_meta.get("hash_gen_time_ms", 0.0),
     }
 
     logger.info(
