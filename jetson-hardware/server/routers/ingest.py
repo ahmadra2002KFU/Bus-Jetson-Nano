@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import logging
 import os
@@ -10,12 +11,13 @@ import re
 import struct
 import time
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Tuple
 
 from fastapi import (
     APIRouter, File, Form, HTTPException, Query, Request, UploadFile,
     WebSocket, WebSocketDisconnect,
 )
+from fastapi.responses import JSONResponse
 
 from ..alerting.telegram_bot import TelegramAlerter
 from ..detection.gps_detector import ServerGpsDetector
@@ -276,7 +278,8 @@ async def ingest_forensic(
     request: Request,
     metadata: str = Form(...),
     pdf: UploadFile = File(...),
-) -> Dict[str, Any]:
+    sha256: Optional[str] = Form(None),
+) -> Any:
     try:
         meta = json.loads(metadata)
         bus_id = int(meta["bus_id"])
@@ -308,7 +311,7 @@ async def ingest_forensic(
     final_path = forensics_dir / final_name
 
     try:
-        size = await _save_upload_file(pdf, final_path)
+        size, server_sha = await _save_upload_file(pdf, final_path)
     except Exception:
         # Best-effort cleanup: delete the DB row we just wrote.
         try:
@@ -318,14 +321,60 @@ async def ingest_forensic(
         logger.exception("forensic: PDF save failed")
         raise HTTPException(status_code=500, detail="failed to save pdf")
 
-    # Update the row with the real path + size.
+    # Verify client-supplied sha256 if present.
+    actor_ip = request.client.host if request.client else None
+    if sha256 is not None:
+        client_sha = sha256.strip().lower()
+        if client_sha != server_sha:
+            # Integrity failure: log audit, drop the file + row, return 422.
+            try:
+                await db.insert_audit(
+                    "INTEGRITY_FAIL",
+                    actor_ip=actor_ip,
+                    target=str(forensic_id),
+                    detail=json.dumps(
+                        {"client": client_sha, "server": server_sha,
+                         "bytes": size, "bus_id": bus_id}
+                    ),
+                )
+            except Exception:
+                logger.exception("forensic: audit insert failed")
+            try:
+                final_path.unlink(missing_ok=True)
+            except Exception:
+                pass
+            try:
+                await db.delete_forensic_ids([forensic_id])
+            except Exception:
+                logger.exception("forensic: rollback delete failed")
+            return JSONResponse(
+                status_code=422,
+                content={
+                    "error": "sha256_mismatch",
+                    "client": client_sha,
+                    "server": server_sha,
+                },
+            )
+
+    # Update the row with the real path + size + sha256.
     import aiosqlite
     async with aiosqlite.connect(db.get_db_path()) as conn:
         await conn.execute(
-            "UPDATE forensics SET pdf_path = ?, bytes = ? WHERE id = ?",
-            (str(final_path), size, forensic_id),
+            "UPDATE forensics SET pdf_path = ?, bytes = ?, sha256 = ? WHERE id = ?",
+            (str(final_path), size, server_sha, forensic_id),
         )
         await conn.commit()
+
+    try:
+        await db.insert_audit(
+            "INGEST_FORENSIC",
+            actor_ip=actor_ip,
+            target=str(forensic_id),
+            detail=json.dumps({"bytes": size, "sha256": server_sha,
+                               "bus_id": bus_id, "attack_type": attack_type}),
+        )
+    except Exception:
+        logger.exception("forensic: audit insert failed")
 
     try:
         await db.insert_event(
@@ -350,7 +399,61 @@ async def ingest_forensic(
             name=f"telegram-forensic-{forensic_id}",
         )
 
-    return {"id": forensic_id, "url": f"/forensics/{forensic_id}.pdf"}
+    return {
+        "id": forensic_id,
+        "url": f"/forensics/{forensic_id}.pdf",
+        "sha256": server_sha,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Verification endpoint — supervisor's `sha256sum -c` analog
+# ---------------------------------------------------------------------------
+
+@router.get("/verify/{forensic_id}")
+async def verify_forensic(forensic_id: int, request: Request) -> Dict[str, Any]:
+    from datetime import datetime, timezone
+    row = await db.fetch_forensic(forensic_id)
+    if row is None:
+        raise HTTPException(status_code=404, detail="not found")
+    pdf_path = Path(row["pdf_path"])
+    stored = (row.get("sha256") or "").lower()
+    computed: Optional[str] = None
+    verified = False
+    if pdf_path.exists():
+        loop = asyncio.get_running_loop()
+
+        def _hash() -> str:
+            h = hashlib.sha256()
+            with open(pdf_path, "rb") as fh:
+                for chunk in iter(lambda: fh.read(64 * 1024), b""):
+                    h.update(chunk)
+            return h.hexdigest()
+
+        computed = await loop.run_in_executor(None, _hash)
+        verified = bool(stored) and (computed == stored)
+
+    checked_at = datetime.now(timezone.utc).isoformat()
+    actor_ip = request.client.host if request.client else None
+    try:
+        await db.insert_audit(
+            "VERIFY",
+            actor_ip=actor_ip,
+            target=str(forensic_id),
+            detail=json.dumps(
+                {"stored": stored, "computed": computed, "verified": verified}
+            ),
+        )
+    except Exception:
+        logger.exception("verify: audit insert failed")
+
+    return {
+        "id": forensic_id,
+        "stored_sha256": stored,
+        "computed_sha256": computed,
+        "verified": verified,
+        "checked_at": checked_at,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -365,24 +468,26 @@ def _format_client(ws: WebSocket) -> str:
     return host
 
 
-async def _save_upload_file(upload: UploadFile, dest: Path) -> int:
-    """Stream ``upload`` to ``dest`` in 64 KiB chunks. Returns bytes written."""
-    total = 0
+async def _save_upload_file(upload: UploadFile, dest: Path) -> Tuple[int, str]:
+    """Stream ``upload`` to ``dest`` in 64 KiB chunks.
+
+    Returns ``(bytes_written, sha256_hex)``. The sha256 is computed in the
+    same single pass as the disk write so we never re-read the file.
+    """
     chunk_size = 64 * 1024
-    # Write synchronously but in chunks to avoid blocking the loop excessively.
-    # For a prototype under 10 MB typical payloads this is fine.
     loop = asyncio.get_running_loop()
 
-    def _write() -> int:
+    def _write() -> Tuple[int, str]:
         written = 0
+        hasher = hashlib.sha256()
         with open(dest, "wb") as fh:
             while True:
                 chunk = upload.file.read(chunk_size)
                 if not chunk:
                     break
                 fh.write(chunk)
+                hasher.update(chunk)
                 written += len(chunk)
-        return written
+        return written, hasher.hexdigest()
 
-    total = await loop.run_in_executor(None, _write)
-    return total
+    return await loop.run_in_executor(None, _write)

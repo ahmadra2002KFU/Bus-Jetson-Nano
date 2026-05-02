@@ -44,9 +44,21 @@ SCHEMA = [
         bus_id      INTEGER NOT NULL,
         attack_type TEXT    NOT NULL,
         pdf_path    TEXT    NOT NULL,
-        bytes       INTEGER NOT NULL
+        bytes       INTEGER NOT NULL,
+        sha256      TEXT
     )
     """,
+    """
+    CREATE TABLE IF NOT EXISTS audit_log (
+        id        INTEGER PRIMARY KEY AUTOINCREMENT,
+        ts        TEXT    NOT NULL,
+        action    TEXT    NOT NULL,
+        actor_ip  TEXT,
+        target    TEXT,
+        detail    TEXT
+    )
+    """,
+    "CREATE INDEX IF NOT EXISTS idx_audit_ts ON audit_log(ts)",
     """
     CREATE TABLE IF NOT EXISTS gps_positions (
         id       INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -86,6 +98,66 @@ async def init_db(db_path: Optional[str] = None) -> None:
         await db.execute("PRAGMA foreign_keys=ON")
         for stmt in SCHEMA:
             await db.execute(stmt)
+        # Idempotent migration: SQLite has no `IF NOT EXISTS` for ADD COLUMN,
+        # so we attempt and swallow only the "duplicate column" error.
+        try:
+            await db.execute("ALTER TABLE forensics ADD COLUMN sha256 TEXT")
+        except aiosqlite.OperationalError as exc:
+            if "duplicate column" not in str(exc).lower():
+                raise
+        await db.commit()
+
+
+# ---------------------------------------------------------------------------
+# Audit log DAO
+# ---------------------------------------------------------------------------
+
+async def insert_audit(
+    action: str,
+    *,
+    actor_ip: Optional[str] = None,
+    target: Optional[str] = None,
+    detail: Optional[str] = None,
+    db_path: Optional[str] = None,
+) -> int:
+    from datetime import datetime, timezone
+    ts = datetime.now(timezone.utc).isoformat()
+    async with aiosqlite.connect(db_path or get_db_path()) as db:
+        cursor = await db.execute(
+            "INSERT INTO audit_log(ts, action, actor_ip, target, detail) "
+            "VALUES (?, ?, ?, ?, ?)",
+            (ts, action, actor_ip, target, detail),
+        )
+        await db.commit()
+        return cursor.lastrowid or 0
+
+
+async def fetch_audit(
+    *, limit: int = 100, db_path: Optional[str] = None
+) -> List[Dict[str, Any]]:
+    async with aiosqlite.connect(db_path or get_db_path()) as db:
+        db.row_factory = aiosqlite.Row
+        async with db.execute(
+            "SELECT id, ts, action, actor_ip, target, detail "
+            "FROM audit_log ORDER BY id DESC LIMIT ?",
+            (int(limit),),
+        ) as cursor:
+            rows = await cursor.fetchall()
+    return [dict(r) for r in rows]
+
+
+# ---------------------------------------------------------------------------
+# Forensic sha256 helper
+# ---------------------------------------------------------------------------
+
+async def update_forensic_sha256(
+    forensic_id: int, sha256: str, *, db_path: Optional[str] = None
+) -> None:
+    async with aiosqlite.connect(db_path or get_db_path()) as db:
+        await db.execute(
+            "UPDATE forensics SET sha256 = ? WHERE id = ?",
+            (sha256, forensic_id),
+        )
         await db.commit()
 
 
@@ -307,7 +379,7 @@ async def fetch_forensics(
     limit: int = 50,
     db_path: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
-    sql = "SELECT id, ts, bus_id, attack_type, pdf_path, bytes FROM forensics WHERE 1=1"
+    sql = "SELECT id, ts, bus_id, attack_type, pdf_path, bytes, sha256 FROM forensics WHERE 1=1"
     params: List[Any] = []
     if bus_id is not None:
         sql += " AND bus_id = ?"
@@ -339,7 +411,7 @@ async def fetch_forensic(
     async with aiosqlite.connect(db_path or get_db_path()) as db:
         db.row_factory = aiosqlite.Row
         async with db.execute(
-            "SELECT id, ts, bus_id, attack_type, pdf_path, bytes "
+            "SELECT id, ts, bus_id, attack_type, pdf_path, bytes, sha256 "
             "FROM forensics WHERE id = ?",
             (forensic_id,),
         ) as cursor:

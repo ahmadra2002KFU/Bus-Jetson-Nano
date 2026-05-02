@@ -231,17 +231,45 @@
 
   document.body.addEventListener('htmx:beforeSwap', (e) => {
     const id = e.detail.target.id;
-    if (id !== 'events-list') return;
-    try {
-      const data = JSON.parse(e.detail.xhr.responseText);
-      e.detail.shouldSwap = false;
-      const arr = Array.isArray(data) ? data : (data.events || []);
-      lastEvents = arr;
-      document.getElementById('events-list').innerHTML = renderEvents(arr);
-    } catch (err) {
-      console.error('events swap failed', err);
+    if (id === 'events-list') {
+      try {
+        const data = JSON.parse(e.detail.xhr.responseText);
+        e.detail.shouldSwap = false;
+        const arr = Array.isArray(data) ? data : (data.events || []);
+        lastEvents = arr;
+        document.getElementById('events-list').innerHTML = renderEvents(arr);
+      } catch (err) {
+        console.error('events swap failed', err);
+      }
+      return;
+    }
+    if (id === 'audit-list') {
+      try {
+        const data = JSON.parse(e.detail.xhr.responseText);
+        e.detail.shouldSwap = false;
+        const arr = Array.isArray(data) ? data : [];
+        document.getElementById('audit-list').innerHTML = renderAudit(arr);
+      } catch (err) {
+        console.error('audit swap failed', err);
+      }
+      return;
     }
   });
+
+  function renderAudit(rows) {
+    if (!rows.length) return '<em>no audit entries yet</em>';
+    const head = '<table class="audit-table"><thead><tr>'
+      + '<th>time</th><th>action</th><th>ip</th><th>target</th><th>detail</th>'
+      + '</tr></thead><tbody>';
+    const body = rows.map((r) =>
+      '<tr><td>' + esc(r.ts || '') + '</td>'
+      + '<td>' + esc(r.action || '') + '</td>'
+      + '<td>' + esc(r.actor_ip || '') + '</td>'
+      + '<td>' + esc(r.target || '') + '</td>'
+      + '<td><code>' + esc(r.detail || '') + '</code></td></tr>'
+    ).join('');
+    return head + body + '</tbody></table>';
+  }
 
   // ====================================================================
   // /api/buses polling (status strip + map + bus-select)

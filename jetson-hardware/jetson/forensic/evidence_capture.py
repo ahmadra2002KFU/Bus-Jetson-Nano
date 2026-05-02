@@ -1,18 +1,21 @@
-"""Forensic evidence capture — build a PDF incident report."""
+"""Forensic evidence capture — build a PDF + INC_*/ folder + sha256 manifest."""
 
 from __future__ import annotations
 
 import csv
+import hashlib
 import logging
 import os
 import time
-from typing import Any
+from typing import Any, Optional
 
+from jetson.forensic.incident_package import build_incident_folder
 from jetson.forensic.pdf_builder import build_incident_pdf
 
 logger = logging.getLogger(__name__)
 
 _MAX_EVENT_ROWS = 25
+_DEFAULT_INCIDENTS_DIR = os.path.join("logs", "incidents")
 
 
 def _read_recent_events(csv_logger, limit: int = _MAX_EVENT_ROWS
@@ -51,30 +54,28 @@ def _read_recent_events(csv_logger, limit: int = _MAX_EVENT_ROWS
 
 
 def capture_evidence(
-    camera=None,
     csv_logger=None,
     bus_id: int = 0,
     attack_type: str = "unknown",
     detection_details: dict | None = None,
     gps_trace: list[tuple[float, float]] | None = None,
     route_polyline: list[tuple[float, float]] | None = None,
+    incidents_dir: Optional[str] = None,
 ):
-    """Capture forensic evidence and render it as a PDF incident report.
+    """Capture forensic evidence: PDF + INC_*/ folder + sha256 of PDF.
 
-    The ``camera`` parameter is accepted for backward-compatibility with the
-    existing call sites but is no longer used: this project does not run
-    against a real camera, so no frame is captured.
+    Camera capture is intentionally out of scope for M4 — no real camera is
+    instantiated and no raw_image.jpg is written. (Camera support is future
+    work and lives outside this milestone.)
 
     Returns:
         tuple[bytes, dict]:
-            - PDF bytes.
-            - Metadata dict with ``bus_id``, ``attack_type``, ``trigger_ts``,
-              ``details`` — consumed by the forensic uploader.
+            - PDF bytes (kept for upload).
+            - Metadata dict containing ``bus_id``, ``attack_type``,
+              ``trigger_ts``, ``details``, ``sha256`` (of PDF),
+              ``incident_id``, ``incident_dir``.
     """
     trigger_ts = time.time()
-
-    # Camera capture intentionally removed: no real camera in this project.
-    del camera  # silence unused-arg linters; preserved in signature only
 
     recent_events = _read_recent_events(csv_logger)
     details = dict(detection_details or {})
@@ -93,15 +94,37 @@ def capture_evidence(
         logger.error("PDF render failed: %s", exc)
         raise
 
+    pdf_sha256 = hashlib.sha256(pdf_bytes).hexdigest()
+
+    # Resolve where INC_*/ folders live. Default: <csv_logger.log_dir>/incidents
+    base_dir = incidents_dir
+    if base_dir is None:
+        log_dir = getattr(csv_logger, "log_dir", None) or "logs"
+        base_dir = os.path.join(log_dir, "incidents")
+
+    folder, _, folder_meta = build_incident_folder(
+        base_dir=base_dir,
+        bus_id=int(bus_id),
+        attack_type=attack_type,
+        trigger_ts=trigger_ts,
+        pdf_bytes=pdf_bytes,
+        detection_details=details,
+        csv_logger=csv_logger,
+        gps_trace=gps_trace,
+    )
+
     metadata = {
         "bus_id":      int(bus_id),
         "attack_type": attack_type,
         "trigger_ts":  trigger_ts,
         "details":     details,
+        "sha256":      pdf_sha256,
+        "incident_id": folder_meta["incident_id"],
+        "incident_dir": folder,
     }
 
     logger.info(
-        "forensic evidence ready: bus=%d attack=%s pdf=%d bytes",
-        bus_id, attack_type, len(pdf_bytes),
+        "forensic evidence ready: bus=%d attack=%s pdf=%d bytes sha256=%s folder=%s",
+        bus_id, attack_type, len(pdf_bytes), pdf_sha256, folder,
     )
     return pdf_bytes, metadata

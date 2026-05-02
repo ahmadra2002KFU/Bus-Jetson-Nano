@@ -316,7 +316,7 @@ class BusAgent:
         trigger_time = time.time()
         try:
             pdf_bytes, metadata = capture_evidence(
-                None, self.csv_logger,
+                self.csv_logger,
                 bus_id=self.config.bus_id,
                 attack_type=attack_type,
                 detection_details=self._detection_details.get(attack_type),

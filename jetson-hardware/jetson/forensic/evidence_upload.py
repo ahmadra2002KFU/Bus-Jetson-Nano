@@ -11,6 +11,7 @@ Return shape is preserved so the existing callback path keeps working:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import time
@@ -63,7 +64,15 @@ def upload_evidence(
     }
 
     files = {"pdf": ("incident.pdf", pdf_bytes, "application/pdf")}
-    data = {"metadata": json.dumps(metadata, separators=(",", ":"))}
+    # SHA-256 of the PDF bytes — sent as both a top-level multipart field
+    # (so the server can verify without parsing JSON) and inside metadata.
+    sha256 = hashlib.sha256(pdf_bytes).hexdigest()
+    md = dict(metadata or {})
+    md.setdefault("sha256", sha256)
+    data = {
+        "metadata": json.dumps(md, separators=(",", ":")),
+        "sha256":   sha256,
+    }
 
     logger.info("forensic upload -> %s (%d bytes)", url, len(pdf_bytes))
 

@@ -92,6 +92,19 @@
   </div>
 </section>
 
+<section class="panel" id="p-audit">
+  <header class="panel-head">
+    <h2>Audit log (chain of custody)</h2>
+  </header>
+  <div id="audit-list"
+       hx-get="/api/audit_log?limit=20"
+       hx-trigger="load, every 5s"
+       hx-target="#audit-list"
+       hx-swap="innerHTML">
+    <em>loading&hellip;</em>
+  </div>
+</section>
+
 <div id="test-modal" class="modal-backdrop" hidden>
   <div class="modal" role="dialog" aria-labelledby="test-modal-title">
     <header class="modal-head">

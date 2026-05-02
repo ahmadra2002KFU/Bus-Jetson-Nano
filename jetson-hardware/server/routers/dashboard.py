@@ -45,7 +45,8 @@ async def dashboard(request: Request) -> HTMLResponse:
 
 
 @router.get("/forensics/{forensic_id}.pdf")
-async def forensic_pdf(forensic_id: int) -> FileResponse:
+async def forensic_pdf(forensic_id: int, request: Request) -> FileResponse:
+    import json as _json
     row = await db.fetch_forensic(forensic_id)
     if row is None:
         raise HTTPException(status_code=404, detail="not found")
@@ -55,6 +56,17 @@ async def forensic_pdf(forensic_id: int) -> FileResponse:
     filename = (
         f"forensic_{forensic_id}_bus{row['bus_id']}_{row['attack_type']}.pdf"
     )
+    actor_ip = request.client.host if request.client else None
+    try:
+        await db.insert_audit(
+            "DOWNLOAD",
+            actor_ip=actor_ip,
+            target=str(forensic_id),
+            detail=_json.dumps({"sha256": row.get("sha256"),
+                                "bytes": row.get("bytes")}),
+        )
+    except Exception:
+        pass
     return FileResponse(
         str(pdf_path),
         media_type="application/pdf",
