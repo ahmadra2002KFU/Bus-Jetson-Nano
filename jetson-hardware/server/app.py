@@ -13,6 +13,7 @@ Run under uvicorn:
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import logging
 import os
@@ -30,7 +31,7 @@ from jetson.routes import create_routes, get_bus_route_assignment
 
 from server.alerting.telegram_bot import TelegramAlerter
 from server.detection.gps_detector import ServerGpsDetector
-from server.forensic.pdf_builder import build_spoof_pdf
+from server.forensic.pdf_builder import build_ddos_pdf, build_spoof_pdf
 from server.routers import api as api_router
 from server.routers import dashboard as dashboard_router
 from server.routers import ingest as ingest_router
@@ -148,6 +149,12 @@ async def _render_and_store_spoof_pdf(
         forensic_id = await db.insert_forensic(
             bus_id, "gps_spoof", str(out_path), len(pdf_bytes), ts=trigger_ts
         )
+        try:
+            await db.update_forensic_sha256(
+                forensic_id, hashlib.sha256(pdf_bytes).hexdigest()
+            )
+        except Exception:
+            logger.exception("server-spoof: sha256 update failed")
 
         # System event so the dashboard "forensic uploaded" feed shows it.
         await db.insert_event(
@@ -173,6 +180,110 @@ async def _render_and_store_spoof_pdf(
 
 
 # ---------------------------------------------------------------------------
+# DDoS handler — writes the event AND renders/stores a forensic PDF
+# ---------------------------------------------------------------------------
+
+def _make_ddos_handler(app: FastAPI):
+    async def _handler(details: Dict[str, Any]) -> None:
+        bus_id = int(details.get("bus_id", 0))
+        ts = float(details.get("timestamp") or time.time())
+
+        rate_mbps = float(details.get("rate_mbps") or 0.0)
+        loss_pct = float(details.get("loss_pct") or 0.0)
+
+        try:
+            await db.insert_event(
+                bus_id,
+                "ddos_detect",
+                ts=ts,
+                value1=rate_mbps,
+                value2=loss_pct,
+                detail=details,
+            )
+        except Exception:
+            logger.exception("ddos event insert failed")
+
+        telegram: TelegramAlerter = getattr(app.state, "telegram", None)
+        if telegram is not None:
+            asyncio.create_task(
+                telegram.send_text(TelegramAlerter.format_ddos(bus_id, details)),
+                name=f"telegram-ddos-text-{bus_id}-{int(ts)}",
+            )
+
+        asyncio.create_task(
+            _render_and_store_ddos_pdf(app, bus_id, ts, details),
+            name=f"ddos-pdf-{bus_id}-{int(ts)}",
+        )
+
+    return _handler
+
+
+async def _render_and_store_ddos_pdf(
+    app: FastAPI,
+    bus_id: int,
+    trigger_ts: float,
+    details: Dict[str, Any],
+) -> None:
+    try:
+        # Pull the last hour of rx_bps for this bus to draw the chart.
+        since = trigger_ts - 3600.0
+        metrics = await db.fetch_metrics(bus_id, since=since, limit=5000)
+        rx_series = [
+            (float(r["ts"]), float(r["rx_bps"]))
+            for r in metrics
+            if r.get("rx_bps") is not None
+        ]
+
+        recent_events = await db.fetch_events(limit=8)
+
+        pdf_bytes = await build_ddos_pdf(
+            bus_id=bus_id,
+            trigger_ts=trigger_ts,
+            details=details,
+            rx_series=rx_series,
+            recent_events=recent_events,
+            build=_build_sha(),
+        )
+
+        forensics_dir = Path(db.get_forensics_dir())
+        forensics_dir.mkdir(parents=True, exist_ok=True)
+        fname = f"ddos_{bus_id}_{int(trigger_ts)}_{uuid.uuid4().hex[:8]}.pdf"
+        out_path = forensics_dir / fname
+        out_path.write_bytes(pdf_bytes)
+
+        forensic_id = await db.insert_forensic(
+            bus_id, "ddos", str(out_path), len(pdf_bytes), ts=trigger_ts
+        )
+        try:
+            await db.update_forensic_sha256(
+                forensic_id, hashlib.sha256(pdf_bytes).hexdigest()
+            )
+        except Exception:
+            logger.debug("ddos: sha256 update skipped", exc_info=True)
+
+        await db.insert_event(
+            bus_id,
+            "forensic_ddos",
+            ts=trigger_ts,
+            value1=float(len(pdf_bytes)),
+            detail={"forensic_id": forensic_id, "source": "server"},
+        )
+        logger.info(
+            "server-side ddos PDF stored: id=%d bus=%d bytes=%d",
+            forensic_id, bus_id, len(pdf_bytes),
+        )
+
+        telegram: TelegramAlerter = getattr(app.state, "telegram", None)
+        if telegram is not None:
+            await telegram.send_document(
+                out_path,
+                caption=f"DDoS forensic | Bus {bus_id} | id={forensic_id}",
+            )
+    except Exception:
+        logger.exception("ddos PDF generation failed (bus=%d)", bus_id)
+
+
+# ---------------------------------------------------------------------------
 # Lifespan
 # ---------------------------------------------------------------------------
 
@@ -186,6 +297,7 @@ async def _lifespan(app: FastAPI) -> AsyncIterator[None]:
     await app.state.telegram.start()
     spoof_handler = _make_gps_spoof_handler(app)
     app.state.gps_spoof_handler = spoof_handler
+    app.state.ddos_handler = _make_ddos_handler(app)
     app.state.gps_detector = ServerGpsDetector(on_detect=spoof_handler)
     app.state.retention_stop = asyncio.Event()
     app.state.retention_task = asyncio.create_task(

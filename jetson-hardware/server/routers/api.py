@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 import logging
 import os
 import time
@@ -13,7 +12,6 @@ from fastapi import APIRouter, Body, HTTPException, Query, Request
 
 from jetson.routes import create_routes, get_bus_route_assignment
 
-from ..alerting.telegram_bot import TelegramAlerter
 from ..storage import db
 
 logger = logging.getLogger(__name__)
@@ -202,38 +200,33 @@ async def test_simulate(
         return {"status": "ok", "attack_type": "gps_spoof", "bus_id": bus_id}
 
     if attack_type in ("ddos", "ddos_detect"):
+        handler = getattr(app.state, "ddos_handler", None)
+        if handler is None:
+            raise HTTPException(
+                status_code=503, detail="ddos handler not initialised"
+            )
         rate_mbps = float(payload.get("rate_mbps") or 32.0)
         loss_pct = float(payload.get("loss_pct") or 12.0)
         details = {
+            "type": "ddos_detect",
+            "timestamp": now,
+            "bus_id": bus_id,
             "rate_mbps": rate_mbps,
             "loss_pct": loss_pct,
             "src_ip": "simulated",
             "simulated": True,
         }
-        event_id = await db.insert_event(
-            bus_id,
-            "ddos_detect",
-            ts=now,
-            value1=rate_mbps,
-            value2=loss_pct,
-            detail=details,
-        )
-        telegram: Optional[TelegramAlerter] = getattr(
-            app.state, "telegram", None
-        )
-        if telegram is not None:
-            asyncio.create_task(
-                telegram.send_text(TelegramAlerter.format_ddos(bus_id, details)),
-                name=f"telegram-ddos-sim-{bus_id}-{int(now)}",
-            )
-        return {
-            "status": "ok",
-            "attack_type": "ddos",
-            "bus_id": bus_id,
-            "event_id": event_id,
-        }
+        await handler(details)
+        return {"status": "ok", "attack_type": "ddos", "bus_id": bus_id}
 
     raise HTTPException(status_code=400, detail="unknown attack_type")
+
+
+@router.get("/audit_log")
+async def api_audit_log(
+    limit: int = Query(50, ge=1, le=1000),
+) -> List[Dict[str, Any]]:
+    return await db.fetch_audit(limit=limit)
 
 
 @router.get("/buses")

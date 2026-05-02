@@ -214,3 +214,131 @@ async def build_spoof_pdf(
             recent_events=recent_events, build=build,
         ),
     )
+
+
+# ----------------------------------------------------------------------------
+# DDoS report
+# ----------------------------------------------------------------------------
+
+DDOS_THRESHOLD_MBPS = 15.0
+
+
+def _ddos_metric_rows(details: Dict[str, Any]) -> List[Tuple[str, str, str]]:
+    rate = details.get("rate_mbps")
+    loss = details.get("loss_pct")
+    rows: List[Tuple[str, str, str]] = []
+    rows.append(("Inbound rate", _fmt_float(rate, 2, " Mbps"), "bad"))
+    rows.append(("Heartbeat loss", _fmt_float(loss, 1, " %"), "bad"))
+    rtt = details.get("rtt_ms")
+    if rtt is not None:
+        rows.append(("Heartbeat RTT", _fmt_float(rtt, 0, " ms"), ""))
+    rows.append(("Source address", str(details.get("src_ip") or "—"), ""))
+    rows.append((
+        "Detection threshold",
+        f"{DDOS_THRESHOLD_MBPS:.0f} Mbps inbound",
+        "",
+    ))
+    if details.get("simulated"):
+        rows.append(("Origin", "simulated (dashboard testing panel)", "flag"))
+    return rows
+
+
+def _render_ddos_chart_png(
+    rx_series: Iterable[Tuple[float, float]],
+    trigger_ts: float,
+    threshold_mbps: float,
+) -> Optional[bytes]:
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.dates as mdates
+        import matplotlib.pyplot as plt
+    except ImportError:
+        logger.warning("matplotlib unavailable; skipping DDoS rx chart")
+        return None
+
+    series = list(rx_series or [])
+    fig = plt.figure(figsize=(7.0, 3.6), dpi=110)
+    try:
+        ax = fig.add_subplot(1, 1, 1)
+        if series:
+            xs = [datetime.fromtimestamp(t) for t, _ in series]
+            ys = [v / 1e6 for _, v in series]  # bps -> Mbps
+            ax.plot(xs, ys, color="#1d4ed8", linewidth=1.4, label="rx_bps")
+            ax.fill_between(xs, ys, color="#1d4ed8", alpha=0.12)
+        ax.axhline(
+            threshold_mbps, linestyle="--", color="#b91c1c",
+            linewidth=1.0, label=f"threshold {threshold_mbps:.0f} Mbps",
+        )
+        try:
+            tx = datetime.fromtimestamp(trigger_ts)
+            ax.axvline(tx, linestyle=":", color="#0f172a", linewidth=1.0, label="trigger")
+        except Exception:
+            pass
+        ax.set_xlabel("Time")
+        ax.set_ylabel("Mbps")
+        ax.set_title("Inbound traffic vs. DDoS threshold")
+        ax.grid(True, linestyle=":", alpha=0.45)
+        ax.legend(loc="best", fontsize=8)
+        if series:
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
+            fig.autofmt_xdate()
+        buf = io.BytesIO()
+        fig.tight_layout()
+        fig.savefig(buf, format="png", bbox_inches="tight")
+        return buf.getvalue()
+    finally:
+        plt.close(fig)
+
+
+def build_ddos_pdf_sync(
+    *,
+    bus_id: int,
+    trigger_ts: float,
+    details: Dict[str, Any],
+    rx_series: Optional[Iterable[Tuple[float, float]]],
+    recent_events: Optional[List[Dict[str, Any]]],
+    build: str,
+) -> bytes:
+    """Synchronous DDoS PDF renderer (run in a thread executor)."""
+    from weasyprint import HTML  # heavy import; defer
+
+    png = _render_ddos_chart_png(rx_series or [], trigger_ts, DDOS_THRESHOLD_MBPS)
+    chart_uri = _png_data_uri(png) if png else None
+
+    ctx = {
+        "bus_id": int(bus_id),
+        "trigger_iso": _ts_iso(trigger_ts),
+        "trigger_human": _ts_human(trigger_ts),
+        "metric_rows": _ddos_metric_rows(details or {}),
+        "rx_chart_uri": chart_uri,
+        "ddos_threshold_mbps": int(DDOS_THRESHOLD_MBPS),
+        "events": _prepare_events(recent_events or []),
+        "generation_human": _ts_human(datetime.now(tz=timezone.utc).timestamp()),
+        "build": build or "dev",
+    }
+
+    template = _env.get_template("ddos_report.html")
+    html_str = template.render(**ctx)
+    pdf = HTML(string=html_str, base_url=str(_TEMPLATE_DIR)).write_pdf()
+    return pdf
+
+
+async def build_ddos_pdf(
+    *,
+    bus_id: int,
+    trigger_ts: float,
+    details: Dict[str, Any],
+    rx_series: Optional[Iterable[Tuple[float, float]]],
+    recent_events: Optional[List[Dict[str, Any]]],
+    build: str,
+) -> bytes:
+    """Async wrapper that runs WeasyPrint + matplotlib in a thread."""
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(
+        None,
+        lambda: build_ddos_pdf_sync(
+            bus_id=bus_id, trigger_ts=trigger_ts, details=details,
+            rx_series=rx_series, recent_events=recent_events, build=build,
+        ),
+    )
